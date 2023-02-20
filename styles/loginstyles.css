@@ -1,0 +1,42 @@
+body {
+    background-image: url('../images/backgrounds/TRU-OM.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* container styles */
+
+#logInDiv {
+    background-color: hsla(0, 0%, 100%, 0.897);
+    width: 600px;
+    height: 400px;
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px #202020;
+}
+
+
+/* header section styles */
+
+#logInHeader {
+    text-align: center;
+    color: #003e51;
+    font-family: 'Arial Nova';
+
+}
+
+#logInHeader img {
+    width: 50px;
+}
+
+#logInHeader strong{
+    position: relative;
+    bottom: 25px;
+    margin-left: 15px;
+    font-size: larger;
+}
+
