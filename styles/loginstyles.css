@@ -1,6 +1,5 @@
 body {
     background-image: url('../images/backgrounds/TRU-OM.jpg');
-    background-repeat: no-repeat;
     background-size: cover;
 }
 
@@ -17,20 +16,23 @@ body {
     transform: translate(-50%, -50%);
     border-radius: 5px;
     box-shadow: 2px 2px 5px #202020;
+    font-family: 'Arial Nova';
 }
 
 
 /* header section styles */
 
 #logInHeader {
-    text-align: center;
-    color: #003e51;
-    font-family: 'Arial Nova';
-
+    text-align: center;    
 }
 
 #logInHeader img {
     width: 50px;
+}
+
+#logInHeader p{
+    color: rgb(77, 77, 77);
+    font-size: large;
 }
 
 #logInHeader strong{
@@ -38,5 +40,38 @@ body {
     bottom: 25px;
     margin-left: 15px;
     font-size: larger;
+    color: #003e51;
+}
+
+/* loginform styles*/
+
+#loginForm {
+padding: 20px 0px 20px 40px;
+width: 300px;
+}
+
+#loginForm .wide{
+    width: 250px;
+    height: 30px;
+    margin: 10px 0px;
+    border-radius: 5px;
+    border: 1px solid grey;
+}
+
+#submitbutton{
+    background-color: #003e51;
+    color: white;
+    position: relative;
+    top: 15px;
+}
+
+/* form side text styles*/
+
+#loginFside{
+    width: 250px;
+    position: relative;
+    bottom: 220px;
+    left: 320px;
+    padding-top: 20px;
 }
 
