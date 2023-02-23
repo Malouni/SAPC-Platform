@@ -15,11 +15,14 @@
     <link rel="stylesheet" href="/fonts/arial-nova/stylesheet.css">
     <link rel="stylesheet" href="/styles/generalStyles.css">
 
+    
+
 
 </head>
 
 <body>
 
+    <!-- Navigation section -->
     <nav>
         <img src="images/LOGOS/TRU-LG02.png" alt="logo">
         <ul>
@@ -35,6 +38,12 @@
             </li>
         </ul>
     </nav>
+
+    <div class="container">
+        <div>header</div>
+    </div>
+
+
 
 
 

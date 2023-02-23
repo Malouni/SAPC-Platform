@@ -41,12 +41,13 @@ nav ul li a{
 nav ul li ul{
     display: none;
     position: absolute;
-    height: 100vh;
+    height: 70vh;
     right: 0px;
     top: 60px;
     background-color: #014e66;
-    padding: 10px;
+    padding: 70px 10px;
     border-radius: 0px 0px 4px 4px;
+    
 }
 
 nav ul li:hover ul{
