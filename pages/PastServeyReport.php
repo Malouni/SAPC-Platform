@@ -60,6 +60,16 @@
                 </table>
             </div>
         </div>
+        <h3>Goals</h3>
+        <table class="tableGoals">
+            <tr class="rowGoals">
+                <th class="gridGoals"><button class="buttonGoals" id="DIELbutton">Diverse, Inclusive & Equitable Learning</button></th>
+                <th class="gridGoals"><button class="buttonGoals" id="SPbutton">Sustainable practice to promote well being</button></th>
+                <th class="gridGoals"><button class="buttonGoals" id="TTLbutton">Transformational Teaching & Learning</button></th>
+                <th class="gridGoals"><button class="buttonGoals" id="TCbutton">Transformation Communities</button></th>
+                <th class="gridGoals"><button class="buttonGoals" id="GSDbutton">Guided skill development</button></th>
+            </tr>
+        </table>
     </div>
 
 

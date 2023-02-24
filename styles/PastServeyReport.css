@@ -24,11 +24,27 @@ div.document {
     width: auto;
 }
 
+/* images styles */
 img.download {
     margin: 0 3px;
 }
-/* loginform styles*/
 
+/* buttons styles */
+button.buttonGoals {
+    width:100%;
+}
+
+table.tableGoals{
+    width: 100%;
+}
+/* table styles */
+tr.rowGoals {
+    width: auto;
+}
+
+th.gridGoals {
+    height: auto;
+}
 
 /* form side text styles*/
 
