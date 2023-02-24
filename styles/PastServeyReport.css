@@ -24,9 +24,16 @@ div.document {
     width: auto;
 }
 
+div.report{
+    border: 1px solid black;
+    width: 98%;
+    height: auto;
+    padding: 0.8% 0.5% 0% 0.5%;
+}
+
 /* images styles */
-img.download {
-    margin: 0 3px;
+button.pdf {
+    margin: 0 5px;
 }
 
 /* buttons styles */
@@ -34,10 +41,21 @@ button.buttonGoals {
     width:100%;
 }
 
+/* table style for documents */
+table.tr.rowDocuments{
+    width: auto;
+}
+table.td.gridDocuments{
+    width: auto;
+}
+
+/* table styles for goals */
 table.tableGoals{
     width: 100%;
+    margin: 0;
+    padding: 0;
 }
-/* table styles */
+
 tr.rowGoals {
     width: auto;
 }
@@ -46,5 +64,9 @@ th.gridGoals {
     height: auto;
 }
 
-/* form side text styles*/
+/* text styles*/
+
+h3.textGoals {
+    margin: 0 20px 0 1px;
+}
 

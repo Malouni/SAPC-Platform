@@ -45,22 +45,22 @@
         <div class="pastDocuments">
             <div class="document">
                 <table>
-                    <tr>
-                        <td><p>Documents</p></td>
+                    <tr class="rowDocuments">
+                        <td class="gridDocuments"><p>Documents</p></td>
                     </tr>
-                    <tr>
-                        <td><p>Friday, 3 February 2022</p></td>
+                    <tr class="rowDocuments">
+                        <td class="gridDocuments"><p>Friday, 3 February 2022</p></td>
                     </tr>
-                    <tr>
-                        <td><a href="" style="margin-right: 30xp;"> Strategic Plan Report (2022)</a> <img src="" class="download"> <img src="" class="download"></td>
+                    <tr class="rowDocuments">
+                        <td class="gridDocuments"><a href="" style="margin-right: 30px;"> Strategic Plan Report (2022)</a> <button src="images/icons/pdf.png" class="pdf"> </button> <button src="images/icons/downloadpdf.png" class="pdf"> </button> </td>
                     </tr>
-                    <tr>
-                        <td><p>Facility of Science</p></td>
+                    <tr class="rowDocuments">
+                        <td class="gridDocuments"><p>Facility of Science</p></td>
                     </tr>
                 </table>
             </div>
         </div>
-        <h3>Goals</h3>
+        <h3 class="textGoals">Goals</h3>
         <table class="tableGoals">
             <tr class="rowGoals">
                 <th class="gridGoals"><button class="buttonGoals" id="DIELbutton">Diverse, Inclusive & Equitable Learning</button></th>
@@ -70,6 +70,12 @@
                 <th class="gridGoals"><button class="buttonGoals" id="GSDbutton">Guided skill development</button></th>
             </tr>
         </table>
+        <div class="report">
+
+        </div>
+
+
+
     </div>
 
 
