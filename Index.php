@@ -11,13 +11,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
 
-   
+
     <!-- links to stylesheets -->
     <link rel="stylesheet" href="/fonts/arial-nova/stylesheet.css">
     <link rel="stylesheet" href="/styles/generalStyles.css">
     <link rel="stylesheet" href="/styles/dashboardstyles.css">
 
-   
+
 
 
 
@@ -65,33 +65,131 @@
                 Should you have any questions, please contact the Dean at <a href="mailto: ganderson@tru.ca">ganderson@tru.ca</a>
             </p>
 
+
+            <!-- video container frame // link is to be updated -->
             <iframe src="https://www.youtube.com/embed/XIMLoLxmTDw" title="About the survey" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
         </div>
 
-        <!-- Timeline section -->       
+        <!-- Timeline section -->
         <div class="timeline insidebox">
             <h1 class="sectionheader">Timeline</h1>
             <!--buttons container-->
             <div>
-                <button><img src="images/icons/timemenu.png" alt="order by time"></button>
-                <button><img src="images/icons/ordermenu.png" alt="order by "></button>
+                <button class="sectionButton"><img src="images/icons/timemenu.png" alt="order by time"></button>
+                <button class="sectionButton sectionButton2"><img src="images/icons/ordermenu.png" alt="order by "></button>
+            </div>
+            <!-- Due list container // list items are to be added according to items in database-->
+            <ul id="TimelineDueList">
+                <li>
+                    <a href="">
+                        <ul>
+                            <li class="date">
+                                <h2>Friday, 3 March 2023</h2>
+                            </li>
+                            <li class="item"><span>Strategic Plan Survey 2023</span>is due <span class="time">00:00</span></li>
+                            <li class="faculty">Faculty of Science</li>
+                        </ul>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <ul>
+                            <li class="date">
+                                <h2>Friday, 3 March 2023</h2>
+                            </li>
+                            <li class="item"><span>Strategic Plan Survey 2023</span>is due <span class="time">00:00</span></li>
+                            <li class="faculty">Faculty of Science</li>
+                        </ul>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <ul>
+                            <li class="date">
+                                <h2>Friday, 3 March 2023</h2>
+                            </li>
+                            <li class="item"><span>Strategic Plan Survey 2023</span>is due <span class="time">00:00</span></li>
+                            <li class="faculty">Faculty of Science</li>
+                        </ul>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <ul>
+                            <li class="date">
+                                <h2>Friday, 3 March 2023</h2>
+                            </li>
+                            <li class="item"><span>Strategic Plan Survey 2023</span>is due <span class="time">00:00</span></li>
+                            <li class="faculty">Faculty of Science</li>
+                        </ul>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Upcoming section -->
+        <div class="upcoming insidebox">
+            <h1 class="sectionheader">Upcoming</h1>
+            <div class="activity">
+                <img src="images/cover-textures/1.png" alt="cover">
+                <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
+                <button class="options">...</button>
+                <div class="meter"></div>
+            </div>
+            <div class="activity">
+                <img src="images/cover-textures/2.png" alt="cover">
+                <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
+                <button class="options">...</button>
+                <div class="meter"></div>
+            </div>
+
+        </div>
+
+        <!-- History section -->
+        <div class="history insidebox">
+            <h1 class="sectionheader">History</h1>
+            <div class="activity">
+                <img src="images/cover-textures/3.png" alt="cover">
+                <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
+                <button class="options">...</button>
+                <div class="meter"></div>
+            </div>
+            <div class="activity">
+                <img src="images/cover-textures/4.png" alt="cover">
+                <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
+                <button class="options">...</button>
+                <div class="meter"></div>
+            </div>
+            <div class="activity">
+                <img src="images/cover-textures/5.png" alt="cover">
+                <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
+                <button class="options">...</button>
+                <div class="meter"></div>
             </div>
         </div>
 
-        <!-- Upcoming section -->   
-        <div class="upcoming insidebox">
-            <h1 class="sectionheader">Upcoming</h1>
-        </div>
 
-        <!-- History section -->   
-        <div class="history insidebox">
-            <h1 class="sectionheader">History</h1>
-        </div>
-
-        <!-- Documents section -->   
+        <!-- Documents section -->
         <div class="documents insidebox">
             <h1 class="sectionheader">Documents</h1>
+            <!--buttons container-->
+            <div>
+                <button class="sectionButton"><img src="images/icons/timemenu.png" alt="order by time"></button>
+                <button class="sectionButton sectionButton2"><img src="images/icons/ordermenu.png" alt="order by "></button>
+            </div>
+            <ul id="DocumentList">
+                <li>
+                    <a href="">
+                        <ul>
+                            <li class="date">
+                                <h2>Friday, 3 March 2023</h2>
+                            </li>
+                            <li class="item"><span>Strategic Plan Survey 2023</span>is due <span class="pdflink"><button><img src="images/icons/downloadpdf.png" alt=""></button></span></li>
+                            <li class="faculty">Faculty of Science</li>
+                        </ul>
+                    </a>
+                </li>
         </div>
     </div>
 
