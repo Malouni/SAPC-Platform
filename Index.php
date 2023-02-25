@@ -131,42 +131,52 @@
         <!-- Upcoming section -->
         <div class="upcoming insidebox">
             <h1 class="sectionheader">Upcoming</h1>
-            <div class="activity">
-                <img src="images/cover-textures/1.png" alt="cover">
-                <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
-                <button class="options">...</button>
-                <div class="meter"></div>
-            </div>
-            <div class="activity">
-                <img src="images/cover-textures/2.png" alt="cover">
-                <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
-                <button class="options">...</button>
-                <div class="meter"></div>
-            </div>
+            <a href="">
+                <div class="activity">
+                    <img src="images/cover-textures/1.png" alt="cover">
+                    <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
+                    <button class="options">...</button>
+                    <div class="meter"></div>
+                </div>
+            </a>
+            <a href="">
+                <div class="activity">
+                    <img src="images/cover-textures/2.png" alt="cover">
+                    <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
+                    <button class="options">...</button>
+                    <div class="meter"></div>
+                </div>
+            </a>
 
         </div>
 
         <!-- History section -->
         <div class="history insidebox">
             <h1 class="sectionheader">History</h1>
-            <div class="activity">
-                <img src="images/cover-textures/3.png" alt="cover">
-                <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
-                <button class="options">...</button>
-                <div class="meter"></div>
-            </div>
-            <div class="activity">
-                <img src="images/cover-textures/4.png" alt="cover">
-                <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
-                <button class="options">...</button>
-                <div class="meter"></div>
-            </div>
-            <div class="activity">
-                <img src="images/cover-textures/5.png" alt="cover">
-                <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
-                <button class="options">...</button>
-                <div class="meter"></div>
-            </div>
+            <a href="">
+                <div class="activity">
+                    <img src="images/cover-textures/3.png" alt="cover">
+                    <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
+                    <button class="options">...</button>
+                    <div class="meter"></div>
+                </div>
+            </a>
+            <a href="">
+                <div class="activity">
+                    <img src="images/cover-textures/4.png" alt="cover">
+                    <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
+                    <button class="options">...</button>
+                    <div class="meter"></div>
+                </div>
+            </a>
+            <a href="">
+                <div class="activity">
+                    <img src="images/cover-textures/5.png" alt="cover">
+                    <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
+                    <button class="options">...</button>
+                    <div class="meter"></div>
+                </div>
+            </a>
         </div>
 
 
