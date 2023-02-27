@@ -27,8 +27,16 @@
         </div>
         <div id="loginForm">
             <form method='post' action='controller.php'>
-                <input type="text" placeholder="Please enter Username" class="wide"></br>
-                <input type="password" placeholder="Please enter Password" class="wide"></br>
+                <input type='hidden' name='page' value='LogInPage'>
+                <input type='hidden' name='command' value='LogIn'>
+                <input type="text" placeholder="Please enter Username" class="wide" name = "truid" required></br>
+                <select name="position" id="position">
+                    <option value="??">??</option>
+                    <option value="??">??</option>
+                    <option value="??">??</option>
+                    <option value="??">??</option>
+                </select>
+                <input type="password" placeholder="Please enter Password" class="wide" name = "password" required></br>
                 <input type="checkbox" id="rememberUser" value="true"><label for="rememberUser">Remember Username</label></br>
                 <input type="submit" value="Log In" class="wide" id="submitbutton">
             </form>
