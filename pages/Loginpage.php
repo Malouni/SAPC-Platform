@@ -12,7 +12,7 @@
 
     <!-- links to stylesheets -->
     <link rel="stylesheet" href="..\fonts\arial-nova\stylesheet.css">
-    <link rel="stylesheet" href="../styles/loginstyles.css">
+    <link rel="stylesheet" href="../styles/LogInStyles.css">
     
 
 
@@ -26,7 +26,7 @@
             <P class="subtitle">Science Strategic Plan</P>
         </div>
         <div id="loginForm">
-            <form action="">
+            <form method='post' action='controller.php'>
                 <input type="text" placeholder="Please enter Username" class="wide"></br>
                 <input type="password" placeholder="Please enter Password" class="wide"></br>
                 <input type="checkbox" id="rememberUser" value="true"><label for="rememberUser">Remember Username</label></br>
