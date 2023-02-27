@@ -16,21 +16,18 @@
     <link rel="stylesheet" href="/styles/generalStyles.css">
     <link rel="stylesheet" href="../styles/PastSurveyReport.css">
 
-    
-
-
 </head>
 
 <body>
 
     <!-- Navigation section -->
     <nav>
-        <img src="images/LOGOS/TRU-LG02.png" alt="logo">
+        <img src="../images/LOGOS/TRU-LG02.png" alt="logo">
         <ul>
-            <li><a href="http://"><img src="images/icons/notifications.png" alt="notifications" class="icon"></a></li>
-            <li><a href="http://"><img src="images/icons/message.png" alt="messages" class="icon"></a></li>
+            <li><a href="http://"><img src="../images/icons/notifications.png" alt="notifications" class="icon"></a></li>
+            <li><a href="http://"><img src="../images/icons/message.png" alt="messages" class="icon"></a></li>
             <li><a href="http://"><span>UserName</span> <span>UserLastname</span></a></li>
-            <li><a href="http://"><img src="images/icons/menu.png" alt="menu" class="icon"></a>
+            <li><a href="http://"><img src="../images/icons/menu.png" alt="menu" class="icon"></a>
                 <ul>
                     <li><a href="">Dashboard</a></li>
                     <li><a href="">Survey</a></li>
@@ -53,7 +50,7 @@
                     </tr>
                     <tr class="rowDocuments">
                         <td class="gridDocuments"><p class="SPRtext"> Strategic Plan Report (2022)</p> </td>
-                        <td><button src="images/icons/pdf.png" class="pdf"> </button> <button src="images/icons/downloadpdf.png" class="pdf"> </button> </td>
+                        <td><button src="../images/icons/pdf.png" class="pdf"> </button> <button src="../images/icons/downloadpdf.png" class="pdf"> </button> </td>
                     </tr>
                     <tr class="rowDocuments">
                         <td class="gridDocuments"><p class="facility">Facility of Science</p></td>
@@ -98,7 +95,7 @@
                 </tr>
                 <!--add php code for adding a new row-->
                 <tr>
-                    <td><button src="images/icons/pdf.png" class="pdf"></button><button src="images/icons/pdf.png" class="pdf"></button><button src="images/icons/pdf.png" class="pdf"></button></td>
+                    <td><button src="../images/icons/pdf.png" class="pdf"></button><button src="../images/icons/pdf.png" class="pdf"></button><button src="../images/icons/pdf.png" class="pdf"></button></td>
                 </tr>
             </table>
 
