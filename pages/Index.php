@@ -32,7 +32,7 @@
         <ul>
             <li><a href="http://"><img src="images/icons/notifications.png" alt="notifications" class="icon"></a></li>
             <li><a href="http://"><img src="images/icons/message.png" alt="messages" class="icon"></a></li>
-            <li><a href="http://"><span>UserName</span> <span>UserLastname</span></a></li>
+            <li><a href="http://"><span><?php echo $_SESSION['userFirstName'];?></span> <span><?php echo $_SESSION['userLastName']; ?></span></a></li>
             <li><a href="http://"><img src="images/icons/menu.png" alt="menu" class="icon"></a>
                 <ul>
                     <li><a href="">Dashboard</a></li>

@@ -33,6 +33,7 @@ if ($_POST['page'] == 'LogInPage')
                 $_SESSION['LogIn'] = 'Yes';
                 $_SESSION['userFirstName'] = get_user_first_name($_SESSION['truid']);
                 $_SESSION['userLastName'] = get_user_last_name($_SESSION['truid']);
+                $_SESSION['userPosition'] = get_user_position ($_SESSION['truid']);
                 include('Index.php');
             }
             exit();

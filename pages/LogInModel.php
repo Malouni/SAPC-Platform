@@ -45,6 +45,19 @@ function get_user_last_name ($truid)
         return -1;
 }
 
+function get_user_position ($truid)
+{
+    global $conn;
+
+    $sql = "select * from usertable where TruID = '$truid'";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        return $row['Position'];
+    } else
+        return -1;
+}
+
 
 
 ?>
