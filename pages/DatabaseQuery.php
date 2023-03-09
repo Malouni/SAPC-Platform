@@ -25,7 +25,7 @@ $UserTableSQL = "CREATE TABLE IF NOT EXISTS UserTable (
 $SurveyUserTableSQL = "CREATE TABLE IF NOT EXISTS SurveyUserTable (
     TruID VARCHAR(15) PRIMARY KEY,
     Progress TINYINT,
-    Year DATE,
+    Year SMALLINT,
     SurveyName VARCHAR(100),
     DateStart DATE,
     DateEnd DATE,
@@ -81,7 +81,7 @@ $SurveyUserTableSQL = "CREATE TABLE IF NOT EXISTS SurveyUserTable (
 
 // SurveyQuestionsTable query 
 $SurveyQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SurveyQuestionsTable (
-    Year DATE PRIMARY KEY,
+    Year SMALLINT PRIMARY KEY,
     SurveyName VARCHAR(100),
     DateStart DATE,
     DateEnd DATE,
@@ -127,7 +127,7 @@ $SurveyQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SurveyQuestionsTable (
 
 // SurveyReportTable query 
 $SurveyReportTableSQL = "CREATE TABLE IF NOT EXISTS SurveyReportTable (
-    Year DATE PRIMARY KEY,
+    Year SMALLINT PRIMARY KEY,
     SurveyName VARCHAR(100),
     DateStart DATE,
     DateEnd DATE,
