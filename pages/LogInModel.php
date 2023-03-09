@@ -7,11 +7,11 @@ define('DB_NAME', 'sciencestrategicplan');
 
 $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
-function check_validity($truid, $password, $position)
+function check_validity($truid, $password)
 {
     global $conn;
 
-    $sql = "select * from usertable where TruID = '$truid' and Password = '$password' and Position = '$position'";
+    $sql = "select * from usertable where TruID = '$truid' and Password = '$password'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0)
         return true;
