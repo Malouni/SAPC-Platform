@@ -26,7 +26,7 @@
             <P class="subtitle">Science Strategic Plan</P>
         </div>
         <div id="loginForm">
-            <form method='post' action='controller.php'>
+            <form method='post' action='Controller.php'>
                 <input type='hidden' name='page' value='LogInPage'>
                 <input type='hidden' name='command' value='LogIn'>
                 <input type="text" placeholder="Please enter Username" class="wide" name = "truid" required></br>
