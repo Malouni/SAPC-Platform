@@ -12,6 +12,7 @@ if (empty($_POST['page'])) {
 require('LogInModel.php');
 require('model2.php');
 
+
 session_start();
 
 
@@ -39,6 +40,8 @@ if ($_POST['page'] == 'LogInPage')
             exit();
     }
 }
+
+
 else if ($_POST['page'] == 'MainPage')
 {
     if (!isset($_SESSION['LogIn'])) {
