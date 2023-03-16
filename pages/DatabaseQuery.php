@@ -1,9 +1,9 @@
 <?php
 // Database connection
 $servername = "localhost";
-$username = "yourusername";
-$password = "yourpassword";
-$dbname = "yourdatabase";
+$username = "Oleg";
+$password = "asd123@#4";
+$dbname = "sciencestrategicplan";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
@@ -12,7 +12,7 @@ if ($conn->connect_error) {
 
 // UserTable query
 $UserTableSQL = "CREATE TABLE IF NOT EXISTS UserTable (
-  TruID varchar(15) PRIMARY KEY,
+  TruID varchar(50) PRIMARY KEY,
   Password char(60),
   Fname varchar(100),
   Lname varchar(100),
