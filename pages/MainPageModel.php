@@ -14,7 +14,6 @@ function GetPresentSurveyInfo($userid , $position )
     $date = date('Y-m-d');
 
     global $conn;
-    PresentSurveyArray = array();        
 
     //Get the SurveyName , Progress and DateEnd
     $survey_sql = "SELECT SurveyTable.SurvName ,
@@ -29,7 +28,7 @@ function GetPresentSurveyInfo($userid , $position )
     //if exit return the data in form of Array.
     if (mysqli_num_rows($survey_result) > 0) {
         $survey_row = mysqli_fetch_assoc($survey_result);
-        return array($survey_row['SurvName'] , $survey_row['SurvDateEnd'] , $user_row['Progress']); 
+        return array($survey_row['SurvName'] , $survey_row['SurvDateEnd'] , $survey_row['Progress']); 
     } else
         return -1;
 }
