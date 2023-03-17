@@ -56,6 +56,26 @@ button:hover{
     background-color: rgb(212, 212, 212);
 }
 
+.orderby{
+    display: none;
+    position: absolute;
+    top: 35px;
+    right: 0px;
+    background-color: rgb(229, 229, 229);
+    width: 200px;
+}
+
+.orderby button{
+    width: 200px;
+    border: none;
+    background-color:  rgb(229, 229, 229);
+    margin: 5px 0px;
+}
+
+.orderby button:hover{
+    background-color:  rgb(196, 196, 196);
+}
+
 
 /* About section styles*/
 .about{
@@ -84,6 +104,12 @@ iframe{
 .timeline{
     grid-area: timeline;
 }
+
+.timeline>div{
+    margin-bottom: 40px;
+    position: relative;
+}
+
 
 .timeline ul{
     padding: 10px 0;
@@ -175,6 +201,11 @@ iframe{
 /* Documents section styles*/
 .documents{
     grid-area: documents;
+}
+
+.documents>div{
+    margin-bottom: 40px;
+    position: relative;
 }
 
 .documents ul{

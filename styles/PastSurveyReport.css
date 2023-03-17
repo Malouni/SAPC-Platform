@@ -1,11 +1,10 @@
 /* container styles */
-
-div.pastReports {
-    border: 1px solid rgb(105, 105, 105);
+.pastReports {
+    border: 1px solid rgb(185, 185, 185);
     width: 98%;
     height: auto;
+    margin: 10px auto;
     min-width: 1000px;
-    margin: 0.5% 0.5% 0% 0.5%;
     padding: 0 0.5% 0.5% 0.5%;
 }
 
@@ -24,37 +23,57 @@ div.document {
     width: auto;
 }
 
-div.report{
+div.report {
     border: 1px solid rgb(105, 105, 105);
-    width: 98.65%;
+    width: 99.8%;
     height: auto;
     padding: 0 0.5% 0.5% 0.5%;
     margin: 0 0 0 2px;
 }
 
-/* images styles */
+/* button images styles */
 button.pdf {
-    margin: 0 5px;
+    margin: 0 10px;
+    cursor: pointer;
 }
 
-/* buttons styles */
-button.buttonGoals {
-    width:100%;
+.icon {
+    width: 15px;
+}
+
+
+/* strategic goals tabs styles */
+.buttonGoals {
+    width: 100%;
     background-color: #003e51;
     color: white;
     text-align: center;
+    height: 40px;
+    border: none;
+    border-radius: 3px 3px 0 0;
+    cursor: pointer;
+}
+
+
+#coverpattern {
+    width: 100%;
+    height: 60px;
+    background-image: url(../images/backgrounds/hexa.jpg);
+    background-size: cover;
+    border: 2px solid white;
 }
 
 /* table style for documents */
-table.tr.rowDocuments{
+table.tr.rowDocuments {
     width: auto;
 }
-table.td.gridDocuments{
+
+table.td.gridDocuments {
     width: auto;
 }
 
 /* table styles */
-table.tableGoals{
+table.tableGoals {
     width: 100%;
     margin: 0;
     padding: 0;
@@ -72,11 +91,12 @@ th.gridGoals {
     padding: 0;
 }
 
-table.tablePastReport{
+table.tablePastReport {
     width: 100%;
     border-collapse: collapse;
 }
-th.headerActivity{
+
+th.headerActivity {
     width: 60%;
     border: 1px solid rgb(105, 105, 105);
     border-collapse: collapse;
@@ -84,49 +104,56 @@ th.headerActivity{
     background-color: #288f94;
     text-align: left;
 }
-th.headerRest{
+
+th.headerRest {
     border: 1px solid rgb(105, 105, 105);
     border-collapse: collapse;
     background-color: #288f94;
     text-align: center;
 }
-tr.rowPastReport{
+
+tr.rowPastReport {
     border: 1px solid rgb(105, 105, 105);
     border-collapse: collapse;
 }
-td.gridActivity{
+
+td.gridActivity {
     border: 1px solid rgb(105, 105, 105);
     border-collapse: collapse;
     text-align: left;
     padding: 0 0 0 0.3%;
 }
-td.gridRest{
+
+td.gridRest {
     border: 1px solid rgb(105, 105, 105);
     border-collapse: collapse;
     text-align: center;
 }
+
 /* text styles*/
-p.headers{
+p.headers {
     font-weight: bold;
     margin: 0.5% 0 0.3% 1px;
     font-size: large;
 }
-p.regularText{
+
+p.regularText {
     margin: 0 0 0.2% 1px;
     font-size: medium;
 }
-p.document{
+
+p.document {
     color: black;
 }
-p.date{
+
+p.date {
     color: #040120;
 }
-p.SPRtext{
+
+p.SPRtext {
     color: rgb(0, 225, 255);
 }
-p.facility{
-    color:rgb(105, 105, 105);
+
+p.facility {
+    color: rgb(105, 105, 105);
 }
-
-
-

@@ -17,37 +17,7 @@
     <link rel="stylesheet" href="/styles/generalStyles.css">
     <link rel="stylesheet" href="/styles/dashboardstyles.css">
 
-    <script>
-        function hideShowMenu() {
-            var subMenu = document.getElementById("sidemenu");
-            if(subMenu.style.display == "block"){
-                subMenu.style.display = "none";
-            }
-            else{
-                subMenu.style.display = "block";
-            }
-        }
-
-        function hideShowMessages() {
-            var subMessages = document.getElementById("subMessages");
-            if(subMessages.style.display == "block"){
-                subMessages.style.display = "none";
-            }
-            else{
-                subMessages.style.display = "block";
-            }
-        }
-
-        function hideShowNotifications() {
-            var subMessages = document.getElementById("subNotifications");
-            if(subMessages.style.display == "block"){
-                subMessages.style.display = "none";
-            }
-            else{
-                subMessages.style.display = "block";
-            }
-        }
-    </script>
+    <script src="../scripts/hideShowScripts.js"></script>
 
 
 
@@ -140,8 +110,13 @@
             <h1 class="sectionheader">Timeline</h1>
             <!--buttons container-->
             <div>
-                <button class="sectionButton"><img src="../images/icons/timemenu.png" alt="order by time"></button>
-                <button class="sectionButton sectionButton2"><img src="../images/icons/ordermenu.png" alt="order by "></button>
+                <button class="sectionButton sectionButton2" onclick="showordertime()"><img src="../images/icons/ordermenu.png" alt="order by "></button>
+                <div class="orderby" id="orderbytime">
+                    <ul>
+                        <li><button>order by date (ascending)</button></li>
+                        <li><button>order by date (descending)</button></li>
+                    </ul>
+                </div>
             </div>
             <!-- Due list container // list items are to be added according to items in database-->
             <ul id="TimelineDueList">
@@ -239,9 +214,15 @@
             <h1 class="sectionheader">Documents</h1>
             <!--buttons container-->
             <div>
-                <button class="sectionButton"><img src="../images/icons/timemenu.png" alt="order by time"></button>
-                <button class="sectionButton sectionButton2"><img src="../images/icons/ordermenu.png" alt="order by "></button>
+                <button class="sectionButton sectionButton2" onclick="showorderdocs()"><img src="../images/icons/ordermenu.png" alt="order by "></button>
+                <div class="orderby" id="orderbydocs">
+                    <ul>
+                        <li><button>order by date (ascending)</button></li>
+                        <li><button>order by date (descending)</button></li>
+                    </ul>
+                </div>
             </div>
+            <!-- document list -->
             <ul id="DocumentList">
                 <li>
                     <a href="">

@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="/styles/generalStyles.css">
     <link rel="stylesheet" href="../styles/surveyStart.css">
 
+    <script src="../scripts/hideShowScripts.js"></script>
+
 
 </head>
 
@@ -21,18 +23,50 @@
     <nav>
         <img src="../images/LOGOS/TRU-LG02.png" alt="logo">
         <ul>
-            <li><a href="http://"><img src="../images/icons/notifications.png" alt="notifications" class="icon"></a></li>
-            <li><a href="http://"><img src="../images/icons/message.png" alt="messages" class="icon"></a></li>
-            <li><a href="http://"><span><?php echo $_SESSION['userimage']; ?></span> <span>UserLastname</span></a></li>
-            <li><a href="http://"><img src="../images/icons/menu.png" alt="menu" class="icon"></a>
-                <ul>
-                    <li><a href="">Dashboard</a></li>
-                    <li><a href="">Survey</a></li>
-                    <li><a href="">Log Out</a></li>
-                </ul>
-            </li>
+            <li><button onclick="hideShowNotifications()"><img src="../images/icons/notifications.png" alt="notifications" class="icon"></button></li>
+            <li><button onclick="hideShowMessages()"><img src="../images/icons/message.png" alt="messages" class="icon"></button></li>
+            <li><span id="username">Alexander </span><span id="userlastname">Ramirez </span></li>
+            <li><button onclick="hideShowMenu()"><img src="../images/icons/menu.png" alt="menu" class="icon"></button></li>
         </ul>
     </nav>
+    <div class="submenu" id="sidemenu">
+        <button class="closebutton" onclick="hideShowMenu()">X</button>
+        <ul>
+            <li><a href="Index.php">
+                    <p>Dashboard</p>
+                </a></li>
+            <li><a href="surveyStart.php">
+                    <p>Survey</p>
+                </a></li>
+            <li><a href="PastSurveyReport.php">
+                    <p>Current Report</p>
+                </a></li>
+            <li><a href="Loginpage.php">
+                    <p>Log Out</p>
+                </a></li>
+        </ul>
+    </div>
+
+    <div class="textsubmenu" id="subMessages">
+        <button class="closebutton" onclick="hideShowMessages()">X</button>
+        <p>Messages</p>
+        <div class="messagescontainer">
+            <p>No messages yet</p>
+        </div>
+        <form action="sendMessage.php">
+            <input type="text" placeholder="Send message to admin">
+            <button type="submit"> Send Message</button>
+        </form>
+
+    </div>
+
+    <div class="notsubmenu" id="subNotifications">
+        <button class="closebutton" onclick="hideShowNotifications()">X</button>
+        <p>Notifications</p>
+        <div class="messagescontainer">
+            <p>No notifications yet</p>
+        </div>
+    </div>
 
     <!----------------------------- Main section -------------------------------->
 
