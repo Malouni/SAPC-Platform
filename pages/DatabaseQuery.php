@@ -28,6 +28,7 @@ $SurveyTableSQL = "CREATE TABLE IF NOT EXISTS SurveyTable (
     SurvDateStart DATE,
     SurvDateEnd DATE,
     AmPeopleFin INT,
+    LastUpdatedDate DATE,
     Position varchar(100)
   )";
 
@@ -90,20 +91,26 @@ $UserAnswerSQL = "CREATE TABLE IF NOT EXISTS UserAnswer (
 // SurveyQuestionsTable query 
 $SurveyQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SurveyQuestions (
     SurvID INT,
+    Q_ID INT,
     Goal VARCHAR(200),
     SubGoal VARCHAR(200),
     Question VARCHAR(200),
-    Sub_Q1 VARCHAR(200),
-    Sub_Q2 VARCHAR(200),
-    Sub_Q3 VARCHAR(200),
-    Sub_Q4 VARCHAR(200),
     Type VARCHAR(200)
 )";
+
+//SubQuestions query
+$SubQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SubQuestions (
+    SurvID INT,
+    Q_ID INT,
+    Sub_Q VARCHAR(200)
+)";
+
 
 // SurveyReportTable query 
 $SurveyReportSQL = "CREATE TABLE IF NOT EXISTS SurveyReport (
     SurvID INT,
-    Activity VARCHAR(200),
+    Q_ID INT,
+    Answer_Percentage Float,
     Activity_Involvement TINYINT,
     Activity_Historical TINYINT
 )";
@@ -125,6 +132,10 @@ if ($conn->query($UserAnswerSQL) === TRUE) {
 
 if ($conn->query($SurveyQuestionsTableSQL) === TRUE) {
     echo "Table SurveyQuestions created successfully\n";
+}
+
+if ($conn->query($SubQuestionsTableSQL) === TRUE) {
+    echo "Table SubQuestion created successfully\n";
 }
 
 if ($conn->query($SurveyReportSQL) === TRUE) {
