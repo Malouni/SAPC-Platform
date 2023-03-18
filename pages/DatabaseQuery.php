@@ -102,6 +102,7 @@ $SurveyQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SurveyQuestions (
 $SubQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SubQuestions (
     SurvID INT,
     Q_ID INT,
+    Sub_QID INT,
     Sub_Q VARCHAR(200)
 )";
 
@@ -110,6 +111,7 @@ $SubQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SubQuestions (
 $SurveyReportSQL = "CREATE TABLE IF NOT EXISTS SurveyReport (
     SurvID INT,
     Q_ID INT,
+    Sub_QID INT,
     Answer_Percentage Float,
     Activity_Involvement TINYINT,
     Activity_Historical TINYINT
