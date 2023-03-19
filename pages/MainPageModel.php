@@ -7,7 +7,7 @@ define('DB_NAME', 'sciencestrategicplan');
 
 $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
-// If Exit return SurveyName , ExpiryDate , ProgressPrecent  
+// If Exit return SurveyName , ExpiryDate , ProgressPrecent..  
 function GetPresentSurveyInfo($userid , $position )
 {
     // Get the Current Date

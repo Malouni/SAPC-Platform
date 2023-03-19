@@ -21,6 +21,8 @@ $UserTableSQL = "CREATE TABLE IF NOT EXISTS UserTable (
     Department varchar(100)
 )";
 
+
+// SurveyTable query
 $SurveyTableSQL = "CREATE TABLE IF NOT EXISTS SurveyTable (
     SurvID INT PRIMARY KEY AUTO_INCREMENT,
     SurvYear SMALLINT,
