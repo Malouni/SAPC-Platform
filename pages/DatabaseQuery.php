@@ -1,34 +1,45 @@
 <?php
 // Database connection
 $servername = "localhost";
-$username = "yourusername";
-$password = "yourpassword";
-$dbname = "yourdatabase";
+$username = "Oleg";
+$password = "asd123@#4";
+$dbname = "sciencestrategicplan";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// UserTable query
+// UserTable query-
 $UserTableSQL = "CREATE TABLE IF NOT EXISTS UserTable (
-  TruID varchar(15) PRIMARY KEY,
-  Password char(60),
-  Fname varchar(100),
-  Lname varchar(100),
-  Position varchar(100),
-  Department varchar(100)
+    UserID INT PRIMARY KEY AUTO_INCREMENT,
+    UserName varchar(100),
+    Password char(60),
+    Fname varchar(100),
+    Lname varchar(100),
+    Position varchar(100),
+    Department varchar(100)
 )";
 
 
-// SurveyUserTable query 
-$SurveyUserTableSQL = "CREATE TABLE IF NOT EXISTS SurveyUserTable (
-    TruID VARCHAR(15) PRIMARY KEY,
-    Progress TINYINT,
-    Year DATE,
-    SurveyName VARCHAR(100),
-    DateStart DATE,
-    DateEnd DATE,
+// SurveyTable query
+$SurveyTableSQL = "CREATE TABLE IF NOT EXISTS SurveyTable (
+    SurvID INT PRIMARY KEY AUTO_INCREMENT,
+    SurvYear SMALLINT,
+    SurvName varchar(100),
+    SurvDateStart DATE,
+    SurvDateEnd DATE,
+    AmPeopleFin INT,
+    LastUpdatedDate DATE,
+    Position varchar(100)
+  )";
+
+// SurveyUserTable query
+$UserAnswerSQL = "CREATE TABLE IF NOT EXISTS UserAnswer (
+    AnswID INT PRIMARY KEY AUTO_INCREMENT,
+    SurvID INT,
+    UserID INT,
+    Progress float,
     Q0 TINYINT,
     Q1 TINYINT,
     Q2 TINYINT,
@@ -75,134 +86,64 @@ $SurveyUserTableSQL = "CREATE TABLE IF NOT EXISTS SurveyUserTable (
     Q13_note TEXT,
     Q14_note TEXT,
     Q15_note TEXT,
-    Q16_note TEXT    
+    Q16_note TEXT
 )";
 
 
 // SurveyQuestionsTable query 
-$SurveyQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SurveyQuestionsTable (
-    Year DATE PRIMARY KEY,
-    SurveyName VARCHAR(100),
-    DateStart DATE,
-    DateEnd DATE,
-    Goal1 VARCHAR(200),
-    Goal2 VARCHAR(200),
-    Goal3 VARCHAR(200),
-    Goal4 VARCHAR(200),
-    Q0 VARCHAR(200),
-    Q1 VARCHAR(200),
-    Q2 VARCHAR(200),
-    Q3 VARCHAR(200),
-    Q4 VARCHAR(200),
-    Q5 VARCHAR(200),
-    Q6 VARCHAR(200),
-    Q7 VARCHAR(200),
-    Q8 VARCHAR(200),
-    Q9 VARCHAR(200),
-    Q10 VARCHAR(200),
-    Q11 VARCHAR(200),
-    Q12 VARCHAR(200),
-    Q13 VARCHAR(200),
-    Q14 VARCHAR(200),
-    Q15 VARCHAR(200),
-    Q16 VARCHAR(200),
-    Q0_Type VARCHAR(100),
-    Q1_Type VARCHAR(100),
-    Q2_Type VARCHAR(100),
-    Q3_Type VARCHAR(100),
-    Q4_Type VARCHAR(100),
-    Q5_Type VARCHAR(100),
-    Q6_Type VARCHAR(100),
-    Q7_Type VARCHAR(100),
-    Q8_Type VARCHAR(100),
-    Q9_Type VARCHAR(100),
-    Q10_Type VARCHAR(100),
-    Q11_Type VARCHAR(100),
-    Q12_Type VARCHAR(100),
-    Q13_Type VARCHAR(100),
-    Q14_Type VARCHAR(100),
-    Q15_Type VARCHAR(100),
-    Q16_Type VARCHAR(100)
+$SurveyQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SurveyQuestions (
+    SurvID INT,
+    Q_ID INT,
+    Goal VARCHAR(200),
+    SubGoal VARCHAR(200),
+    Question VARCHAR(200),
+    Type VARCHAR(200)
 )";
 
+//SubQuestions query
+$SubQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SubQuestions (
+    SurvID INT,
+    Q_ID INT,
+    Sub_QID INT,
+    Sub_Q VARCHAR(200)
+)";
+
+
 // SurveyReportTable query 
-$SurveyReportTableSQL = "CREATE TABLE IF NOT EXISTS SurveyReportTable (
-    Year DATE PRIMARY KEY,
-    SurveyName VARCHAR(100),
-    DateStart DATE,
-    DateEnd DATE,
-    Goal_Achievement TINYINT,
-    Survey_Answer TINYINT,
-    Activity0 VARCHAR(200),
-    Activity0_Involement TINYINT,
-    Activity0_Hidtorical TINYINT,
-    Activity1 VARCHAR(200),
-    Activity1_Involement TINYINT,
-    Activity1_Hidtorical TINYINT,
-    Activity2 VARCHAR(200),
-    Activity2_Involement TINYINT,
-    Activity2_Hidtorical TINYINT,
-    Activity3 VARCHAR(200),
-    Activity3_Involement TINYINT,
-    Activity3_Hidtorical TINYINT,
-    Activity4 VARCHAR(200),
-    Activity4_Involement TINYINT,
-    Activity4_Hidtorical TINYINT,
-    Activity5 VARCHAR(200),
-    Activity5_Involement TINYINT,
-    Activity5_Hidtorical TINYINT,
-    Activity6 VARCHAR(200),
-    Activity6_Involement TINYINT,
-    Activity6_Hidtorical TINYINT,
-    Activity7 VARCHAR(200),
-    Activity7_Involement TINYINT,
-    Activity7_Hidtorical TINYINT,
-    Activity8 VARCHAR(200),
-    Activity8_Involement TINYINT,
-    Activity8_Hidtorical TINYINT,
-    Activity9 VARCHAR(200),
-    Activity9_Involement TINYINT,
-    Activity9_Hidtorical TINYINT,
-    Activity10 VARCHAR(200),
-    Activity10_Involement TINYINT,
-    Activity10_Hidtorical TINYINT,
-    Activity11 VARCHAR(200),
-    Activity11_Involement TINYINT,
-    Activity11_Hidtorical TINYINT,
-    Activity12 VARCHAR(200),
-    Activity12_Involement TINYINT,
-    Activity12_Hidtorical TINYINT,
-    Activity13 VARCHAR(200),
-    Activity13_Involement TINYINT,
-    Activity13_Hidtorical TINYINT,
-    Activity14 VARCHAR(200),
-    Activity14_Involement TINYINT,
-    Activity14_Hidtorical TINYINT,
-    Activity15 VARCHAR(200),
-    Activity15_Involement TINYINT,
-    Activity15_Hidtorical TINYINT,
-    Activity16 VARCHAR(200),
-    Activity16_Involement TINYINT,
-    Activity16_Hidtorical TINYINT
+$SurveyReportSQL = "CREATE TABLE IF NOT EXISTS SurveyReport (
+    SurvID INT,
+    Q_ID INT,
+    Sub_QID INT,
+    Answer_Percentage Float,
+    Activity_Involvement TINYINT,
+    Activity_Historical TINYINT
 )";
 
 
 
 // execute the query and check for errors
 if ($conn->query($UserTableSQL) === TRUE) {
-    echo "Table UserTable created successfully";
+    echo "Table UserTable created successfully\n";
 }
 
-if ($conn->query($SurveyUserTableSQL) === TRUE) {
-    echo "Table SurveyUserTable created successfully";
+if ($conn->query($SurveyTableSQL) === TRUE) {
+    echo "Table SurveyTable created successfully\n";
+}
+
+if ($conn->query($UserAnswerSQL) === TRUE) {
+    echo "Table UserAnswer created successfully\n";
 }
 
 if ($conn->query($SurveyQuestionsTableSQL) === TRUE) {
-    echo "Table SurveyQuestionsTable created successfully";
+    echo "Table SurveyQuestions created successfully\n";
 }
 
-if ($conn->query($SurveyReportTableSQL) === TRUE) {
-    echo "Table SurveyReportTable created successfully";
+if ($conn->query($SubQuestionsTableSQL) === TRUE) {
+    echo "Table SubQuestion created successfully\n";
+}
+
+if ($conn->query($SurveyReportSQL) === TRUE) {
+    echo "Table SurveyReport created successfully\n";
 }
 
 // close the database connection
