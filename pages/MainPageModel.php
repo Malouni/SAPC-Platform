@@ -8,28 +8,34 @@ define('DB_NAME', 'sciencestrategicplan');
 $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
 // If Exit return SurveyName , ExpiryDate , ProgressPrecent  
-//This code is apply for each user will only has one survey for each time 
-function GetPresentSurveyInfo($truid)
+function GetPresentSurveyInfo($userid , $position )
 {
     // Get the Current Date
     $date = date('Y-m-d');
 
-    //Check if exit any new survey by check the ExpiryDate vs CurrentDate 
     global $conn;
 
-    $sql = "select SurveyName , DateEnd , Progress from SurveyUserTable where TruID = '$truid' and DateEnd >= '$date'";
-    $result = mysqli_query($conn, $sql);
+    //Get the SurveyName , Progress and DateEnd.
+    $survey_sql = "SELECT SurveyTable.SurvName ,
+                       SurveyTable.SurvDateEnd , 
+                       UserAnswer.Progress 
+                       FROM UserAnswer 
+                       RIGHT JOIN SurveyTable ON SurveyTable.SurvID = UserAnswer.SurvID
+                       AND SurveyTable.SurvDateEnd >= '$date' AND SurveyTable.Position = '$position' OR SurveyTable.Position = 'everyone' ";
 
-    //if exit return the data(Array)
-    if (mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-        return array($row['SurveyName'] ,$row['Progress'] , $row['DateEnd']);
+    $survey_result = mysqli_query($conn, $survey_sql);
+
+    //if exit return the data in form of Array.
+    if (mysqli_num_rows($survey_result) > 0) {
+        $survey_row = mysqli_fetch_assoc($survey_result);
+        return array($survey_row['SurvName'] , $survey_row['SurvDateEnd'] , $survey_row['Progress']); 
     } else
         return -1;
 }
 
+
 // If Exit return SurveyName 
-function GetPastSurveyInfo()
+function GetPastSurveyInfo($userid)
 {
     // Get the Current Date
     $date = date('Y-m-d');
@@ -37,20 +43,26 @@ function GetPastSurveyInfo()
     //Check if exit any old survey by check the ExpiryDate vs CurrentDate 
     global $conn;
 
-    $sql = "select SurveyName from SurveyUserTable where TruID = '$truid' and DateEnd < '$date'";
-    $result = mysqli_query($conn, $sql);
 
-    //if exit return the data(Array)
-    if (mysqli_num_rows($result) > 0) {
-        dataArray = array();        
-        while ($row = mysqli_fetch_assoc($result)){
-           
-            array_push($dataArray, $row['SurveyName']); 
+    //Get the SurvName that user did before 
+    $survey_sql = "SELECT SurveyTable.SurvName 
+                    FROM  UserAnswer
+                    JOIN  SurveyTable ON SurveyTable.SurvID = UserAnswer.SurvID
+                    AND UserAnswer.UserID = '$userid' AND SurveyTable.SurvDateEnd < '$date'";
+
+    $survey_result = mysqli_query($conn, $survey_sql);
+
+
+    //if exit return the data in form of Array.
+    if (mysqli_num_rows($survey_result) > 0) {
+
+        $PastSurveyArray = array();        
+        while ($survey_row = mysqli_fetch_assoc($survey_result)){
+           array_push($PastSurveyArray, $survey_row['SurvName']); 
         }
-        return dataArray;
+        return $PastSurveyArray ;
     } else
         return -1;
 }
 
 ?>
-
