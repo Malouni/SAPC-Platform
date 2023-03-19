@@ -98,8 +98,18 @@ else if ($_POST['page'] == 'PastReport')
 
     $command = $_POST['command'];
     switch($command) {
-        case '':
+        case 'SurveyDocuments':
+            $result = get_survey_documents();
+            echo json_encode($result);
+            break;
 
+        case 'SurveyActivityGoal':
+            $result = get_survey_activity($_SESSION['documentId'], $_POST['goal']);
+            echo json_encode($result);
+            break;
+
+        case 'CurrentSurveyDocumentID':
+            $_SESSION['documentId'] = $_POST['CurrentDocumentID'];
             break;
 
     }
