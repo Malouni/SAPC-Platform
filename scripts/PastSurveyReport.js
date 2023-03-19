@@ -1,140 +1,166 @@
-function search_discussions() {
+document.addEventListener("DOMContentLoaded", function(){
+    show_survey_documents();
+});
+
+function show_survey_documents() {
     var url = 'Controller.php';
 
-    var query = {page: 'PastReport', command: 'SurveyReport'};
-
-    $.post(url, query, function(data) {
-
-        var result = JSON.parse(data);
-
-        var tables = "<p class='headers'>Inclusion and Diversity</p>";
-        tables += "<p class='regularText'>Ensure the staff and facility compliment is equitable, diverse and inclusive</p>";
-
-
-
-
-        for (var row = 0; row < result.length; row++) {
-
-            tables += "<table class='tablePastReport'>";
-            tables += "<tr class='rowPastReport'>";
-            tables += "<th class='headerActivity'>Activity</th>";
-            tables += "<th class='headerRest'>Involvement</th>";
-            tables += "<th class='headerRest'>Historical</th>";
-            tables += "</tr>";
-
-            for (var columns = 0; columns < result[row].length; columns++)
-            {
-                tables += "<tr class='rowPastReport'>";
-                tables += "<td class='gridActivity'>" + result[row]['Activity' + columns] + "</td>";
-                tables += "<td class='gridRest'>" + result[row]['Activity' + columns + '_Involvement'] + "</td>";
-                tables += "<td class='gridRest'>"+ result[row]['Activity' + columns + '_Historical'] +"</td>";
-                tables += "</tr>";
-            }
-            tables += "<tr>";
-            tables += "<td>";
-            tables += "<button src='../images/icons/pdf.png' class='pdf' button-goal-id = '"+ row + "add" +"' ></button>";
-            tables += "<button src='../images/icons/pdf.png' class='pdf' button-goal-id = '"+ row + "remove" +"' ></button>";
-            tables += "<button src='../images/icons/pdf.png' class='pdf' button-goal-id = '"+ row + "info" +"' ></button>";
-            tables += "</td>";
-            tables += "</tr>";
-            tables += "</table>";
-        }
-
-        $('#report-pane').html(table);
-
-        $('td > button[button-goal-id]').click(function() {
-            var id = $(this).attr('button-goal-id');
-            
-            if()
-            {
-
-            }
-            else if()
-            {
-                
-            }
-            else
-            {
-
-            }
-        });
-    });
-
-}
-
-function search_discussions() {
-    var url = 'Controller.php';
-
-    var query = {page: 'PastReport', command: 'SurveyReport'};
+    var query = {page: 'PastReport', command: 'SurveyDocuments'};
 
     $.post(url, query, function(data) {
 
         var result = JSON.parse(data);
 
         var documents = "";
+        if(result[0] == "Failed" || result)
+        {
+            documents ="<div class='document'>";
+            documents ="<table>";
+            documents ="<tr class='rowDocuments'>";
+            documents ="<td class='gridDocuments'><p class='document'>Error, no connection to the server</p></td>";
+            documents ="</tr>";
+            documents ="</table>";
+            documents ="</div>";
+        }
+        else
+        {
+            for (var row = 0; row < result.length; row++) {
 
-        for (var row = 0; row < result.length; row++) {
-
-            documents += "<div class='document'>";
-            documents += "<table>";
-            documents += "<tr class='rowDocuments'>";
-            documents += "<td class='gridDocuments'><p class='document'>Document</p></td>";
-            documents += "</tr>";
-            documents += "<tr class='rowDocuments'>";
-            documents += "<td class='gridDocuments'><p class='date'>" + $row['Year'] + "</p></td>";
-            documents += "</tr>";
-            documents += "<tr class='rowDocuments'>";
-            documents += "<td class='gridDocuments'><p class='SPRtext'>" + $row['SurveyName'] + "</p> </td>";
-            documents += "<td>";
-            documents += "<button src='../images/icons/pdf.png' class='pdf' button-document-id = '" + row + "'> </button>";
-            documents += "<button src='../images/icons/downloadpdf.png' class='pdf' button-document-id = '" + row + "'> </button>";
-            documents += "</td>";
-            documents += "</tr>";
-            documents += "<tr class='rowDocuments'>";
-            documents += "<td class='gridDocuments'><p class='facility'>Facility of Science</p></td>";
-            documents += "</tr>";
-            documents += "</table>";
-            documents += "</div>";
+                documents += "<div class='document'>";
+                documents += "<table>";
+                documents += "<tr class='rowDocuments'>";
+                documents += "<td class='gridDocuments'><p class='document'>Document</p></td>";
+                documents += "</tr>";
+                documents += "<tr class='rowDocuments'>";
+                documents += "<td class='gridDocuments'><p class='date'>" + result[row]['SurvYear'] + "</p></td>";
+                documents += "</tr>";
+                documents += "<tr class='rowDocuments'>";
+                documents += "<td class='gridDocuments'><p class='SPRtext'>" + result[row]['SurvName'] + "</p> </td>";
+                documents += "<td>";
+                documents += "<button src='../images/icons/pdf.png' class='pdf' button-document-id = '" + result[row]['SurvID'] + "'> </button>";
+                documents += "<button src='../images/icons/downloadpdf.png' class='pdf' button-document-id = '" + result[row]['SurvID'] + "'> </button>";
+                documents += "</td>";
+                documents += "</tr>";
+                documents += "<tr class='rowDocuments'>";
+                documents += "<td class='gridDocuments'><p class='facility'>Facility of Science</p></td>";
+                documents += "</tr>";
+                documents += "</table>";
+                documents += "</div>";
+            }
         }
 
         $('#documents-pane').html(table);
 
         $('td > button[button-document-show-id]').click(function() {
             var id = $(this).attr('button-document-show-id');
-
+            set_current_document(id);
+            diel_goal_show();
         });
 
         $('td > button[button-document-download-id]').click(function() {
             var id = $(this).attr('button-document-download-id');
- 
+            download_chosen_document(id);
         });
     });
 
 }
 
-function diel_show ()
-{
+function show_survey_goal_chosen(goal) {
+    var url = 'Controller.php';
+
+    var query = {page: 'PastReport', command: 'SurveyActivityGoal', goal: ''+goal+''};
+
+    $.post(url, query, function(data) {
+
+        var result = JSON.parse(data);
+
+        if(result[0] == "Failed" || result)
+        {
+            var tables = "<p class='headers'>No connection to the DataBase, Please try again latter</p>";
+        }
+        else
+        {
+            if(result[0]['Goal'] == "diel")
+                var tables = "<p class='headers'>Diverse, Inclusive & Equitable Learning</p>";
+            else if(result[0]['Goal'] == "sppb")
+                var tables = "<p class='headers'>Sustainable practice to promote well being</p>";
+            else if(result[0]['Goal'] == "ttl")
+                var tables = "<p class='headers'>Transformational Teaching & Learning</p>";
+            else if(result[0]['Goal'] == "tc")
+                var tables = "<p class='headers'>Transformation Communities</p>";
+            else
+                var tables = "<p class='headers'>Guided skill development</p>";
+
+            for(var row = 0; row < result.length; row++)
+            {
+                if(row == 0)
+                {
+                    tables = "<p class='headers'>"+ result[row]['SubGoal']+"</p>";
+                    //tables += "<p class='regularText'>"+ result[row]['desc'] +"</p>";
+                    tables += "<table class='tablePastReport'>";
+                    tables += "<tr class='rowPastReport'>";
+                    tables += "<th class='headerActivity'>Activity</th>";
+                    tables += "<th class='headerRest'>Involvement</th>";
+                    tables += "<th class='headerRest'>Historical</th>";
+                    tables += "</tr>";
+                }
+                else if(result[row-1]['SubGoal'] != result[row]['SubGoal'])
+                {
+                    tables = "<p class='headers'>"+ result[row]['SubGoal']+"</p>";
+                    //tables += "<p class='regularText'>"+ result[row]['desc'] +"</p>";
+                    tables += "<table class='tablePastReport'>";
+                    tables += "<tr class='rowPastReport'>";
+                    tables += "<th class='headerActivity'>Activity</th>";
+                    tables += "<th class='headerRest'>Involvement</th>";
+                    tables += "<th class='headerRest'>Historical</th>";
+                    tables += "</tr>";
+                }
+
+                tables += "<tr class='rowPastReport'>";
+                tables += "<td class='gridActivity'>" + result[row]['Activity'] + "</td>";
+                tables += "<td class='gridRest'>" + result[row]['Activity_Involvement'] + "</td>";
+                tables += "<td class='gridRest'>"+ result[row]['Activity_Historical'] +"</td>";
+                tables += "</tr>";
+
+                if(result[row]['SubGoal'] != result[row+1]['SubGoal'])
+                    tables += "</table>";
+            }
+        }
+        $('#report-pane').html(tables);
+    });
 
 }
 
-function sp_show()
+function set_current_document (id)
 {
-
+    var url = 'Controller.php';
+    var query = {page: 'PastReport', command: 'CurrentSurveyDocumentID', CurrentDocumentID:''+ id +''};
+    $.post(url, query);
 }
 
-function ttl_show()
+function diel_goal_show()
 {
-
+    show_survey_goal_chosen('diel');
 }
 
-function tc_show()
+function sppb_goal_show()
 {
-
+    show_survey_goal_chosen('sppb');
 }
 
-function _show()
+function ttl_goal_show()
 {
+    show_survey_goal_chosen('ttl');
+}
 
+function tc_goal_show()
+{
+    show_survey_goal_chosen('tc');
+}
+
+function gcd_goal_show()
+{
+    show_survey_goal_chosen('gcd');
 }
 
 

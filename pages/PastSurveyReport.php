@@ -41,32 +41,22 @@
             <?php
                 if (!empty($result))
                     echo $result;
-                else
-                    echo "<div class='document'>
-                            <table>
-                                <tr class='rowDocuments'>
-                                    <td class='gridDocuments'><p class='document'>Error, no connection to the server</p></td>
-                                </tr>
-                            </table>
-                          </div> ";
             ?>
         </div>
         <p class="headers">Goals</p>
         <table class="tableGoals">
             <tr class="rowGoals">
-                <th class="gridGoals"><button class="buttonGoals" id="DIELbutton">Diverse, Inclusive & Equitable Learning</button></th>
-                <th class="gridGoals"><button class="buttonGoals" id="SPbutton">Sustainable practice to promote well being</button></th>
-                <th class="gridGoals"><button class="buttonGoals" id="TTLbutton">Transformational Teaching & Learning</button></th>
-                <th class="gridGoals"><button class="buttonGoals" id="TCbutton">Transformation Communities</button></th>
-                <th class="gridGoals"><button class="buttonGoals" id="GSDbutton">Guided skill development</button></th>
+                <th class="gridGoals"><button class="buttonGoals" onclick="diel_goal_show()" id="DIELbutton">Diverse, Inclusive & Equitable Learning</button></th>
+                <th class="gridGoals"><button class="buttonGoals" onclick="sppb_goal_show()"  id="SPbutton">Sustainable practice to promote well being</button></th>
+                <th class="gridGoals"><button class="buttonGoals" onclick="ttl_goal_show()" id="TTLbutton">Transformational Teaching & Learning</button></th>
+                <th class="gridGoals"><button class="buttonGoals" onclick="tc_goal_show()"  id="TCbutton">Transformation Communities</button></th>
+                <th class="gridGoals"><button class="buttonGoals" onclick="gcd_goal_show()" id="GSDbutton">Guided skill development</button></th>
             </tr>
         </table>
         <div class="report" id="report-pane">
             <?php
                 if (!empty($result))
                     echo $result;
-                else
-                    echo "<p class='headers'>Error, no connection to the server</p>";
             ?>
         </div>
 
