@@ -16,48 +16,98 @@
     <link rel="stylesheet" href="/styles/generalStyles.css">
     <link rel="stylesheet" href="../styles/PastSurveyReport.css">
 
+    <script src="../scripts/hideShowScripts.js"></script>
+
 </head>
 
 <body>
 
     <!-- Navigation section -->
+    <!-------------------------- Navigation section------------------------- -->
     <nav>
         <img src="../images/LOGOS/TRU-LG02.png" alt="logo">
         <ul>
-            <li><a href="http://"><img src="../images/icons/notifications.png" alt="notifications" class="icon"></a></li>
-            <li><a href="http://"><img src="../images/icons/message.png" alt="messages" class="icon"></a></li>
-            <li><a href="http://"><span>UserName</span> <span>UserLastname</span></a></li>
-            <li><a href="http://"><img src="../images/icons/menu.png" alt="menu" class="icon"></a>
-                <ul>
-                    <li><a href="">Dashboard</a></li>
-                    <li><a href="">Survey</a></li>
-                    <li><a href="">Log Out</a></li>
-                </ul>
-            </li>
+            <li><button onclick="hideShowNotifications()"><img src="../images/icons/notifications.png" alt="notifications" class="icon"></button></li>
+            <li><button onclick="hideShowMessages()"><img src="../images/icons/message.png" alt="messages" class="icon"></button></li>
+            <li><span id="username">Alexander </span><span id="userlastname">Ramirez </span></li>
+            <li><button onclick="hideShowMenu()"><img src="../images/icons/menu.png" alt="menu" class="icon"></button></li>
         </ul>
     </nav>
+    <div class="submenu" id="sidemenu">
+        <button class="closebutton" onclick="hideShowMenu()">X</button>
+        <ul>
+            <li><a href="Index.php">
+                    <p>Dashboard</p>
+                </a></li>
+            <li><a href="surveyStart.php">
+                    <p>Survey</p>
+                </a></li>
+            <li><a href="PastSurveyReport.php">
+                    <p>Current Report</p>
+                </a></li>
+            <li><a href="Loginpage.php">
+                    <p>Log Out</p>
+                </a></li>
+        </ul>
+    </div>
+
+    <div class="textsubmenu" id="subMessages">
+        <button class="closebutton" onclick="hideShowMessages()">X</button>
+        <p>Messages</p>
+        <div class="messagescontainer">
+            <p>No messages yet</p>
+        </div>
+        <form action="sendMessage.php">
+            <input type="text" placeholder="Send message to admin">
+            <button type="submit"> Send Message</button>
+        </form>
+
+    </div>
+
+    <div class="notsubmenu" id="subNotifications">
+        <button class="closebutton" onclick="hideShowNotifications()">X</button>
+        <p>Notifications</p>
+        <div class="messagescontainer">
+            <p>No notifications yet</p>
+        </div>
+    </div>
+
+    <!----------------------Main content----------------------------->
+
 
     <div class="pastReports">
-        <p class="headers">Science Strategic Plan 2023</p>
+
+        <!---------info section--------->
+        <p class="headers">Science Strategic Plan <span class="year">2023<span></p>
         <div class="pastDocuments">
             <div class="document">
                 <table>
                     <tr class="rowDocuments">
-                        <td class="gridDocuments"><p class="document">Documents</p></td>
+                        <td class="gridDocuments">
+                            <p class="document">Documents</p>
+                        </td>
                     </tr>
                     <tr class="rowDocuments">
-                        <td class="gridDocuments"><p class="date">Friday, 3 February 2022</p></td>
+                        <td class="gridDocuments">
+                            <p class="date">Friday, 3 February 2022</p>
+                        </td>
                     </tr>
                     <tr class="rowDocuments">
-                        <td class="gridDocuments"><p class="SPRtext"> Strategic Plan Report (2022)</p> </td>
-                        <td><button src="../images/icons/pdf.png" class="pdf"> </button> <button src="../images/icons/downloadpdf.png" class="pdf"> </button> </td>
+                        <td class="gridDocuments">
+                            <p class="SPRtext"> Strategic Plan Report (2022)</p>
+                        </td>
+                        <td><button class="pdf"><img src="../images/icons/pdf.png" alt="pdf" class="icon"></button></td>
                     </tr>
                     <tr class="rowDocuments">
-                        <td class="gridDocuments"><p class="facility">Facility of Science</p></td>
+                        <td class="gridDocuments">
+                            <p class="facility">Facility of Science</p>
+                        </td>
                     </tr>
                 </table>
             </div>
         </div>
+
+        <!--------------Goals tabs---------------->
         <p class="headers">Goals</p>
         <table class="tableGoals">
             <tr class="rowGoals">
@@ -68,8 +118,12 @@
                 <th class="gridGoals"><button class="buttonGoals" id="GSDbutton">Guided skill development</button></th>
             </tr>
         </table>
-        <div class="report">
-            <p class="headers">Diverse, Inclusive & Equitable Learning</p>
+        <div id="coverpattern"></div>
+
+        <!---------------------------DIEL report--------------------------------->
+        <div class="report" id="DIEL-R">
+            <p class="headers">Fostering diverse, inclusive and equitable learning and working environments</p>
+            <!--------------------SubGoal1------------------------>
             <p class="headers">Inclusion and Diversity</p>
             <p class="regularText">Ensure the staff and facility compliment is equitable, diverse and inclusive</p>
             <table class="tablePastReport">
@@ -94,11 +148,9 @@
                     <td class="gridRest"> &nbsp; </td>
                 </tr>
                 <!--add php code for adding a new row-->
-                <tr>
-                    <td><button src="../images/icons/pdf.png" class="pdf"></button><button src="../images/icons/pdf.png" class="pdf"></button><button src="../images/icons/pdf.png" class="pdf"></button></td>
-                </tr>
             </table>
 
+            <!--------------------SubGoal2------------------------>
             <p class="headers">Community mindedness</p>
             <p class="regularText">Promote, support and strengthen a respectful, inclusive, equitable and welcoming culture for all faculty, staff and students</p>
 
@@ -120,7 +172,56 @@
                     <td class="gridRest"> &nbsp; </td>
                 </tr>
             </table>
+
+            <!--------------------SubGoal3------------------------>
+            <p class="headers">Curiosity</p>
+            <p class="regularText">Foster an environment that encourages interaction and shows respect to Indigenous learning and knowledge</p>
+
+            <table class="tablePastReport">
+                <tr class="rowPastReport">
+                    <th class="headerActivity">Activity</th>
+                    <th class="headerRest">Involvement</th>
+                </tr>
+                <tr class="rowPastReport">
+                    <td class="gridActivity"> &nbsp; </td>
+                    <td class="gridRest"> &nbsp; </td>
+                </tr>
+                <tr class="rowPastReport">
+                    <td class="gridActivity"> &nbsp; </td>
+                    <td class="gridRest"> &nbsp; </td>
+                </tr>
+                <tr class="rowPastReport">
+                    <td class="gridActivity"> &nbsp; </td>
+                    <td class="gridRest"> &nbsp; </td>
+                </tr>
+            </table>
+
+            <!--------------------SubGoal4------------------------>
+            <p class="headers">Sustainability</p>
+            <p class="regularText">Eliminate achievement gaps for marginalized students</p>
+
+            <table class="tablePastReport">
+                <tr class="rowPastReport">
+                    <th class="headerActivity">Activity</th>
+                    <th class="headerRest">Involvement</th>
+                </tr>
+                <tr class="rowPastReport">
+                    <td class="gridActivity"> &nbsp; </td>
+                    <td class="gridRest"> &nbsp; </td>
+                </tr>
+                <tr class="rowPastReport">
+                    <td class="gridActivity"> &nbsp; </td>
+                    <td class="gridRest"> &nbsp; </td>
+                </tr>
+                <tr class="rowPastReport">
+                    <td class="gridActivity"> &nbsp; </td>
+                    <td class="gridRest"> &nbsp; </td>
+                </tr>
+            </table>
         </div>
+
+       
+
 
 
 
