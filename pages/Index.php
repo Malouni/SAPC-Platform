@@ -32,7 +32,7 @@
         <ul>
             <li><button onclick="hideShowNotifications()"><img src="../images/icons/notifications.png" alt="notifications" class="icon"></button></li>
             <li><button onclick="hideShowMessages()"><img src="../images/icons/message.png" alt="messages" class="icon"></button></li>
-            <li><span id="username">Alexander </span><span id="userlastname">Ramirez </span></li>
+            <li><span id="username"><?php echo $_SESSION['userFirstName'];?></span><span id="userlastname"><?php echo $_SESSION['userLastName']; ?></span></li>
             <li><button onclick="hideShowMenu()"><img src="../images/icons/menu.png" alt="menu" class="icon"></button></li>
         </ul>
     </nav>
