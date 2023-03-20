@@ -92,6 +92,7 @@ $UserAnswerSQL = "CREATE TABLE IF NOT EXISTS UserAnswer (
 $SurveyQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SurveyQuestions (
     SurvID INT,
     QuestionID INT,
+    QuestionID INT,
     Goal VARCHAR(200),
     SubGoal VARCHAR(200),
     Question VARCHAR(200),
