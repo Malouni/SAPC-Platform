@@ -13,15 +13,13 @@
     <link rel="stylesheet" href="/styles/generalStyles.css">
     <link rel="stylesheet" href="/styles/dashboardstyles.css">
 
-    <script src="../scripts/Navigation.js"></script>
-
 </head>
 
 <body>
 
     <!-------------------------- Navigation section------------------------- -->
     <?php
-        include('Navigation.php');
+        require('Navigation.php');
     ?>
     <!----------------------------- Main section -------------------------------->
 

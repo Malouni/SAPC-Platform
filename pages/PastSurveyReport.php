@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="/styles/generalStyles.css">
     <link rel="stylesheet" href="../styles/PastSurveyReport.css">
 
-    <script src="../scripts/Navigation.js"></script>
-
 </head>
 
 <body>
