@@ -68,18 +68,17 @@ VALUES
     (1,5,'Flexibility of working hours'),
     (1,5,'Opportunities to work from home'),
     (1,12, 'Relevance of professional development'),
-    (1,12, 'Opportunities for advancement')
-    
-    ;
-    ";
+    (1,12, 'Opportunities for advancement');";
 
 
 // SurveyReportTable query - In this example, we're populating the SurvID column with values from the SurvID column in SurveyQuestions. 
 //The Activity column is populated with the Question column from SurveyQuestions. 
 //The Activity_Involvement and Activity_Historical columns are populated with sample values of 3 and 4, respectively. You can adjust these values to match your needs.
-$SurveyReportSQL = "INSERT INTO SurveyReport (SurvID, QuestionID, Answer_Percentage, Activity_Involvement,Activity_Historical)
-SELECT SurvID, QuestionID, 0.5, 3, 4
-FROM SurveyQuestions";
+$SurveyReportSQL = "INSERT INTO SurveyReport (SurvID, QuestionID, SubQuestionID, Answer_Percentage, Activity_Involvement,Activity_Historical)
+SELECT SurveyQuestions.SurvID, SurveyQuestions.QuestionID, SubQuestions.SubQuestionID, 0.5, 3, 4
+FROM SurveyQuestions
+INNER JOIN SubQuestions
+ON SurveyQuestions.QuestionID=SubQuestions.QuestionID";
 
 
 

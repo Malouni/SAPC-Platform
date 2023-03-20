@@ -47,3 +47,19 @@ function showordertime(){
         subTime.style.display = "block";
     }
 }
+
+function mainPage() {
+    $('#form-main-page').submit();
+}
+
+function survey() {
+    $('#form-survey').submit();
+}
+
+function currentReport() {
+    $('#form-current-Report').submit();
+}
+
+function signOut() {
+    $('#form-sign-out').submit();
+}

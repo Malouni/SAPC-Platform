@@ -1,7 +1,3 @@
-<?php
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,70 +5,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Reports</title>
 
     <!-- links to stylesheets -->
     <link rel="stylesheet" href="/fonts/arial-nova/stylesheet.css">
     <link rel="stylesheet" href="/styles/generalStyles.css">
     <link rel="stylesheet" href="../styles/PastSurveyReport.css">
 
-    <script src="../scripts/hideShowScripts.js"></script>
-
 </head>
 
 <body>
 
-    <!-- Navigation section -->
     <!-------------------------- Navigation section------------------------- -->
-    <nav>
-        <img src="../images/LOGOS/TRU-LG02.png" alt="logo">
-        <ul>
-            <li><button onclick="hideShowNotifications()"><img src="../images/icons/notifications.png" alt="notifications" class="icon"></button></li>
-            <li><button onclick="hideShowMessages()"><img src="../images/icons/message.png" alt="messages" class="icon"></button></li>
-            <li><span id="username"><?php echo $_SESSION['userFirstName'];?></span><span id="userlastname"><?php echo $_SESSION['userLastName']; ?></span></li>
-            <li><button onclick="hideShowMenu()"><img src="../images/icons/menu.png" alt="menu" class="icon"></button></li>
-        </ul>
-    </nav>
-    <div class="submenu" id="sidemenu">
-        <button class="closebutton" onclick="hideShowMenu()">X</button>
-        <ul>
-            <li><a href="Index.php">
-                    <p>Dashboard</p>
-                </a></li>
-            <li><a href="surveyStart.php">
-                    <p>Survey</p>
-                </a></li>
-            <li><a href="PastSurveyReport.php">
-                    <p>Current Report</p>
-                </a></li>
-            <li><a href="Loginpage.php">
-                    <p>Log Out</p>
-                </a></li>
-        </ul>
-    </div>
-
-    <div class="textsubmenu" id="subMessages">
-        <button class="closebutton" onclick="hideShowMessages()">X</button>
-        <p>Messages</p>
-        <div class="messagescontainer">
-            <p>No messages yet</p>
-        </div>
-        <form action="sendMessage.php">
-            <input type="text" placeholder="Send message to admin">
-            <button type="submit"> Send Message</button>
-        </form>
-
-    </div>
-
-    <div class="notsubmenu" id="subNotifications">
-        <button class="closebutton" onclick="hideShowNotifications()">X</button>
-        <p>Notifications</p>
-        <div class="messagescontainer">
-            <p>No notifications yet</p>
-        </div>
-    </div>
-
-    <!----------------------Main content----------------------------->
+    <?php
+        include('Navigation.php');
+    ?>
+    <!----------------------------- Main section -------------------------------->
 
 
     <div class="pastReports">
