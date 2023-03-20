@@ -90,8 +90,8 @@ $UserAnswerSQL = "CREATE TABLE IF NOT EXISTS UserAnswer (
 
 // SurveyQuestionsTable query 
 $SurveyQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SurveyQuestions (
-    QuestionID INT PRIMARY KEY AUTO_INCREMENT,
     SurvID INT,
+    QuestionID INT AUTO_INCREMENT,
     Goal VARCHAR(200),
     SubGoal VARCHAR(200),
     Question VARCHAR(200),
@@ -102,7 +102,7 @@ $SurveyQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SurveyQuestions (
 $SubQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SubQuestions (
     SurvID INT,
     QuestionID INT,
-    SubQuestionID INT PRIMARY KEY AUTO_INCREMENT,
+    SubQuestionID INT,
     Sub_Q VARCHAR(200)
 )";
 
@@ -111,7 +111,7 @@ $SubQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SubQuestions (
 $SurveyReportSQL = "CREATE TABLE IF NOT EXISTS SurveyReport (
     SurvID INT,
     QuestionID INT,
-    SubQuestionID INT PRIMARY KEY AUTO_INCREMENT,
+    SubQuestionID INT AUTO_INCREMENT,
     Answer_Percentage Float,
     Activity_Involvement TINYINT,
     Activity_Historical TINYINT
@@ -121,27 +121,27 @@ $SurveyReportSQL = "CREATE TABLE IF NOT EXISTS SurveyReport (
 
 // execute the query and check for errors
 if ($conn->query($UserTableSQL) === TRUE) {
-    echo "Table UserTable created successfully\n<br>";
+    echo "Table UserTable created successfully\n";
 }
 
 if ($conn->query($SurveyTableSQL) === TRUE) {
-    echo "Table SurveyTable created successfully\n<br>";
+    echo "Table SurveyTable created successfully\n";
 }
 
 if ($conn->query($UserAnswerSQL) === TRUE) {
-    echo "Table UserAnswer created successfully\n <br>";
+    echo "Table UserAnswer created successfully\n";
 }
 
 if ($conn->query($SurveyQuestionsTableSQL) === TRUE) {
-    echo "Table SurveyQuestions created successfully\n <br>";
+    echo "Table SurveyQuestions created successfully\n";
 }
 
 if ($conn->query($SubQuestionsTableSQL) === TRUE) {
-    echo "Table SubQuestion created successfully\n <br>";
+    echo "Table SubQuestion created successfully\n";
 }
 
 if ($conn->query($SurveyReportSQL) === TRUE) {
-    echo "Table SurveyReport created successfully\n<br>";
+    echo "Table SurveyReport created successfully\n";
 }
 
 // close the database connection
