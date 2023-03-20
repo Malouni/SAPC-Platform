@@ -80,13 +80,13 @@ function show_survey_goal_chosen(goal) {
         }
         else
         {
-            if(result[0]['Goal'] == "diel")
+            if(result[0]['Goal'] == "DIEL")
                 var tables = "<p class='headers'>Diverse, Inclusive & Equitable Learning</p>";
-            else if(result[0]['Goal'] == "sppb")
+            else if(result[0]['Goal'] == "SPP")
                 var tables = "<p class='headers'>Sustainable practice to promote well being</p>";
-            else if(result[0]['Goal'] == "ttl")
+            else if(result[0]['Goal'] == "TTL")
                 var tables = "<p class='headers'>Transformational Teaching & Learning</p>";
-            else if(result[0]['Goal'] == "tc")
+            else if(result[0]['Goal'] == "TC")
                 var tables = "<p class='headers'>Transformation Communities</p>";
             else
                 var tables = "<p class='headers'>Guided skill development</p>";
@@ -95,7 +95,14 @@ function show_survey_goal_chosen(goal) {
             {
                 if(row == 0)
                 {
-                    tables = "<p class='headers'>"+ result[row]['SubGoal']+"</p>";
+                    if(result[row]['SubGoal'] == "I&D")
+                        tables += "<p class='headers'>Inclusive & Diversity</p>";
+                    else if(result[row]['SubGoal'] == "CM")
+                        tables += "<p class='headers'>Community mindedness</p>";
+                    else if(result[row]['SubGoal'] == "C")
+                        tables += "<p class='headers'>Curiosity</p>";
+                    else
+                        tables += "<p class='headers'>Sustainability</p>";
                     //tables += "<p class='regularText'>"+ result[row]['desc'] +"</p>";
                     tables += "<table class='tablePastReport'>";
                     tables += "<tr class='rowPastReport'>";
@@ -106,7 +113,14 @@ function show_survey_goal_chosen(goal) {
                 }
                 else if(result[row-1]['SubGoal'] != result[row]['SubGoal'])
                 {
-                    tables = "<p class='headers'>"+ result[row]['SubGoal']+"</p>";
+                    if(result[row]['SubGoal'] == "I&D")
+                        tables += "<p class='headers'>Inclusive & Diversity</p>";
+                    else if(result[row]['SubGoal'] == "CM")
+                        tables += "<p class='headers'>Community mindedness</p>";
+                    else if(result[row]['SubGoal'] == "C")
+                        tables += "<p class='headers'>Curiosity</p>";
+                    else
+                        tables += "<p class='headers'>Sustainability</p>";
                     //tables += "<p class='regularText'>"+ result[row]['desc'] +"</p>";
                     tables += "<table class='tablePastReport'>";
                     tables += "<tr class='rowPastReport'>";
@@ -117,7 +131,7 @@ function show_survey_goal_chosen(goal) {
                 }
 
                 tables += "<tr class='rowPastReport'>";
-                tables += "<td class='gridActivity'>" + result[row]['Activity'] + "</td>";
+                tables += "<td class='gridActivity'>" + result[row]['Question'] + "</td>";
                 tables += "<td class='gridRest'>" + result[row]['Activity_Involvement'] + "</td>";
                 tables += "<td class='gridRest'>"+ result[row]['Activity_Historical'] +"</td>";
                 tables += "</tr>";
@@ -140,27 +154,27 @@ function set_current_document (id)
 
 function diel_goal_show()
 {
-    show_survey_goal_chosen('diel');
+    show_survey_goal_chosen('DIEL');
 }
 
 function sppb_goal_show()
 {
-    show_survey_goal_chosen('sppb');
+    show_survey_goal_chosen('SPP');
 }
 
 function ttl_goal_show()
 {
-    show_survey_goal_chosen('ttl');
+    show_survey_goal_chosen('TTL');
 }
 
 function tc_goal_show()
 {
-    show_survey_goal_chosen('tc');
+    show_survey_goal_chosen('TC');
 }
 
 function gcd_goal_show()
 {
-    show_survey_goal_chosen('gcd');
+    show_survey_goal_chosen('GSD');
 }
 
 
