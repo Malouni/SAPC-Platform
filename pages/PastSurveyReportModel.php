@@ -22,7 +22,7 @@ function get_survey_activity($survId, $goal)
 {
     global $conn;
 
-    $sql = "SELECT SurveyQuestions.Goal , SurveyQuestions.SubGoal, SurveyReport.Activity, SurveyReport.Activity_Involvement, SurveyReport.Activity_Historical
+    $sql = "SELECT SurveyQuestions.Goal , SurveyQuestions.SubGoal, SurveyQuestions.Question, SurveyReport.Activity_Involvement, SurveyReport.Activity_Historical
             FROM SurveyQuestions
             INNER JOIN SurveyReport
             ON SurveyQuestions.QuestionID = SurveyReport.QuestionID and SurveyQuestions.SurvID = SurveyReport.SurvID
