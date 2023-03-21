@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function(){
     show_survey_documents();
+    disable_goal_buttons();
 });
 
 function show_survey_documents() {
@@ -9,8 +10,9 @@ function show_survey_documents() {
 
     $.post(url, query, function(data) {
         var result = JSON.parse(data);
+        
         var documents = "";
-        if(result[0] == "Failed")
+        if(result == "Failed")
         {
             documents +="<div class='document'>";
             documents +="<table>";
@@ -35,8 +37,8 @@ function show_survey_documents() {
                 documents += "<tr class='rowDocuments'>";
                 documents += "<td class='gridDocuments'><p class='SPRtext'>" + result[row]['SurvName'] + "</p> </td>";
                 documents += "<td>";
-                documents += "<button src='../images/icons/pdf.png' class='pdf' button-document-id = '" + result[row]['SurvID'] + "'> </button>";
-                documents += "<button src='../images/icons/downloadpdf.png' class='pdf' button-document-id = '" + result[row]['SurvID'] + "'> </button>";
+                documents += "<button src='../images/icons/pdf.png' class='pdf' button-document-show-id = '" + result[row]['SurvID'] + "'> </button>";
+                documents += "<button src='../images/icons/downloadpdf.png' class='pdf' button-document-download-id = '" + result[row]['SurvID'] + "'> </button>";
                 documents += "</td>";
                 documents += "</tr>";
                 documents += "<tr class='rowDocuments'>";
@@ -46,17 +48,17 @@ function show_survey_documents() {
                 documents += "</div>";
             }
         }
-        alert(documents);
+
         $('#documents-pane').html(documents);
 
-        $('button[button-document-show-id]').click(function() {
+        $('td > button[button-document-show-id]').click(function() {
             var id = $(this).attr('button-document-show-id');
-            alert(id);
             set_current_document(id);
+            enable_goal_buttons();
             diel_goal_show();
         });
 
-        $('button[button-document-download-id]').click(function() {
+        $('td > button[button-document-download-id]').click(function() {
             var id = $(this).attr('button-document-download-id');
             download_chosen_document(id);
         });
@@ -72,8 +74,10 @@ function show_survey_goal_chosen(goal) {
     $.post(url, query, function(data) {
 
         var result = JSON.parse(data);
-
-        if(result[0] == "Failed" || result)
+        alert(data);
+        //alert(result.length);
+        alert(result);
+        if(result == "Failed")
         {
             var tables = "<p class='headers'>No connection to the DataBase, Please try again latter</p>";
         }
@@ -87,7 +91,7 @@ function show_survey_goal_chosen(goal) {
                 var tables = "<p class='headers'>Transformational Teaching & Learning</p>";
             else if(result[0]['Goal'] == "TC")
                 var tables = "<p class='headers'>Transformation Communities</p>";
-            else
+            else if(result[0]['Goal'] == "GSD")
                 var tables = "<p class='headers'>Guided skill development</p>";
 
             for(var row = 0; row < result.length; row++)
@@ -100,9 +104,8 @@ function show_survey_goal_chosen(goal) {
                         tables += "<p class='headers'>Community mindedness</p>";
                     else if(result[row]['SubGoal'] == "C")
                         tables += "<p class='headers'>Curiosity</p>";
-                    else
+                    else if(result[row]['SubGoal'] == "S")
                         tables += "<p class='headers'>Sustainability</p>";
-                    //tables += "<p class='regularText'>"+ result[row]['desc'] +"</p>";
                     tables += "<table class='tablePastReport'>";
                     tables += "<tr class='rowPastReport'>";
                     tables += "<th class='headerActivity'>Activity</th>";
@@ -118,9 +121,8 @@ function show_survey_goal_chosen(goal) {
                         tables += "<p class='headers'>Community mindedness</p>";
                     else if(result[row]['SubGoal'] == "C")
                         tables += "<p class='headers'>Curiosity</p>";
-                    else
+                    else if(result[row]['SubGoal'] == "S")
                         tables += "<p class='headers'>Sustainability</p>";
-                    //tables += "<p class='regularText'>"+ result[row]['desc'] +"</p>";
                     tables += "<table class='tablePastReport'>";
                     tables += "<tr class='rowPastReport'>";
                     tables += "<th class='headerActivity'>Activity</th>";
@@ -129,14 +131,66 @@ function show_survey_goal_chosen(goal) {
                     tables += "</tr>";
                 }
 
-                tables += "<tr class='rowPastReport'>";
-                tables += "<td class='gridActivity'>" + result[row]['Question'] + "</td>";
-                tables += "<td class='gridRest'>" + result[row]['Activity_Involvement'] + "</td>";
-                tables += "<td class='gridRest'>"+ result[row]['Activity_Historical'] +"</td>";
-                tables += "</tr>";
-
-                if(result[row]['SubGoal'] != result[row+1]['SubGoal'])
+                if(result[row]['Type'] == 'composed')
+                {
+                    var composedMainQuestion = true;
+                    for(var composedQuestion = row; ;composedQuestion++)
+                    {
+                        if(composedMainQuestion)
+                        {
+                            tables += "<tr class='rowPastReportSingle'>";
+                            //TODO: We need to change the attribute for column span for the grid below and move it to css file for the corresponding style
+                            tables += "<td class='gridComposedActivity' colspan='3'>" + result[composedQuestion]['Question'] + "</td>";
+                            tables += "</tr>";
+                            tables += "<tr class='rowPastReportComposed'>";
+                            tables += "<td class='gridActivity'>" + result[composedQuestion]['Sub_Q'] + "</td>";
+                            tables += "<td class='gridRest'>" + result[composedQuestion]['Activity_Involvement'] + "</td>";
+                            tables += "<td class='gridRest'>"+ result[composedQuestion]['Activity_Historical'] +"</td>";
+                            tables += "</tr>";
+                            composedMainQuestion = false;
+                        }
+                        else
+                        {
+                            tables += "<tr class='rowPastReportComposed'>";
+                            tables += "<td class='gridActivity'>" + result[composedQuestion]['Sub_Q'] + "</td>";
+                            tables += "<td class='gridRest'>" + result[composedQuestion]['Activity_Involvement'] + "</td>";
+                            tables += "<td class='gridRest'>"+ result[composedQuestion]['Activity_Historical'] +"</td>";
+                            tables += "</tr>";
+                        }
+                        //alert(composedQuestion);
+                        if(composedQuestion == result.length -1)
+                        {
+                            row = composedQuestion;
+                            break;
+                        }
+                        else if(result[composedQuestion]['Type'] != result[composedQuestion+1]['Type'])
+                        {
+                            row = composedQuestion;
+                            break;
+                        }else if(result[composedQuestion]['SubGoal'] != result [composedQuestion+1]['SubGoal'])
+                        {
+                            row = composedQuestion;
+                            break;
+                        }
+                    }
+                    composedMainQuestion = true;
+                }
+                else
+                {
+                    tables += "<tr class='rowPastReportSingle'>";
+                    tables += "<td class='gridActivity'>" + result[row]['Question'] + "</td>";
+                    tables += "<td class='gridRest'>" + result[row]['Activity_Involvement'] + "</td>";
+                    tables += "<td class='gridRest'>"+ result[row]['Activity_Historical'] +"</td>";
+                    tables += "</tr>";
+                }
+                if(row == result.length -1)
+                {
                     tables += "</table>";
+                }
+                else if(result[row]['SubGoal'] != result[row+1]['SubGoal'])
+                {
+                    tables += "</table>";
+                }
             }
         }
         $('#report-pane').html(tables);
@@ -174,6 +228,24 @@ function tc_goal_show()
 function gcd_goal_show()
 {
     show_survey_goal_chosen('GSD');
+}
+
+function disable_goal_buttons()
+{
+    $('#DIELbutton').prop('disabled', true);
+    $('#SPbutton').prop('disabled', true);
+    $('#TTLbutton').prop('disabled', true);
+    $('#TCbutton').prop('disabled', true);
+    $('#GSDbutton').prop('disabled', true);
+}
+
+function enable_goal_buttons()
+{
+    $('#DIELbutton').prop('disabled', false);
+    $('#SPbutton').prop('disabled', false);
+    $('#TTLbutton').prop('disabled', false);
+    $('#TCbutton').prop('disabled', false);
+    $('#GSDbutton').prop('disabled', false);
 }
 
 

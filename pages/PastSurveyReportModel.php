@@ -21,13 +21,19 @@ function get_survey_activity($survId, $goal)
 {
     global $conn;
 
-    $sql = "SELECT SurveyQuestions.Goal, SurveyQuestions.SubGoal, SurveyQuestions.Question, SubQuestions.Sub_Q, SurveyReport.Activity_Involvement, SurveyReport.Activity_Historical
-            FROM SurveyReport
-            INNER JOIN SurveyQuestions
-            ON SurveyQuestions.QuestionID = SurveyReport.QuestionID and SurveyQuestions.SurvID = SurveyReport.SurvID
-            INNER JOIN SubQuestions
-            ON SubQuestions.QuestionID = SurveyReport.QuestionID and SubQuestions.SurvID = SurveyReport.SurvID
-            WHERE SurveyQuestions.SurvID = '$survId' and SurveyQuestions.Goal = '$goal'";
+    $sql = "SELECT
+                SQ.Goal,
+                SQ.SubGoal,
+                SQ.Question,
+                SQ.Type,
+                SQS.Sub_Q,
+                SR.Activity_Involvement,
+                SR.Activity_Historical
+            FROM SurveyReport SR
+            JOIN SurveyQuestions SQ ON SR.QuestionID = SQ.QuestionID
+            LEFT JOIN SubQuestions SQS ON SR.SubQuestionID = SQS.SubQuestionID AND SR.QuestionID = SQS.QuestionID
+            WHERE SR.SurvID = '$survId' and SQ.Goal ='$goal'
+            ORDER BY SR.SurvID, SR.QuestionID, SR.SubQuestionID;";
 
     $result = mysqli_query($conn, $sql);
     $data = [];
