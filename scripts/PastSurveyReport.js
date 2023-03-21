@@ -8,9 +8,8 @@ function show_survey_documents() {
     var query = {page: 'PastReport', command: 'SurveyDocuments'};
 
     $.post(url, query, function(data) {
-
         var result = JSON.parse(data);
-
+        
         var documents = "";
         if(result[0] == "Failed" || result)
         {
@@ -49,7 +48,7 @@ function show_survey_documents() {
             }
         }
 
-        $('#documents-pane').html(table);
+        $('#documents-pane').html(documents);
 
         $('td > button[button-document-show-id]').click(function() {
             var id = $(this).attr('button-document-show-id');
