@@ -12,7 +12,6 @@ if (empty($_POST['page'])) {
 require('LogInModel.php');
 require('model2.php');
 require('PastSurveyReportModel.php');
-require('PastSurveyReportModel.php');
 
 
 session_start();

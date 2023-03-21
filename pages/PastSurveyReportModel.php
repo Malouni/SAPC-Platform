@@ -30,7 +30,6 @@ function get_survey_activity($survId, $goal)
             WHERE SurveyQuestions.SurvID = '$survId' and SurveyQuestions.Goal = '$goal'";
 
     $result = mysqli_query($conn, $sql);
-    echo '<pre>'; print_r($result); echo '</pre>';
     $data = [];
 
     if (mysqli_num_rows($result) > 0)

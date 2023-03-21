@@ -9,17 +9,16 @@ function show_survey_documents() {
 
     $.post(url, query, function(data) {
         var result = JSON.parse(data);
-        
         var documents = "";
-        if(result[0] == "Failed" || result)
+        if(result[0] == "Failed")
         {
-            documents ="<div class='document'>";
-            documents ="<table>";
-            documents ="<tr class='rowDocuments'>";
-            documents ="<td class='gridDocuments'><p class='document'>Error, no connection to the server</p></td>";
-            documents ="</tr>";
-            documents ="</table>";
-            documents ="</div>";
+            documents +="<div class='document'>";
+            documents +="<table>";
+            documents +="<tr class='rowDocuments'>";
+            documents +="<td class='gridDocuments'><p class='document'>Error, no connection to the server</p></td>";
+            documents +="</tr>";
+            documents +="</table>";
+            documents +="</div>";
         }
         else
         {
@@ -47,16 +46,17 @@ function show_survey_documents() {
                 documents += "</div>";
             }
         }
-
+        alert(documents);
         $('#documents-pane').html(documents);
 
-        $('td > button[button-document-show-id]').click(function() {
+        $('button[button-document-show-id]').click(function() {
             var id = $(this).attr('button-document-show-id');
+            alert(id);
             set_current_document(id);
             diel_goal_show();
         });
 
-        $('td > button[button-document-download-id]').click(function() {
+        $('button[button-document-download-id]').click(function() {
             var id = $(this).attr('button-document-download-id');
             download_chosen_document(id);
         });

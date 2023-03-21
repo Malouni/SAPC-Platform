@@ -33,7 +33,9 @@ div.report {
 
 /* button images styles */
 button.pdf {
-    margin: 0 10px;
+    width: 20px;
+    height: 20px;
+    margin: 0 5px;
     cursor: pointer;
 }
 
