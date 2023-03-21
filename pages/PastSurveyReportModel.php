@@ -10,7 +10,7 @@ function get_survey_documents()
     if (mysqli_num_rows($result) > 0)
     {
         while($row = mysqli_fetch_assoc($result))
-        $data[] = $row;
+            $data[] = $row;
         return $data;
     }
     else
@@ -41,7 +41,7 @@ function get_survey_activity($survId, $goal)
     if (mysqli_num_rows($result) > 0)
     {
         while($row = mysqli_fetch_assoc($result))
-        $data[] = $row;
+            $data[] = $row;
         return $data;
     }
     else

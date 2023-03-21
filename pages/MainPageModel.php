@@ -8,7 +8,7 @@ define('DB_NAME', 'sciencestrategicplan');
 $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
 // If Exit return SurveyName , ExpiryDate , ProgressPrecent  
-function GetPresentSurveyInfo($userid , $position )
+function GetPresentSurveyInfo($position)
 {
     // Get the Current Date
     $date = date('Y-m-d');
@@ -25,43 +25,46 @@ function GetPresentSurveyInfo($userid , $position )
 
     $survey_result = mysqli_query($conn, $survey_sql);
 
+    $data = [];
+
     //if exit return the data in form of Array.
     if (mysqli_num_rows($survey_result) > 0) {
-        $survey_row = mysqli_fetch_assoc($survey_result);
-        return array($survey_row['SurvName'] , $survey_row['SurvDateEnd'] , $survey_row['Progress']); 
+        while ($survey_row = mysqli_fetch_assoc($survey_result))
+            $data[] = $survey_row;
+        return $data;
     } else
         return -1;
 }
 
 
-// If Exit return SurveyName 
+// If Exit return SurveyName
 function GetPastSurveyInfo($userid)
 {
     // Get the Current Date
     $date = date('Y-m-d');
 
-    //Check if exit any old survey by check the ExpiryDate vs CurrentDate 
+    //Check if exit any old survey by check the ExpiryDate vs CurrentDate
     global $conn;
 
 
-    //Get the SurvName that user did before 
-    $survey_sql = "SELECT SurveyTable.SurvName 
+    //Get the SurvName that user did before
+    $survey_sql = "SELECT SurveyTable.SurvName
                     FROM  UserAnswer
                     JOIN  SurveyTable ON SurveyTable.SurvID = UserAnswer.SurvID
                     AND UserAnswer.UserID = '$userid' AND SurveyTable.SurvDateEnd < '$date'";
 
     $survey_result = mysqli_query($conn, $survey_sql);
 
+    $data = [];
 
     //if exit return the data in form of Array.
-    if (mysqli_num_rows($survey_result) > 0) {
-
-        $PastSurveyArray = array();        
-        while ($survey_row = mysqli_fetch_assoc($survey_result)){
-           array_push($PastSurveyArray, $survey_row['SurvName']); 
-        }
-        return $PastSurveyArray ;
-    } else
+    if (mysqli_num_rows($survey_result) > 0) 
+    {
+        while ($survey_row = mysqli_fetch_assoc($survey_result))
+            $data[] = $survey_row;
+        return $data;
+    }
+    else
         return -1;
 }
 
