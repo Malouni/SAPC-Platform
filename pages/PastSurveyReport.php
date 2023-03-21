@@ -1,4 +1,6 @@
+<?php
 
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +16,8 @@
     <link rel="stylesheet" href="/styles/generalStyles.css">
     <link rel="stylesheet" href="../styles/PastSurveyReport.css">
 
-    <script src="../scripts/hideShowScripts.js"></script>
+    <script src="../scripts/PastSurveyReport.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 </head>
 
