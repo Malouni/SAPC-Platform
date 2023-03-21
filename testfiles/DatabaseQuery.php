@@ -33,59 +33,50 @@ $SurveyTableSQL = "CREATE TABLE IF NOT EXISTS SurveyTable (
   )";
 
 // SurveyUserTable query
-$UserAnswerSQL = "CREATE TABLE IF NOT EXISTS UserAnswer (
-    AnswID INT PRIMARY KEY AUTO_INCREMENT,
-    SurvID INT,
+$UserAnswerSQL = "CREATE TABLE IF NOT EXISTS UserAnswer(
+    UserID,
+    QuestionID,
+    SurvID,
+    Answer INT,
+    CONSTRAINT fk_question
+        FOREIGN KEY (QuestionID)
+        REFERENCES SurveyQuestion(QuestionID),
+    CONSTRAINT fk_user
+        FOREIGN KEY (UserID)
+        REFERENCES UserTable(UserID),
+    CONSTRAINT fk_survey
+        FOREIGN KEY (SurvID)
+        REFERENCES SurveyTable(SurvID)
+);";
+
+//subquestions answers table
+$SQAnswerSQL = "CREATE TABLE IF NOT EXISTS SubQuestionAnswer (
+    QuestionID,
+    SubQuestionID,
+    Answer INT,
+    CONSTRAINT fk_question
+        FOREIGN KEY (QuestionID)
+        REFERENCES SurveyQuestion(QuestionID),
+    CONSTRAINT fk_subquestion
+        FOREIGN KEY (SubQuestionID)
+        REFERENCES SubQuestions(SubQuestionID)
+
+); ";
+
+//answer notes table
+$AnswerNotesSQL = " CREATE TABLE IF NOT EXISTS AnswerNotes (
+    NoteID INT PRIMARY KEY AUTO_INCREMENT,
     UserID INT,
-    Progress float,
-    Q0 TINYINT,
-    Q1 TINYINT,
-    Q2 TINYINT,
-    Q3_1 TINYINT,
-    Q3_2 TINYINT,
-    Q4 TINYINT,
-    Q5 TINYINT,
-    Q6_1 INT,
-    Q6_2 INT,
-    Q6_3 INT,
-    Q6_4 INT,
-    Q6_5 INT,
-    Q7_1 INT,
-    Q7_2 INT,
-    Q7_3 INT,
-    Q7_4 INT,
-    Q7_5 INT,
-    Q8 TINYINT,
-    Q9 INT,
-    Q10 TINYINT,
-    Q11 TINYINT,
-    Q12_1 TINYINT,
-    Q12_2 TINYINT,
-    Q12_3 TINYINT,
-    Q12_4 TINYINT,
-    Q13_1 TINYINT,
-    Q13_2 TINYINT,
-    Q14_1 TINYINT,
-    Q14_2 TINYINT,
-    Q15 TINYINT,
-    Q16 TINYINT,
-    Q1_note TEXT,
-    Q2_note TEXT,
-    Q3_note TEXT,
-    Q4_note TEXT,
-    Q5_note TEXT,
-    Q6_note TEXT,
-    Q7_note TEXT,
-    Q8_note TEXT,
-    Q9_note TEXT,
-    Q10_note TEXT,
-    Q11_note TEXT,
-    Q12_note TEXT,
-    Q13_note TEXT,
-    Q14_note TEXT,
-    Q15_note TEXT,
-    Q16_note TEXT
-)";
+    QuestionID INT,
+    NoteText TEXT,
+    CONSTRAINT fk_user
+        FOREIGN KEY (UserID)
+        REFERENCES UserTable(UserID),
+    CONSTRAINT fk_question
+        FOREIGN KEY (QuestionID)
+        REFERENCES SurveyQuestion(QuestionID),
+);";
+
 
 
 // SurveyQuestionsTable query 
@@ -105,6 +96,8 @@ $SubQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SubQuestions (
     QuestionID INT,
     Sub_Q VARCHAR(200)
 )";
+
+
 
 
 // SurveyReportTable query
@@ -142,6 +135,14 @@ if ($conn->query($SubQuestionsTableSQL) === TRUE) {
 
 if ($conn->query($SurveyReportSQL) === TRUE) {
     echo "Table SurveyReport created successfully\n<br>";
+}
+
+if ($conn->query($SQAnswerSQL) === TRUE) {
+    echo "Table Sub-Question answers created successfully\n<br>";
+}
+
+if ($conn->query($AnswerNotesSQL) === TRUE) {
+    echo "Table answer-notes created successfully\n<br>";
 }
 
 // close the database connection

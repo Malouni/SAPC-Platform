@@ -35,13 +35,11 @@ div.report {
 button.pdf {
     margin: 0 10px;
     cursor: pointer;
-    width: 15px;
 }
 
-/*
 .icon {
-    
-}*/
+    width: 15px;
+}
 
 
 /* strategic goals tabs styles */
