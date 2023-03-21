@@ -33,8 +33,9 @@ div.report {
 
 /* button images styles */
 button.pdf {
-    margin: 0 10px;
-    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    margin: 0 5px;
 }
 
 .icon {
@@ -117,11 +118,34 @@ tr.rowPastReport {
     border-collapse: collapse;
 }
 
+/* This is a css for a row of the single question  */
+tr.rowPastReportSingle{
+    border: 1px solid rgb(105, 105, 105);
+    border-collapse: collapse;
+    background-color: #288f94;
+}
+
+/* This is a css for a row for a composed sub-question*/
+tr.rowPastReportComposed{
+    border: 1px solid rgb(105, 105, 105);
+    border-collapse: collapse;
+    background-color: gray;
+}
+
 td.gridActivity {
     border: 1px solid rgb(105, 105, 105);
     border-collapse: collapse;
     text-align: left;
     padding: 0 0 0 0.3%;
+}
+
+/* This is a css for a grid of the composed main question*/
+td.gridComposedActivity {
+    border: 1px solid rgb(105, 105, 105);
+    border-collapse: collapse;
+    text-align: center;
+    background-color: #288f94;
+    font-weight: bold;
 }
 
 td.gridRest {

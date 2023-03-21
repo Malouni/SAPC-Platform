@@ -12,10 +12,10 @@
 <div class="submenu" id="sidemenu">
     <button class="closebutton" onclick="hideShowMenu()">X</button>
     <ul>
-        <li onclick='mainPage()'> <button> Dashboard</<button> </li>
+        <li onclick='mainPage()'> <p>Dashboard </p> </li>
         <li onclick='survey()'> <p>Survey</p> </li>
         <li onclick='currentReport()'> <p>Current Report</p> </li>
-        <li> <button onclick='signOut()'> Log Out </button> </li>
+        <li onclick='signOut()'> <p> Log Out </p> </li>
     </ul>
 </div>
 
