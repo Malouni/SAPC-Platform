@@ -25,11 +25,35 @@ VALUES
 
 
 
-// SurveyUserTable query
-$UserAnswerSQL = "INSERT INTO UserAnswer (SurvID, UserID, Progress,    Q0, Q1, Q2, Q3_1, Q3_2, Q4, Q5, Q6_1, Q6_2, Q6_3, Q6_4, Q6_5, Q7_1, Q7_2, Q7_3, Q7_4, Q7_5, Q8, Q9, Q10, Q11, Q12_1, Q12_2, Q12_3, Q12_4, Q13_1, Q13_2, Q14_1, Q14_2, Q15, Q16, Q1_note, Q2_note, Q3_note, Q4_note, Q5_note, Q6_note, Q7_note, Q8_note, Q9_note, Q10_note, Q11_note, Q12_note, Q13_note, Q14_note, Q15_note, Q16_note)
-VALUES 
-(1, 101, 0.25,    4, 5, 3, 2, 4, 5, 1, 5, 4, 5, 2, 3, 1, 5, 2, 3, 4, 3, 2, 5, 3, 5, 2, 1, 3, 5, 4, 3, 2, 4, 2, 'Good experience overall', 'Helpful staff', 'Not enough resources', 'Slow internet', 'Lack of diversity', 'Sub-questions were not clear', 'Facilities could be improved', 'Course material was not challenging enough', 'Curriculum was outdated', 'Too many assignments', 'Could use more extracurricular activities', 'Faculty could be more involved with students', 'Lack of mentorship opportunities', 'Would like to see more guest speakers', 'Overall satisfied', NULL),
-(1, 102, 0.5,     3, 4, 4, 5, 1, 2, 3, 4, 3, 5, 4, 1, 3, 4, 2, 5, 2, 4, 3, 3, 4, 3, 5, 4, 1, 2, 4, 2, 4, 2, 1, 'Mixed experience', 'Staff could be more approachable', 'Not enough study space', 'Difficulty finding resources', 'Curriculum could be more structured', 'Sub-questions were helpful', 'Facilities were well-maintained', 'Course material was relevant and challenging', 'Curriculum was well-designed', 'Assignments were manageable', 'Good extracurricular activities available', 'Faculty was supportive and encouraging', 'Mentorship opportunities were sufficient', 'Guest speakers were valuable', 'Overall satisfied', NULL);
+// query to populate answer tables
+$UserAnswerSQL = "INSERT INTO UserAnswer (UserID, QuestionID, SurvID, Answer) VALUES
+(1, 1, 1, 3),
+(1, 2, 1, 2),
+(2, 1, 1, 4),
+(2, 2, 1, 5),
+(3, 1, 1, 2),
+(3, 2, 1, 3);
+
+";
+
+$UserSQAnswerSQL = "INSERT INTO SubQuestionAnswer (UserID, QuestionID, SubQuestionID, Answer) VALUES
+(1, 3, 1, 2),
+(1, 3, 2, 3),
+(2, 3, 1, 4),
+(2, 3, 2, 1),
+(3, 3, 1, 3),
+(3, 3, 2, 2);
+
+";
+
+$UserAnswerNotesSQL = "INSERT INTO AnswerNotes (UserID, QuestionID, NoteText) VALUES
+(1, 1, 'This question was unclear.'),
+(1, 2, 'I strongly disagree with this question.'),
+(2, 1, 'I found this question very helpful.'),
+(2, 2, 'This question needs more context.'),
+(3, 1, 'I am not sure how to answer this question.'),
+(3, 2, 'I am very satisfied with this question.');
+
 ";
 
 
@@ -99,13 +123,6 @@ else{
     echo "Table SurveyTable error\n<br>";
 }
 
-if ($conn->query($UserAnswerSQL) === TRUE) {
-    echo "Table UserAnswer populated successfully\n<br>";
-}
-else{
-    echo "Table UserAnswerTable error\n<br>";
-}
-
 if ($conn->query($SurveyQuestionsTableSQL) === TRUE) {
     echo "Table SurveyQuestions populated successfully\n<br>";
 }
@@ -126,6 +143,31 @@ if ($conn->query($SubQuestionSQL) === TRUE) {
 else{
     echo "Table SubQuestions error\n<br>";
 }
+
+if ($conn->query($UserAnswerSQL) === TRUE) {
+    echo "Table UserAnswer populated successfully\n<br>";
+}
+else{
+    echo "Table UserAnswerTable error\n<br>";
+}
+
+if ($conn->query($UserSQAnswerSQL) === TRUE) {
+    echo "Table UserAnswer Sub-Questions populated successfully\n<br>";
+}
+else{
+    echo "Table UserAnswerTable error\n<br>";
+}
+
+
+if ($conn->query($UserAnswerNotesSQL) === TRUE) {
+    echo "Table UserAnswerNotes populated successfully\n<br>";
+}
+else{
+    echo "Table UserAnswerTable error\n<br>";
+}
+
+
+
 
 
 // close the database connection

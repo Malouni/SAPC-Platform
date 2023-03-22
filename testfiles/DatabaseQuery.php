@@ -32,54 +32,7 @@ $SurveyTableSQL = "CREATE TABLE IF NOT EXISTS SurveyTable (
     Position varchar(100)
   )";
 
-// SurveyUserTable query
-$UserAnswerSQL = "CREATE TABLE IF NOT EXISTS UserAnswer(
-    UserID,
-    QuestionID,
-    SurvID,
-    Answer INT,
-    CONSTRAINT fk_question
-        FOREIGN KEY (QuestionID)
-        REFERENCES SurveyQuestion(QuestionID),
-    CONSTRAINT fk_user
-        FOREIGN KEY (UserID)
-        REFERENCES UserTable(UserID),
-    CONSTRAINT fk_survey
-        FOREIGN KEY (SurvID)
-        REFERENCES SurveyTable(SurvID)
-);";
-
-//subquestions answers table
-$SQAnswerSQL = "CREATE TABLE IF NOT EXISTS SubQuestionAnswer (
-    QuestionID,
-    SubQuestionID,
-    Answer INT,
-    CONSTRAINT fk_question
-        FOREIGN KEY (QuestionID)
-        REFERENCES SurveyQuestion(QuestionID),
-    CONSTRAINT fk_subquestion
-        FOREIGN KEY (SubQuestionID)
-        REFERENCES SubQuestions(SubQuestionID)
-
-); ";
-
-//answer notes table
-$AnswerNotesSQL = " CREATE TABLE IF NOT EXISTS AnswerNotes (
-    NoteID INT PRIMARY KEY AUTO_INCREMENT,
-    UserID INT,
-    QuestionID INT,
-    NoteText TEXT,
-    CONSTRAINT fk_user
-        FOREIGN KEY (UserID)
-        REFERENCES UserTable(UserID),
-    CONSTRAINT fk_question
-        FOREIGN KEY (QuestionID)
-        REFERENCES SurveyQuestion(QuestionID),
-);";
-
-
-
-// SurveyQuestionsTable query 
+  // SurveyQuestionsTable query 
 $SurveyQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SurveyQuestions (
     QuestionID INT PRIMARY KEY AUTO_INCREMENT,
     SurvID INT,
@@ -110,6 +63,30 @@ $SurveyReportSQL = "CREATE TABLE IF NOT EXISTS SurveyReport (
     Activity_Historical TINYINT
 )";
 
+// SurveyUserTable query
+$UserAnswerSQL = "CREATE TABLE IF NOT EXISTS UserAnswer(
+    UserID INT,
+    QuestionID INT,
+    SurvID INT,
+    Answer INT
+)";
+
+//subquestions answers table
+$SQAnswerSQL = "CREATE TABLE IF NOT EXISTS SubQuestionAnswer (
+    UserID INT,
+    QuestionID INT,
+    SubQuestionID INT,
+    Answer INT
+); ";
+
+//answer notes table
+$AnswerNotesSQL = " CREATE TABLE IF NOT EXISTS AnswerNotes (
+    NoteID INT PRIMARY KEY AUTO_INCREMENT,
+    UserID INT,
+    QuestionID INT,
+    NoteText TEXT
+);";
+
 
 
 // execute the query and check for errors
@@ -119,10 +96,6 @@ if ($conn->query($UserTableSQL) === TRUE) {
 
 if ($conn->query($SurveyTableSQL) === TRUE) {
     echo "Table SurveyTable created successfully\n<br>";
-}
-
-if ($conn->query($UserAnswerSQL) === TRUE) {
-    echo "Table UserAnswer created successfully\n<br>";
 }
 
 if ($conn->query($SurveyQuestionsTableSQL) === TRUE) {
@@ -137,6 +110,10 @@ if ($conn->query($SurveyReportSQL) === TRUE) {
     echo "Table SurveyReport created successfully\n<br>";
 }
 
+if ($conn->query($UserAnswerSQL) === TRUE) {
+    echo "Table UserAnswer created successfully\n<br>";
+}
+
 if ($conn->query($SQAnswerSQL) === TRUE) {
     echo "Table Sub-Question answers created successfully\n<br>";
 }
@@ -147,5 +124,3 @@ if ($conn->query($AnswerNotesSQL) === TRUE) {
 
 // close the database connection
 mysqli_close($conn);
-
-?>
