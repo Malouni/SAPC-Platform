@@ -13,6 +13,10 @@
     <link rel="stylesheet" href="/styles/generalStyles.css">
     <link rel="stylesheet" href="/styles/dashboardstyles.css">
 
+    <!-- links to scripts -->
+    <script src="../scripts/MainPage.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -112,44 +116,19 @@
         </div>
 
         <!-- Upcoming section -->
-        <div class="upcoming insidebox">
-            <h1 class="sectionheader">Upcoming</h1>
-            <div class="activity">
-                <img src="../images/cover-textures/1.png" alt="cover">
-                <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
-                <button class="options">...</button>
-                <div class="meter"></div>
-            </div>
-            <div class="activity">
-                <img src="../images/cover-textures/2.png" alt="cover">
-                <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
-                <button class="options">...</button>
-                <div class="meter"></div>
-            </div>
-
+        <div class="upcoming insidebox" id="upcoming-pane">
+            <?php
+                if (!empty($result))
+                    echo $result;
+            ?>
         </div>
 
         <!-- History section -->
-        <div class="history insidebox">
-            <h1 class="sectionheader">History</h1>
-            <div class="activity">
-                <img src="../images/cover-textures/3.png" alt="cover">
-                <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
-                <button class="options">...</button>
-                <div class="meter"></div>
-            </div>
-            <div class="activity">
-                <img src="../images/cover-textures/4.png" alt="cover">
-                <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
-                <button class="options">...</button>
-                <div class="meter"></div>
-            </div>
-            <div class="activity">
-                <img src="../images/cover-textures/5.png" alt="cover">
-                <p class="title">Faculty of Science<br><span>Strategic Plan Survey</span></p>
-                <button class="options">...</button>
-                <div class="meter"></div>
-            </div>
+        <div class="history insidebox" id="history-pane">
+            <?php
+                if (!empty($result))
+                    echo $result;
+            ?>
         </div>
 
 
@@ -168,6 +147,17 @@
             </div>
             <!-- document list -->
             <ul id="DocumentList">
+                <li>
+                    <a>
+                        <ul>
+                            <li class="date">
+                                <h2>Friday, 3 March 2023</h2>
+                            </li>
+                            <li class="item"><span>Strategic Plan Survey 2023</span>is due <span class="pdflink"><button><img src="../images/icons/downloadpdf.png" alt=""></button></span></li>
+                            <li class="faculty">Faculty of Science</li>
+                        </ul>
+                    </a>
+                </li>
                 <li>
                     <a href="">
                         <ul>
