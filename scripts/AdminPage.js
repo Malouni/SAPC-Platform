@@ -2,10 +2,6 @@ document.addEventListener("DOMContentLoaded", function(){
     showUsersTable ();
 });
 
-//Button click listeners
-$('#addNewUser').click(addNewUser);
-$('#deleteUser').click(removeUser);
-$('#csvFileSend').click(addUsersFromFile);
 
 //Functions
 function showUsersTable(){
@@ -46,10 +42,10 @@ function showUsersTable(){
             for (var row = 0; row < result.length; row++) {
 
                 userTable += "<tr>";
-                userTable += "<td>"+$row['Fname']+"</td>";
-                userTable += "<td>"+$row['Lname']+"</td>";
-                userTable += "<td>"+$row['UserName']+"</td>";
-                userTable += "<td>"+$row['Position']+"</td>";
+                userTable += "<td>" + result[row]['Fname'] + "</td>";
+                userTable += "<td>" + result[row]['Lname'] + "</td>";
+                userTable += "<td>" + result[row]['UserName'] + "</td>";
+                userTable += "<td>" + result[row]['Position'] + "</td>";
                 userTable += "</tr>";
             }
             userTable += "</tbody></table>";
@@ -61,7 +57,8 @@ function showUsersTable(){
 
 
 
-function addNewUser(){
+function addNewUserFunction()
+{
     var url = 'Controller.php';
     var query = {page: 'AdminPage', command: 'AddNewUser', Fname: $("#fName").val(),
                                                            Lname: $("#lName").val(),
@@ -76,7 +73,8 @@ function addNewUser(){
     });
 }
 
-function removeUser(){
+function removeUserFunction()
+{
     var url = 'Controller.php';
     var query = {page: 'AdminPage', command: 'RemoveUser', EmailDelete: $("#emailDelete").val(),
                                                            EmailConDelete: $("#emailCDelete").val()};
@@ -87,17 +85,17 @@ function removeUser(){
     });
 }
 
-function addUsersFromFile(){
-
-    const csvFile = $("#csvFile").val();
-    const input = csvFile.files[0];
-    const reader = new FileReader();
+function addUsersFromFileFunction(){
+    var csvFile = document.querySelector('#csvFile').files[0];
+    var reader = new FileReader();
+    reader.readAsText(csvFile);
 
     reader.onload = function (e) {
-        const text = e.target.result;
-        const data = csvToArray(text);
-        alert(data);
-
+        var text = e.target.result;
+        var data = csvToArray(text);
+        alert(data[0]["Department"]);
+        var result2 = JSON.stringify(data);
+        alert(result2);
         var url = 'Controller.php';
         var query = {page: 'AdminPage', command: 'csvAddUsers', usersData: data};
         $.post(url, query, function(data) {
@@ -106,34 +104,35 @@ function addUsersFromFile(){
         showUsersTable();
         });
     };
-
-    reader.readAsText(input);
 }
 
 function csvToArray(text)
 {
     var delimiter = ",";
 
-    const headers = text.slice(0, text.indexOf("\n")).split(delimiter);
-
+    var headers = text.slice(0, text.indexOf("\n")).split(delimiter);
+    alert(headers);
+    //alert(text);
     // slice from \n index + 1 to the end of the text
     // use split to create an array of each csv value row
-    const rows = text.slice(text.indexOf("\n") + 1).split("\n");
+    var rows = text.slice(text.indexOf("\n") + 1).split("\n");
+   // alert(rows);
 
     // Map the rows
     // split values from each row into an array
     // use headers.reduce to create an object
     // object properties derived from headers:values
     // the object passed as an element of the array
-    const arr = rows.map(function (row) {
-      const values = row.split(delimiter);
-      const el = headers.reduce(function (object, header, index) {
+    var arr = rows.map(function (row) {
+        var values = row.split(delimiter);
+        alert(values);
+        var el = headers.reduce(function (object, header, index) {
         object[header] = values[index];
+        alert(values[index]);
         return object;
       }, {});
       return el;
     });
-
     // return the array
     return arr;
 }
