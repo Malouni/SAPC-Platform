@@ -15,8 +15,8 @@
     grid-template-columns: 33.33% 33.33% 33.33% ;
     grid-template-rows: 1fr 1fr;
     grid-template-areas:
-    "about about timeline"
-    "upcoming history documents"
+    "about about about"
+    "upcoming history history"
     ;
 }
 
@@ -100,44 +100,7 @@ iframe{
 }
 
 
-/* Timeline section styles*/
-.timeline{
-    grid-area: timeline;
-}
 
-.timeline>div{
-    margin-bottom: 40px;
-    position: relative;
-}
-
-
-.timeline ul{
-    padding: 10px 0;
-    list-style-type: none;
-}
-
-.timeline a{
-    text-decoration: none;
-}
-
-.timeline .date h2{
-    font-size: medium;
-    color: #003e51;    
-}
-
-.timeline .item{
-    color: #288f94;
-}
-
-.timeline .item .time{
-    float: right;
-    margin-right: 10px;
-    color: rgb(105, 105, 105);
-}
-
-.timeline .faculty{
-    color:rgb(105, 105, 105);
-}
 
 /* Upcoming section styles*/
 .upcoming{
@@ -145,8 +108,8 @@ iframe{
 }
 
 .activity{
-    margin: 10px 0;
-    width: 70%;
+    margin: 10px;
+    width: 300px;
     max-height: 400px;
     display: grid;
     grid-template-columns: 85% 15%;
@@ -158,6 +121,7 @@ iframe{
     ;
     border: 1px solid  rgb(190, 190, 190);
     border-radius: 3px;
+    float: left;
 }
 
 .activity img{
@@ -197,45 +161,4 @@ iframe{
 .history{
     grid-area: history;
 }
-
-/* Documents section styles*/
-.documents{
-    grid-area: documents;
-}
-
-.documents>div{
-    margin-bottom: 40px;
-    position: relative;
-}
-
-.documents ul{
-    padding: 10px 0;
-    list-style-type: none;
-}
-
-.documents a{
-    text-decoration: none;
-}
-
-.documents .date h2{
-    font-size: medium;
-    color: #003e51;    
-}
-
-.documents .item{
-    color: #288f94;
-}
-
-.documents .item .pdflink{
-    float: right;
-    margin-right: 10px;
-}
-
-.documents .item .pdflink img{
-    width: 1vw;
-}
-.documents .faculty{
-    color:rgb(105, 105, 105);
-}
-
 
