@@ -52,69 +52,6 @@
             <iframe src="https://www.youtube.com/embed/XIMLoLxmTDw" title="About the survey" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
         </div>
-
-        <!-- Timeline section -->
-        <div class="timeline insidebox">
-            <h1 class="sectionheader">Timeline</h1>
-            <!--buttons container-->
-            <div>
-                <button class="sectionButton sectionButton2" onclick="showordertime()"><img src="../images/icons/ordermenu.png" alt="order by "></button>
-                <div class="orderby" id="orderbytime">
-                    <ul>
-                        <li><button>order by date (ascending)</button></li>
-                        <li><button>order by date (descending)</button></li>
-                    </ul>
-                </div>
-            </div>
-            <!-- Due list container // list items are to be added according to items in database-->
-            <ul id="TimelineDueList">
-                <li>
-                    <a href="">
-                        <ul>
-                            <li class="date">
-                                <h2>Friday, 3 March 2023</h2>
-                            </li>
-                            <li class="item"><span>Strategic Plan Survey 2023</span>is due <span class="time">00:00</span></li>
-                            <li class="faculty">Faculty of Science</li>
-                        </ul>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <ul>
-                            <li class="date">
-                                <h2>Friday, 3 March 2023</h2>
-                            </li>
-                            <li class="item"><span>Strategic Plan Survey 2023</span>is due <span class="time">00:00</span></li>
-                            <li class="faculty">Faculty of Science</li>
-                        </ul>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <ul>
-                            <li class="date">
-                                <h2>Friday, 3 March 2023</h2>
-                            </li>
-                            <li class="item"><span>Strategic Plan Survey 2023</span>is due <span class="time">00:00</span></li>
-                            <li class="faculty">Faculty of Science</li>
-                        </ul>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <ul>
-                            <li class="date">
-                                <h2>Friday, 3 March 2023</h2>
-                            </li>
-                            <li class="item"><span>Strategic Plan Survey 2023</span>is due <span class="time">00:00</span></li>
-                            <li class="faculty">Faculty of Science</li>
-                        </ul>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
         <!-- Upcoming section -->
         <div class="upcoming insidebox" id="upcoming-pane">
             <?php
@@ -129,46 +66,6 @@
                 if (!empty($result))
                     echo $result;
             ?>
-        </div>
-
-
-        <!-- Documents section -->
-        <div class="documents insidebox">
-            <h1 class="sectionheader">Documents</h1>
-            <!--buttons container-->
-            <div>
-                <button class="sectionButton sectionButton2" onclick="showorderdocs()"><img src="../images/icons/ordermenu.png" alt="order by "></button>
-                <div class="orderby" id="orderbydocs">
-                    <ul>
-                        <li><button>order by date (ascending)</button></li>
-                        <li><button>order by date (descending)</button></li>
-                    </ul>
-                </div>
-            </div>
-            <!-- document list -->
-            <ul id="DocumentList">
-                <li>
-                    <a>
-                        <ul>
-                            <li class="date">
-                                <h2>Friday, 3 March 2023</h2>
-                            </li>
-                            <li class="item"><span>Strategic Plan Survey 2023</span>is due <span class="pdflink"><button><img src="../images/icons/downloadpdf.png" alt=""></button></span></li>
-                            <li class="faculty">Faculty of Science</li>
-                        </ul>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <ul>
-                            <li class="date">
-                                <h2>Friday, 3 March 2023</h2>
-                            </li>
-                            <li class="item"><span>Strategic Plan Survey 2023</span>is due <span class="pdflink"><button><img src="../images/icons/downloadpdf.png" alt=""></button></span></li>
-                            <li class="faculty">Faculty of Science</li>
-                        </ul>
-                    </a>
-                </li>
         </div>
     </div>
 
