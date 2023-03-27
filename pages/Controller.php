@@ -11,6 +11,7 @@ if (empty($_POST['page'])) {
 
 require('../models/LogInModel.php');
 require('../models/PastSurveyReportModel.php');
+require('../models/MainPageModel.php');
 
 
 session_start();
@@ -34,6 +35,7 @@ if ($_POST['page'] == 'LogInPage')
                 $_SESSION['userFirstName'] = get_user_first_name ($_POST['truid']);
                 $_SESSION['userLastName'] = get_user_last_name ($_POST['truid']);
                 $_SESSION['userPosition'] = get_user_position ($_POST['truid']);
+                $_SESSION['userId'] = get_user_id($_POST['truid']);
                 require('Index.php');
             }
             exit();
@@ -69,6 +71,30 @@ else if($_POST['page'] == 'Navigation')
         $display_type = 'none';
         include ('LogInPage.php');
         break;
+    }
+}
+
+else if($_POST['page'] == 'MainPage')
+{
+    if (!isset($_SESSION['LogIn'])) {
+        $display_type = 'none';
+        include('LogInPage.php');
+        exit();
+    }
+
+    $command = $_POST['command'];
+    switch($command) {
+
+    case 'UpcomingSurveys':
+        $result = get_upcoming_surveys();
+        echo json_encode($result);
+        break;
+
+    case 'HistoryOfSurveys':
+        $result = get_surveys_completed_by_user($_SESSION['userId']);
+        echo json_encode($result);
+        break;
+
     }
 }
 

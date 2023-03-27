@@ -1,12 +1,5 @@
 <?php
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'Oleg');
-define('DB_PASS', 'asd123@#4');
-define('DB_NAME', 'sciencestrategicplan');
-
-$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
 // If Exit return SurveyName , ExpiryDate , ProgressPrecent  
 function GetPresentSurveyInfo($position)
 {
@@ -17,9 +10,9 @@ function GetPresentSurveyInfo($position)
 
     //Get the SurveyName , Progress and DateEnd.
     $survey_sql = "SELECT SurveyTable.SurvName ,
-                       SurveyTable.SurvDateEnd , 
-                       UserAnswer.Progress 
-                       FROM UserAnswer 
+                       SurveyTable.SurvDateEnd ,
+                       UserAnswer.Progress
+                       FROM UserAnswer
                        RIGHT JOIN SurveyTable ON SurveyTable.SurvID = UserAnswer.SurvID
                        AND SurveyTable.SurvDateEnd >= '$date' AND SurveyTable.Position = '$position' OR SurveyTable.Position = 'everyone' ";
 
@@ -66,6 +59,44 @@ function GetPastSurveyInfo($userid)
     }
     else
         return -1;
+}
+
+function get_upcoming_surveys()
+{
+    global $conn;
+
+    $date = date('Y-m-d');
+    $sql = "select SurvID,SurvName
+            from SurveyTable
+            where SurvDateEnd >= '$date' and Position = 'user'";
+    $result = mysqli_query($conn, $sql);
+    $data = [];
+    if (mysqli_num_rows($result) > 0)
+    {
+        while($row = mysqli_fetch_assoc($result))
+            $data[] = $row;
+        return $data;
+    }
+    else
+        return $data[0] = "NoResults";
+}
+
+function get_surveys_completed_by_user($userid)
+{
+    global $conn;
+
+    $sql = "select SurvID,SurvName
+            from SurveyTable";
+    $result = mysqli_query($conn, $sql);
+    $data = [];
+    if (mysqli_num_rows($result) > 0)
+    {
+        while($row = mysqli_fetch_assoc($result))
+            $data[] = $row;
+        return $data;
+    }
+    else
+        return $data[0] = "NoResults";
 }
 
 ?>
