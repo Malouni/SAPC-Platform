@@ -9,9 +9,8 @@ if (empty($_POST['page'])) {
     exit();
 }
 
-require('LogInModel.php');
-require('model2.php');
-require('PastSurveyReportModel.php');
+require('../models/LogInModel.php');
+require('../models/PastSurveyReportModel.php');
 
 
 session_start();
