@@ -159,57 +159,70 @@ else if ($_POST['page'] == 'AdminPage')
             break;
 
         case 'AddNewUser':
-            if($_POST["Email"] == $_POST["EmailCon"])
+            if(!check_if_user_exists($_POST["Email"]))
             {
-                $result = add_new_user($_POST["Email"], $_POST["Fname"], $_POST["Lname"], $_POST["userType"], $_POST["department"]);
-                if($result){
-                    $result = "New user was added successfully!";
-                }else{
-                    $result = "The error occupied, try again later.";
+                if($_POST["Email"] == $_POST["EmailCon"])
+                {
+                    $result = add_new_user($_POST["Email"], $_POST["Fname"], $_POST["Lname"], $_POST["userType"], $_POST["department"]);
+                    if($result){
+                        $result = "New user ".$_POST["Email"]." was added successfully!";
+                    }else{
+                        $result = "The error occupied, try again later.";
+                    }
+                }
+                else
+                {
+                    $result = "Emails for user: ".$_POST["Email"]." are not matching, please try again";
                 }
             }
             else
             {
-                $result = "Emails are not matching, please try again";
+                $result = "User: ".$_POST["Email"]." already exists";
             }
             echo json_encode($result);
             break;
 
         case 'RemoveUser':
-            if($_POST["EmailDelete"] == $_POST["EmailConDelete"])
+            if(check_if_user_exists($_POST["EmailDelete"]))
             {
-                $result = get_users_info($_POST["EmailDelete"]);
-                if($result){
-                    $result = "The user was deleted successfully!";
-                }else{
-                    $result = "The error occupied, try again later.";
+                if($_POST["EmailDelete"] == $_POST["EmailConDelete"])
+                {
+                    $result = remove_user($_POST["EmailDelete"]);
+                    if($result){
+                        $result = "The user: ".$_POST["EmailDelete"]." was deleted successfully!";
+                    }else{
+                        $result = "The error occupied, try again later.";
+                    }
+                }
+                else
+                {
+                    $result = "Emails for user: ".$_POST["EmailDelete"]." are not matching, please try again";
                 }
             }
             else
             {
-                $result = "Emails are not matching, please try again";
+                $result = "The user: ".$_POST["EmailDelete"]." does not exists";
             }
             echo json_encode($result);
             break;
 
         case 'csvAddUsers':
-            $data[] = $_POST["csvFileData"];
-            for($line = 0; $line < $data; $line++)
+            $data = json_decode($_POST["csvFileData"]);
+            for($line = 0; $line < count($data) - 1; $line++)
             {
-                if(check_if_user_exists($data[]))
+                if(check_if_user_exists($data[$line]["Username"]))
                 {
-                    if(true /*add_new_user()*/){
-                        $result += "The user "+ +" was added successfully!\n";
+                    if(add_new_user($data[$line]["Username"],$data[$line]["FirstName"], $data[$line]["LastName"], $data[$line]["UserType"], $data[$line]["Department"])){
+                        $result += "The user "+ $data[$line]["Username"] +" was added successfully!\n";
                     }else{
-                        $result += "The user "+ +" was not added due to the error!, try again\n";
+                        $result += "The user "+ $data[$line]["Username"] +" was not added due to the error!, try again\n";
                     }
                 }
                 else
                 {
-                    $result += "User already exists: "+ $data[$line] +"\n";
+                    $result += "User already exists: "+ $data[$line]["Username"] +"\n";
                 }
             }
-            
             echo json_encode($result);
             break;
     }

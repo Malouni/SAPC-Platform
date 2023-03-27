@@ -41,10 +41,6 @@ session_start();
                 <h2>Survey Users</h2>
             </div>
             <div class="usertable" id="user-table">
-                <?php
-                    if (!empty($result))
-                        echo $result;
-                ?>
             </div>
         </div>
 
@@ -56,24 +52,24 @@ session_start();
 
             <!---------file row------------>
             <div class="row row1">
-                <form>
+                <form onsubmit="addUsersFromFileFunction()">
                     <label for="csvFile">Upload CSV file containing user information:</label>
-                    <input type="file" name="csvFile" id="csvFile" accept=".csv">
+                    <input type="file" name="csvFile" id="csvFile" accept=".csv" required>
                     <br>
-                    <input type="submit" value="Upload" name="csvFileSend" id="csvFileSend">
+                    <input type="submit" value="Upload" id="csvFileSend">
                 </form>
             </div>
 
             <!---------manually row------------>
             <div class="row row2">
                 <p>Add user manually</p>
-                <form>
-                    <input type="text" name="fName" id = "fName" placeholder="User First Name">
-                    <input type="text" name="lName" id = "lName" placeholder="User Last Name">
-                    <input type="text" name="email" id = "email" placeholder="User email">
-                    <input type="text" name="emailC" id = "emailC" placeholder="Confirm email">
-                    <input type="text" name="department" id = "department" placeholder="User Department">
-                    <select name="userType" id="userType">
+                <form onsubmit="addNewUserFunction()">
+                    <input type="text" name="fName" id = "fName" placeholder="User First Name" required>
+                    <input type="text" name="lName" id = "lName" placeholder="User Last Name" required>
+                    <input type="text" name="email" id = "email" placeholder="User email" required>
+                    <input type="text" name="emailC" id = "emailC" placeholder="Confirm email" required>
+                    <input type="text" name="department" id = "department" placeholder="User Department" required>
+                    <select name="userType" id="userType" require>
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                     </select>
@@ -85,9 +81,9 @@ session_start();
             <!---------delete row------------>
             <div class="row row3">
                 <h2>Delete User</h2>
-                <form>
-                    <input type="text" name="emailDelete"  id="emailDelete" placeholder="User email">
-                    <input type="text" name="emailCDelete" id="emailCDelete" placeholder="Confirm email">
+                <form onsubmit="removeUserFunction()">
+                    <input type="text" name="emailDelete"  id="emailDelete" placeholder="User email" required>
+                    <input type="text" name="emailCDelete" id="emailCDelete" placeholder="Confirm email" required>
                     <input type="submit" value="Delete User" id="deleteUser">
                 </form>
             </div>

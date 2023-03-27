@@ -49,9 +49,9 @@ function check_if_user_exists($email)
 
     $sql = "select * from UserTable where UserName = '$email'";
     $result = mysqli_query($conn, $sql);
-    if (mysqli_num_rows($result) > 0) {
+    if (mysqli_num_rows($result) > 0)
         return true;
-    } else
+    else
         return false;
 }
 
