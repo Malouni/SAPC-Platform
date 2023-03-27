@@ -51,7 +51,7 @@ function GetPastSurveyInfo($userid)
     $data = [];
 
     //if exit return the data in form of Array.
-    if (mysqli_num_rows($survey_result) > 0) 
+    if (mysqli_num_rows($survey_result) > 0)
     {
         while ($survey_row = mysqli_fetch_assoc($survey_result))
             $data[] = $survey_row;
@@ -61,14 +61,16 @@ function GetPastSurveyInfo($userid)
         return -1;
 }
 
-function get_upcoming_surveys()
+function get_upcoming_surveys($userid)
 {
     global $conn;
 
     $date = date('Y-m-d');
-    $sql = "select SurvID,SurvName
-            from SurveyTable
-            where SurvDateEnd >= '$date' and Position = 'user'";
+    $sql = "SELECT SurveyTable.SurvID, SurveyTable.SurvName
+            FROM SurveyTable
+            INNER JOIN UserTable
+            ON SurveyTable.Position = UserTable.Position
+            WHERE SurveyTable.SurvDateEnd >= '$date' and UserTable.UserID = '$userid'";
     $result = mysqli_query($conn, $sql);
     $data = [];
     if (mysqli_num_rows($result) > 0)
@@ -85,8 +87,15 @@ function get_surveys_completed_by_user($userid)
 {
     global $conn;
 
-    $sql = "select SurvID,SurvName
-            from SurveyTable";
+    $sql = "SELECT DISTINCT rt.SurvID, rt.SurvName
+            FROM
+            (SELECT SurveyTable.SurvID, SurveyTable.SurvName
+            FROM SurveyTable
+            INNER JOIN UserTable
+            ON SurveyTable.Position = UserTable.Position
+            INNER JOIN useranswer
+            ON UserTable.UserID = useranswer.UserID
+            WHERE UserTable.UserID = '$userid')rt";
     $result = mysqli_query($conn, $sql);
     $data = [];
     if (mysqli_num_rows($result) > 0)
