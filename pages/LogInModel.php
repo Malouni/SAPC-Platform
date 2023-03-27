@@ -11,7 +11,7 @@ function check_validity($truid, $password)
 {
     global $conn;
 
-    $sql = "select * from usertable where TruID = '$truid' and Password = '$password'";
+    $sql = "select * from usertable where UserName = '$truid' and Password = '$password'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0)
         return true;
@@ -23,7 +23,7 @@ function get_user_first_name ($truid)
 {
     global $conn;
 
-    $sql = "select * from usertable where TruID = '$truid'";
+    $sql = "select * from usertable where UserName = '$truid'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
@@ -36,7 +36,7 @@ function get_user_last_name ($truid)
 {
     global $conn;
 
-    $sql = "select * from usertable where TruID = '$truid'";
+    $sql = "select * from usertable where UserName = '$truid'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
@@ -49,7 +49,7 @@ function get_user_position ($truid)
 {
     global $conn;
 
-    $sql = "select * from usertable where TruID = '$truid'";
+    $sql = "select * from usertable where UserName = '$truid'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
