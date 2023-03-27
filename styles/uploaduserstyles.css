@@ -1,0 +1,162 @@
+/*----common styles--------*/
+
+h2 {
+    color: #003e51;
+}
+
+
+
+.container {
+    z-index: -2;
+    position: absolute;
+    box-sizing: border-box;
+    left: 0;
+    top: 0;
+    padding: 70px 10px 20px 10px;
+    width: 100%;
+    min-width: 1080px;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-areas:
+        "leftside rightside"
+    ;
+     border: 1px solid rgb(121, 121, 121);
+}
+
+.row{
+    border: 1px solid rgb(121, 121, 121);
+    padding: 10px;
+    overflow: auto;
+    margin: 10px 0;
+}
+
+/* ---------left column-----------*/
+.leftside {
+    grid-area: leftside;
+    padding: 10px;
+    display: grid;
+    grid-template-rows: 0.5fr 9fr;
+    grid-template-areas:
+        "header"
+        "row1"
+    ;
+}
+
+.usertable{
+    border: 1px solid rgb(121, 121, 121);
+    padding: 10px;
+    overflow: auto;
+    margin: 10px 0;
+}
+
+.usertable table{
+    border: 1px solid rgb(121, 121, 121);
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.usertable th{
+    background-color: #003e51;
+    color: white;
+}
+
+.usertable tr:nth-child(odd) td{
+    background-color: rgb(231, 231, 231);
+}
+
+
+
+/* ---------right column-----------*/
+.rightside {
+    grid-area: rightside;
+    padding: 10px;
+    display: grid;
+    grid-template-rows: 0.5fr 2.5fr 4fr 2.5fr;
+}
+
+
+/*--------file row--------*/
+.row1{
+    position: relative;
+}
+
+.row1 form *{
+    display: block;
+}
+
+.row1 form #submitr1{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 300px;
+    height: 40px;
+    background-color: rgb(219, 219, 219);
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+
+}
+
+
+/*--------manually row--------*/
+
+.row2{
+    background-color: #dbdbdb;
+    border: none;
+    position: relative;
+}
+
+.row2 p{
+    margin-bottom: 10px;
+}
+
+.row2 form *{
+    width: 300px;
+    height: 40px;
+    margin: 10px 0px;
+}
+
+.row2 form #submitr2{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 300px;
+    height: 40px;
+    background-color:#ffcd00;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+
+}
+
+/*------delete row--------*/
+
+.row3{
+    position: relative;
+}
+
+.row3 form *{
+    width: 300px;
+    height: 40px;
+    margin: 10px 0px;
+}
+
+.row3 form #submitr3{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 300px;
+    height: 40px;
+    background-color:#ffcd00;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+
+}
+
+
+
+
+
+
