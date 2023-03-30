@@ -102,3 +102,28 @@
     height: 40px;
     padding: 10px;
 }
+
+/* New add but not work well ....*/
+
+
+table {
+	border-collapse: collapse;
+}
+
+th, td {
+	padding: 10px;
+	text-align: center;
+    background-color: #ffffff;
+
+}
+
+
+#text_answer {
+	padding: 5px;
+	border-radius: 5px;
+	border: 1px solid #000000;
+	margin: 5px 0;
+	width: 50%;
+	box-sizing: border-box;
+}
+
