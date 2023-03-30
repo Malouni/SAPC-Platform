@@ -42,6 +42,7 @@ if ($_POST['page'] == 'LogInPage')
     }
 }
 
+//navigation funcitonality
 else if($_POST['page'] == 'Navigation')
 {
     if (!isset($_SESSION['LogIn'])) {
@@ -65,6 +66,10 @@ else if($_POST['page'] == 'Navigation')
         include('PastSurveyReport.php');
         break;
 
+    case 'UploadCsv':
+        include('upload_csv.php');
+        break;
+
     case 'SignOut':
         session_unset();
         session_destroy();
@@ -73,6 +78,7 @@ else if($_POST['page'] == 'Navigation')
         break;
     }
 }
+
 
 else if($_POST['page'] == 'MainPage')
 {

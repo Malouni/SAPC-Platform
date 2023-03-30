@@ -60,6 +60,10 @@ function currentReport() {
     $('#form-current-Report').submit();
 }
 
+function userManagement(){
+    $('#form-user-management').submit();
+}
+
 function signOut() {
     $('#form-sign-out').submit();
 }

@@ -23,7 +23,7 @@
 
     <!-------------------------- Navigation section------------------------- -->
     <?php
-        require('Navigation.php');
+    require('Navigation.php');
     ?>
     <!----------------------------- Main section -------------------------------->
 
@@ -34,37 +34,40 @@
         <div class="about insidebox">
 
             <h1 class="sectionheader">Science Strategic Plan</h1>
-            <p>
-                In September 2021 the Faculty of Science committed to a Strategic Academic Plan for 2021-2026.<br><br>
-                The Plan details can be found on our webpage
-                <a href="https://www.tru.ca/science/about/Strategic_Plan.html">https://www.tru.ca/science/about/Strategic_Plan.html</a>.<br><br>
-                The purpose of this survey is to collect data concerning our
-                achievements related to the Strategic Academic Plan that are individual in nature.
-                Having said that, no individual results will be shared with aggregated results
-                being used to track and monitor the success of the Faculty of Science in meeting
-                its commitment to the planning goals and objectives.<br><br>
-                This survey should only take ten minutes of your time.<br><br>
-                Should you have any questions, please contact the Dean at <a href="mailto: ganderson@tru.ca">ganderson@tru.ca</a>
-            </p>
+            <div class="flexbox">
+                <p>
+                    In September 2021 the Faculty of Science committed to a Strategic Academic Plan for 2021-2026.<br><br>
+                    The Plan details can be found on our webpage
+                    <a href="https://www.tru.ca/science/about/Strategic_Plan.html">https://www.tru.ca/science/about/Strategic_Plan.html</a>.<br><br>
+                    The purpose of this survey is to collect data concerning our
+                    achievements related to the Strategic Academic Plan that are individual in nature.
+                    Having said that, no individual results will be shared with aggregated results
+                    being used to track and monitor the success of the Faculty of Science in meeting
+                    its commitment to the planning goals and objectives.<br><br>
+                    This survey should only take ten minutes of your time.<br><br>
+                    Should you have any questions, please contact the Dean at <a href="mailto: ganderson@tru.ca">ganderson@tru.ca</a>
+                </p>
 
 
-            <!-- video container frame // link is to be updated -->
-            <iframe src="https://www.youtube.com/embed/XIMLoLxmTDw" title="About the survey" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <!-- video container frame // link is to be updated -->
+                <iframe src="https://www.youtube.com/embed/XIMLoLxmTDw" title="About the survey" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+            </div>
 
         </div>
         <!-- Upcoming section -->
         <div class="upcoming insidebox" id="upcoming-pane">
             <?php
-                if (!empty($result))
-                    echo $result;
+            if (!empty($result))
+                echo $result;
             ?>
         </div>
 
         <!-- History section -->
         <div class="history insidebox" id="history-pane">
             <?php
-                if (!empty($result))
-                    echo $result;
+            if (!empty($result))
+                echo $result;
             ?>
         </div>
     </div>

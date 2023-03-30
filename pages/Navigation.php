@@ -15,6 +15,7 @@
         <li onclick='mainPage()'> <p>Dashboard </p> </li>
         <li onclick='survey()'> <p>Survey</p> </li>
         <li onclick='currentReport()'> <p>Current Report</p> </li>
+        <li onclick='userManagement()'> <p>User Management</p> </li>
         <li onclick='signOut()'> <p> Log Out </p> </li>
     </ul>
 </div>
@@ -53,6 +54,11 @@
 <form method='post' action='Controller.php' id='form-current-Report' style='display:none'>
     <input type='hidden' name='page' value='Navigation'>
     <input type='hidden' name='command' value='PresentReport'>
+</form>
+
+<form method='post' action='Controller.php' id='form-user-management' style='display:none'>
+    <input type='hidden' name='page' value='Navigation'>
+    <input type='hidden' name='command' value='UploadCsv'>
 </form>
 
 <form method='post' action='Controller.php' id='form-sign-out' style='display:none'>

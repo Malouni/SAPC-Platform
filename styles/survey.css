@@ -12,6 +12,42 @@
     grid-template-rows: 1fr 5fr;
 }
 
+/* ------progress bar styles--------*/
+
+.progressbar{
+    padding: 60px 7vw 0;
+}
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+  }
+  
+  .circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: white;
+    border: 3px solid rgb(1, 131, 170);
+  }
+  
+  .bar {
+    width: 100%;
+    height: 7px;
+    background-color: rgb(187, 187, 187);
+    position: relative;
+  }
+  
+  .fill {
+    height: 7px;
+    background: linear-gradient(to right, rgb(1, 131, 170), rgb(0, 223, 193));
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+
+
 /* general sytles*/
 
 .section {
