@@ -12,12 +12,12 @@ function show_survey_documents() {
         var result = JSON.parse(data);
         
         var documents = "";
-        if(result == "Failed")
+        if(result == "No Data")
         {
             documents +="<div class='document'>";
             documents +="<table>";
             documents +="<tr class='rowDocuments'>";
-            documents +="<td class='gridDocuments'><p class='document'>Error, no connection to the server</p></td>";
+            documents +="<td class='gridDocuments'><p class='document'>No data found</p></td>";
             documents +="</tr>";
             documents +="</table>";
             documents +="</div>";
@@ -74,12 +74,10 @@ function show_survey_goal_chosen(goal) {
     $.post(url, query, function(data) {
 
         var result = JSON.parse(data);
-        alert(data);
         //alert(result.length);
-        alert(result);
-        if(result == "Failed")
+        if(result == "No Data")
         {
-            var tables = "<p class='headers'>No connection to the DataBase, Please try again latter</p>";
+            var tables = "<p class='headers'>No data found</p>";
         }
         else
         {

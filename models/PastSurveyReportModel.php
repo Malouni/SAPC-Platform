@@ -14,7 +14,7 @@ function get_survey_documents()
         return $data;
     }
     else
-        return $data[0] = "Failed";
+        return $data[0] = "No Data";
 }
 
 function get_survey_activity($survId, $goal)
@@ -45,7 +45,7 @@ function get_survey_activity($survId, $goal)
         return $data;
     }
     else
-        return $data[0] = "Failed";
+        return $data[0] = "No Data";
 }
 
 
