@@ -137,6 +137,7 @@ nav .icon {
 
 .submenu li:hover {
     background-color: #003e51;
+    cursor: pointer;
 }
 
 /*------- text submenu styles------------*/

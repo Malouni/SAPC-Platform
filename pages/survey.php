@@ -18,13 +18,21 @@ session_start();
     <link rel="stylesheet" href="/styles/generalStyles.css">
     <link rel="stylesheet" href="../styles/survey.css">
 
+    <script>
+        function updateProgressBar(progress) {
+            const fill = document.querySelector(".fill");
+            const percentage = Math.max(0, Math.min(100, progress * 100));
+            fill.style.width = `${percentage}%`;
+        }
+    </script>
+
 </head>
 
 <body>
 
     <!-------------------------- Navigation section------------------------- -->
     <?php
-        include('Navigation.php');
+    include('Navigation.php');
     ?>
     <!----------------------------- Main section -------------------------------->
 
@@ -32,11 +40,24 @@ session_start();
     <div class="container">
 
         <div class="progressbar section">
-            <p> progress bar code here </p>
+            <p>Progress</p>
+            <div class="progress-bar">
+                <div class="circle start"></div>
+                <div class="bar">
+                    <div class="fill"></div>
+                </div>
+                <div class="circle end"></div>
+            </div>
+            <script>
+                updateProgressBar(0.5);
+            </script>
+
         </div>
+
+
         <div class="questions section">
             <div class="question">
-                <h3 id="S_tochange">Strategy goal #:?</h3>   <!------------------Here is the field for the strategy goal to be changed-->
+                <h3 id="S_tochange">Strategy goal #:?</h3> <!------------------Here is the field for the strategy goal to be changed-->
                 <p id="Q_tochange">Q#. Question to be asked</p>
                 <form>
                     <input type="radio" id="option1" name="options" value="1">
