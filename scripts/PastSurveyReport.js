@@ -10,7 +10,6 @@ function show_survey_documents() {
 
     $.post(url, query, function(data) {
         var result = JSON.parse(data);
-        
         var documents = "";
         if(result == "Failed")
         {
@@ -74,9 +73,6 @@ function show_survey_goal_chosen(goal) {
     $.post(url, query, function(data) {
 
         var result = JSON.parse(data);
-        alert(data);
-        //alert(result.length);
-        alert(result);
         if(result == "Failed")
         {
             var tables = "<p class='headers'>No connection to the DataBase, Please try again latter</p>";

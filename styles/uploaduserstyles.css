@@ -85,7 +85,7 @@ h2 {
     display: block;
 }
 
-.row1 form #submitr1{
+.row1 form #csvFileSend{
     position: absolute;
     bottom: 10px;
     right: 10px;
@@ -117,7 +117,7 @@ h2 {
     margin: 10px 0px;
 }
 
-.row2 form #submitr2{
+.row2 form #addNewUser{
     position: absolute;
     bottom: 10px;
     right: 10px;
@@ -142,7 +142,7 @@ h2 {
     margin: 10px 0px;
 }
 
-.row3 form #submitr3{
+.row3 form #deleteUser{
     position: absolute;
     bottom: 10px;
     right: 10px;

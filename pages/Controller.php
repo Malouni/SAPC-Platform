@@ -12,6 +12,7 @@ if (empty($_POST['page'])) {
 require('../models/LogInModel.php');
 require('../models/PastSurveyReportModel.php');
 require('../models/MainPageModel.php');
+require('../models/AdminPageModel.php');
 
 
 session_start();
@@ -114,6 +115,7 @@ else if ($_POST['page'] == 'MainPage')
 
     }
 }
+
 else if ($_POST['page'] == 'PastReport')
 {
     if (!isset($_SESSION['LogIn'])) {
@@ -140,6 +142,80 @@ else if ($_POST['page'] == 'PastReport')
 
     }
 }
-else {
+
+else if ($_POST['page'] == 'AdminPage')
+{
+    if (!isset($_SESSION['LogIn'])) {
+        $display_type = 'none';
+        include('LogInPage.php');
+        exit();
+    }
+
+    $command = $_POST['command'];
+    switch($command) {
+        case 'UserTable':
+            $result = get_users_info();
+            echo json_encode($result);
+            break;
+
+        case 'AddNewUser':
+            if($_POST["Email"] == $_POST["EmailCon"])
+            {
+                $result = add_new_user($_POST["Email"], $_POST["Fname"], $_POST["Lname"], $_POST["userType"], $_POST["department"]);
+                if($result){
+                    $result = "New user was added successfully!";
+                }else{
+                    $result = "The error occupied, try again later.";
+                }
+            }
+            else
+            {
+                $result = "Emails are not matching, please try again";
+            }
+            echo json_encode($result);
+            break;
+
+        case 'RemoveUser':
+            if($_POST["EmailDelete"] == $_POST["EmailConDelete"])
+            {
+                $result = get_users_info($_POST["EmailDelete"]);
+                if($result){
+                    $result = "The user was deleted successfully!";
+                }else{
+                    $result = "The error occupied, try again later.";
+                }
+            }
+            else
+            {
+                $result = "Emails are not matching, please try again";
+            }
+            echo json_encode($result);
+            break;
+
+        case 'csvAddUsers':
+            $data[] = $_POST["csvFileData"];
+            for($line = 0; $line < $data; $line++)
+            {
+                if(check_if_user_exists($data[]))
+                {
+                    if(true /*add_new_user()*/){
+                        $result += "The user "+ +" was added successfully!\n";
+                    }else{
+                        $result += "The user "+ +" was not added due to the error!, try again\n";
+                    }
+                }
+                else
+                {
+                    $result += "User already exists: "+ $data[$line] +"\n";
+                }
+            }
+            
+            echo json_encode($result);
+            break;
+    }
+}
+
+else
+{
 }
 ?>

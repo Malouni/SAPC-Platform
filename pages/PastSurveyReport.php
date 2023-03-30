@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/styles/generalStyles.css">
     <link rel="stylesheet" href="../styles/PastSurveyReport.css">
 
+    <!-- links to scripts -->
     <script src="../scripts/PastSurveyReport.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 

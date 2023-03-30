@@ -17,6 +17,9 @@ session_start();
     <link rel="stylesheet" href="/styles/generalStyles.css">
     <link rel="stylesheet" href="../styles/uploaduserstyles.css">
 
+    <!-- links to scripts -->
+    <script src="../scripts/AdminPage.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 
 </head>
@@ -37,9 +40,10 @@ session_start();
             <div class="header">
                 <h2>Survey Users</h2>
             </div>
-            <div class="usertable">
+            <div class="usertable" id="user-table">
                 <?php
-                require('../utilities/ShowUserTable.php');
+                    if (!empty($result))
+                        echo $result;
                 ?>
             </div>
         </div>
@@ -52,40 +56,39 @@ session_start();
 
             <!---------file row------------>
             <div class="row row1">
-                <form action="../utilities/uploadFunction.php" method="post" enctype="multipart/form-data">
-                    <label for="csvfile">Upload CSV file containing user information:</label>
-                    <input type="file" name="csvfile" id="csvfile" accept=".csv">
+                <form>
+                    <label for="csvFile">Upload CSV file containing user information:</label>
+                    <input type="file" name="csvFile" id="csvFile" accept=".csv">
                     <br>
-                    <input type="submit" value="Upload" name="submit" id="submitr1">
+                    <input type="submit" value="Upload" name="csvFileSend" id="csvFileSend">
                 </form>
             </div>
 
             <!---------manually row------------>
             <div class="row row2">
                 <p>Add user manually</p>
-                <form action="../utilities/addUser.php" method="post">
-                    <input type="text" name="fName" placeholder="User First Name">
-                    <input type="text" name="lName" placeholder="User Last Name">
-                    <input type="text" name="email" placeholder="User email">
-                    <input type="text" name="emailC" placeholder="Confirm email">
-                    <input type="text" name="department" placeholder="User Department">
+                <form>
+                    <input type="text" name="fName" id = "fName" placeholder="User First Name">
+                    <input type="text" name="lName" id = "lName" placeholder="User Last Name">
+                    <input type="text" name="email" id = "email" placeholder="User email">
+                    <input type="text" name="emailC" id = "emailC" placeholder="Confirm email">
+                    <input type="text" name="department" id = "department" placeholder="User Department">
                     <select name="userType" id="userType">
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                     </select>
-                    <input type="submit" value="Add User" id="submitr2">
+                    <input type="submit" value="Add User" id="addNewUser">
                 </form>
-
             </div>
 
 
             <!---------delete row------------>
             <div class="row row3">
                 <h2>Delete User</h2>
-                <form action="../utilities/userdelete.php" method="post">
-                    <input type="text" name="email" placeholder="User email">
-                    <input type="text" name="emailC" placeholder="Confirm email">
-                    <input type="submit" value="Delete User" id="submitr3">
+                <form>
+                    <input type="text" name="emailDelete"  id="emailDelete" placeholder="User email">
+                    <input type="text" name="emailCDelete" id="emailCDelete" placeholder="Confirm email">
+                    <input type="submit" value="Delete User" id="deleteUser">
                 </form>
             </div>
         </div>
