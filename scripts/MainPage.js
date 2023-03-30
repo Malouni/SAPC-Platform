@@ -4,11 +4,11 @@ document.addEventListener("DOMContentLoaded", function(){
     documents();
 });
 
-
 function upcomingSurveys (){
     var url = 'Controller.php';
 
     var query = {page: 'MainPage', command: 'UpcomingSurveys'};
+    
 
     $.post(url, query, function(data) {
         var result = JSON.parse(data);
@@ -21,6 +21,7 @@ function upcomingSurveys (){
             //upcomingSurveys += "<img src='../images/cover-textures/1.png' alt='cover'>";
             upcomingSurveys += "<p class='title'>No Upcoming Surveys</p>";
             upcomingSurveys += "</div>";
+            
         }
         else
         {
@@ -33,7 +34,10 @@ function upcomingSurveys (){
                 upcomingSurveys += "<div class='meter'></div>";
                 upcomingSurveys += "</div>";
             }
+            //set upcomingSurveysID for later use in SurveyPage
+            set_upcoming_SurveysID(result[0]['SurvID']);
         }
+
 
         $('#upcoming-pane').html(upcomingSurveys);
 
@@ -80,4 +84,13 @@ function historyOfSurveys(){
         });
 
     });
+}
+
+
+function set_upcoming_SurveysID(id)
+{
+    var url = 'Controller.php';
+    var ID = parseInt(id) ;
+    var query = {page: 'MainPage', command: 'upcomingSurveysID', ID : ''+ ID +''};
+    $.post(url, query);
 }
