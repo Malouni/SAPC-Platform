@@ -64,8 +64,15 @@ else if($_POST['page'] == 'Navigation')
         break;
 
     case 'PresentReport':
-        include('PastSurveyReport.php');
-        break;
+        if($_SESSION['userPosition']=="admin"){
+            include('PastSurveyReport.php');
+            break;
+        }
+        else{
+            include('userReview.php');
+            break;
+        }
+        
 
     case 'UploadCsv':
         include('upload_csv.php');
@@ -193,4 +200,3 @@ else if ($_POST['page'] == 'PastReport')
 }
 else {
 }
-?>

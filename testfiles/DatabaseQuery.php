@@ -50,6 +50,15 @@ $SubQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SubQuestions (
     Sub_Q VARCHAR(200)
 )";
 
+//Options for possible answers
+$SubQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS AnswerOptions(
+    SurvID INT,
+    QuestionID INT,
+    SubQuestionID INT,
+    InputValue varchar
+)";
+
+
 
 
 
