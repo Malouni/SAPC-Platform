@@ -92,7 +92,12 @@ table td{
     text-align: left;
 }
 
+/*-------styles for subquestion table-------*/
 
+.multioption-SQ{
+    column-span: 2;
+    
+}
 
 .text-input>input{
     width: 100%;
