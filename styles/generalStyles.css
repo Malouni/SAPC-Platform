@@ -127,6 +127,17 @@ nav .icon {
     margin-top: 10px;
 }
 
+#signout-btn{
+    position: absolute;
+    bottom: 10px;
+    text-align: right;
+}
+
+#signout-btn p{
+    padding-right:30px;
+}
+
+
 .submenu p {
     width: 300px;
     height: 40px;
