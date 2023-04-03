@@ -51,7 +51,7 @@ $SubQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SubQuestions (
 )";
 
 //Options for possible answers
-$SubQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS AnswerOptions(
+$AnswerOptions = "CREATE TABLE IF NOT EXISTS AnswerOptions(
     SurvID INT,
     QuestionID INT,
     SubQuestionID INT,
@@ -128,6 +128,10 @@ if ($conn->query($SQAnswerSQL) === TRUE) {
 }
 
 if ($conn->query($AnswerNotesSQL) === TRUE) {
+    echo "Table answer-notes created successfully\n<br>";
+}
+
+if ($conn->query($AnswerOptions) === TRUE) {
     echo "Table answer-notes created successfully\n<br>";
 }
 
