@@ -1,49 +1,71 @@
 function hideShowMenu() {
     var subMenu = document.getElementById("sidemenu");
-    if(subMenu.style.display == "block"){
+    var userPoselem = document.getElementById("userposition");
+    var menulist = document.getElementById('submenulist');
+    if (subMenu.style.display == "block") {
         subMenu.style.display = "none";
     }
-    else{
+    else {
         subMenu.style.display = "block";
+        if (userPoselem.innerText == 'admin') {              /* this part creates the menu item 'Admin Options' if the user has admin position */
+            // Create a new li element
+            var li = document.createElement('li');
+
+            // Set the onclick event to userManagement function
+            li.setAttribute('onclick', 'userManagement()');
+
+            // Create a new p element
+            var p = document.createElement('p');
+
+            // Set the text content of the p element to 'Admin Options'
+            p.textContent = 'Admin Options';
+
+            // Append the p element to the li element
+            li.appendChild(p);
+
+            // Append the li element to the submenulist element
+            menulist.appendChild(li);
+        }
     }
+
 }
 
 function hideShowMessages() {
     var subMessages = document.getElementById("subMessages");
-    if(subMessages.style.display == "block"){
+    if (subMessages.style.display == "block") {
         subMessages.style.display = "none";
     }
-    else{
+    else {
         subMessages.style.display = "block";
     }
 }
 
 function hideShowNotifications() {
     var subMessages = document.getElementById("subNotifications");
-    if(subMessages.style.display == "block"){
+    if (subMessages.style.display == "block") {
         subMessages.style.display = "none";
     }
-    else{
+    else {
         subMessages.style.display = "block";
     }
 }
 
-function showorderdocs(){
-    var subDocs= document.getElementById("orderbydocs");
-    if(subDocs.style.display == "block"){
+function showorderdocs() {
+    var subDocs = document.getElementById("orderbydocs");
+    if (subDocs.style.display == "block") {
         subDocs.style.display = "none";
     }
-    else{
+    else {
         subDocs.style.display = "block";
     }
 }
 
-function showordertime(){
-    var subTime= document.getElementById("orderbytime");
-    if(subTime.style.display == "block"){
+function showordertime() {
+    var subTime = document.getElementById("orderbytime");
+    if (subTime.style.display == "block") {
         subTime.style.display = "none";
     }
-    else{
+    else {
         subTime.style.display = "block";
     }
 }
@@ -60,7 +82,7 @@ function currentReport() {
     $('#form-current-Report').submit();
 }
 
-function userManagement(){
+function userManagement() {
     $('#form-user-management').submit();
 }
 

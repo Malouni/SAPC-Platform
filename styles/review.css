@@ -1,0 +1,47 @@
+.container {
+    z-index: -2;
+    position: absolute;
+    box-sizing: border-box;
+    left: 0;
+    top: 0;
+    padding: 80px 10px 20px;
+    width: 100%;
+    min-width: 1080px;
+    height: 100vh;
+}
+
+.report{
+    width: 100%;
+    border: 1px solid rgb(204, 204, 204);
+    text-align: center;
+    padding: 10px;
+}
+
+.sectionheader{
+    font-size: 3vh;
+    color: #003e51;
+    border-bottom: 1px solid rgb(190, 190, 190) ;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+table{
+    width: 100%;
+    text-align: left;
+}
+
+th,td{
+    border: 1px solid rgb(190, 190, 190);
+    padding: 5px;
+    
+}
+
+th{
+    background-color: #003e51;
+    color: white;
+}
+
+tr:hover{
+    background-color:  rgb(190, 190, 190);
+    cursor: pointer;
+}

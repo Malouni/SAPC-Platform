@@ -7,16 +7,16 @@
         <li><button onclick="hideShowMessages()"><img src="../images/icons/message.png" alt="messages" class="icon"></button></li>
         <li><span id="username"><?php echo $_SESSION['userFirstName'];?></span><span id="userlastname"><?php echo $_SESSION['userLastName']; ?></span></li>
         <li><button onclick="hideShowMenu()"><img src="../images/icons/menu.png" alt="menu" class="icon"></button></li>
+        <li style="display:none;"><span id="userposition"><?php echo $_SESSION['userPosition'];?></span></li>
     </ul>
 </nav>
 <div class="submenu" id="sidemenu">
     <button class="closebutton" onclick="hideShowMenu()">X</button>
-    <ul>
+    <ul id="submenulist">
         <li onclick='mainPage()'> <p>Dashboard </p> </li>
         <li onclick='survey()'> <p>Survey</p> </li>
         <li onclick='currentReport()'> <p>Current Report</p> </li>
-        <li onclick='userManagement()'> <p>User Management</p> </li>
-        <li onclick='signOut()'> <p> Log Out </p> </li>
+        <li onclick='signOut()' id="signout-btn"> <p> Log Out </p> </li>
     </ul>
 </div>
 
