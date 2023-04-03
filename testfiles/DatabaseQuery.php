@@ -51,8 +51,6 @@ $SubQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SubQuestions (
 )";
 
 
-
-
 // SurveyReportTable query
 $SurveyReportSQL = "CREATE TABLE IF NOT EXISTS SurveyReport (
     SurvID INT,

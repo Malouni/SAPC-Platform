@@ -44,6 +44,14 @@ session_start();
             </div>
         </div>
 
+        <div class="leftside">
+            <div class="header">
+                <h2>Survey Users</h2>
+            </div>
+            <div class="usertable" id="survey-table">
+            </div>
+        </div>
+
         <!------------right side container----------->
         <div class="rightside">
             <div class="header">

@@ -158,6 +158,11 @@ else if ($_POST['page'] == 'AdminPage')
             echo json_encode($result);
             break;
 
+        case 'SurveyTable':
+            $result = get_surveys_info();
+            echo json_encode($result);
+            break;
+
         case 'AddNewUser':
             if(!check_if_user_exists($_POST["Email"]))
             {
@@ -207,7 +212,7 @@ else if ($_POST['page'] == 'AdminPage')
             break;
 
         case 'csvAddUsers':
-            $data = json_decode($_POST["csvFileData"]);
+            $data = json_decode($_POST["csvFileDataUsers"]);
             for($line = 0; $line < count($data) - 1; $line++)
             {
                 if(check_if_user_exists($data[$line]["Username"]))
@@ -225,10 +230,39 @@ else if ($_POST['page'] == 'AdminPage')
             }
             echo json_encode($result);
             break;
+
+        case 'csvAddSurvey':
+            $data = json_decode($_POST["csvFileDataSurveys"]);
+            if(!check_if_survey_exists($data[0][0]["SurvYear"], $data[0][0]["SurvName"]))
+            {
+                $newSurvId = add_new_survey($data[0][0]["SurvYear"], $data[0][0]["SurvName"], $data[0][0]["SurvDateStart"], $data[0][0]["SurvDateEnd"], $data[0][0]["Position"]);
+                if($newSurvId)
+                {
+                    if($result = add_questions_to_new_survey($data[1], $data[2], $newSurvId))
+                    {
+                        $result = "The survey: " + $data[0][0]["SurvName"] + " was added successfully!";
+                    }
+                    else
+                    {
+                        $result = "The survey: " + $data[0][0]["SurvName"] + " addition failed, check the csv file (Questions Part)";
+                    }
+                }
+                else
+                {
+                    $result = "The survey: " + $data[0][0]["SurvName"] + " addition failed, check the csv file (Survey Details)";
+                }
+            }
+            else
+            {
+                $result ="The survey: "+ $data[0][0]["SurvName"] + " already exists";
+            }
+            echo json_encode($result);
+            break;
     }
 }
 
 else
 {
 }
+
 ?>
