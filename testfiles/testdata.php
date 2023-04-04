@@ -19,7 +19,14 @@ VALUES ('gamso17@mytru.ca', 'password', 'Oleg', 'Gams', 'user', 'Science'),
 
 $SurveyTableSQL = "INSERT INTO SurveyTable (SurvYear, SurvName, SurvDateStart, SurvDateEnd, AmPeopleFin,LastUpdatedDate, Position)
 VALUES 
-    (2023, 'SP23', '2023-05-01', '2023-05-31', 200, '2021-01-31', 'user');";
+    (2021, 'SP21', '2021-05-01', '2021-05-31', 200, '2021-01-31', 'user'),
+    (2021, 'SD21', '2021-05-01', '2021-05-31', 200, '2021-01-31', 'chair'),
+    (2022, 'SP22', '2022-05-01', '2022-05-31', 200, '2022-01-31', 'user'),
+    (2022, 'SD22', '2022-05-01', '2022-05-31', 200, '2022-01-31', 'chair'),
+    (2023, 'SP23', '2023-05-01', '2023-05-31', 200, '2023-01-31', 'user'),
+    (2023, 'SD23', '2023-05-01', '2023-05-31', 200, '2023-01-31', 'chair')
+    
+    ;";
 
 
 
@@ -57,8 +64,45 @@ VALUES
   (2, 13, 1, NULL),
   (2, 14, 1, NULL),
   (2, 15, 1, 1),
-  (2, 16, 1, 3);
-";
+  (2, 16, 1, 3),
+
+
+  (1, 1, 3, 5),
+(1, 2, 3, 4),
+(1, 3, 3, 2),
+(1, 4, 3, NULL),
+(1, 5, 3, 3),
+(1, 6, 3, 1),
+(1, 7, 3, NULL),
+(1, 8, 3, NULL),
+(1, 9, 3, 25000),
+(1, 10, 3, 2),
+(1, 11, 3, 1),
+(1, 12, 3, NULL),
+(1, 13, 3, NULL),
+(1, 14, 3, NULL),
+(1, 15, 3, 3),
+(1, 16, 3, 2),
+(2, 1, 3, 3),
+(2, 2, 3, 6),
+(2, 3, 3, 1),
+(2, 4, 3, NULL),
+(2, 5, 3, 1),
+(2, 6, 3, 2),
+(2, 7, 3, NULL),
+(2, 8, 3, NULL),
+(2, 9, 3, 12000),
+(2, 10, 3, 3),
+(2, 11, 3, 0),
+(2, 12, 3, NULL),
+(2, 13, 3, NULL),
+(2, 14, 3, NULL),
+(2, 15, 3, 1),
+(2, 16, 3, 3)
+
+
+  
+;";
 
 $UserSQAnswerSQL = "INSERT INTO SubQuestionAnswer (UserID, QuestionID, SubQuestionID, Answer)
 VALUES
@@ -168,11 +212,19 @@ VALUES
 // SurveyReportTable query - In this example, we're populating the SurvID column with values from the SurvID column in SurveyQuestions. 
 //The Activity column is populated with the Question column from SurveyQuestions. 
 //The Activity_Involvement and Activity_Historical columns are populated with sample values of 3 and 4, respectively. You can adjust these values to match your needs.
-$SurveyReportSQL = "INSERT INTO SurveyReport (SurvID, QuestionID, SubQuestionID, Answer_Percentage, Activity_Involvement,Activity_Historical)
-SELECT SurveyQuestions.SurvID, SurveyQuestions.QuestionID, SubQuestions.SubQuestionID, 0.5, 3, 4
-FROM SurveyQuestions
-INNER JOIN SubQuestions
-ON SurveyQuestions.QuestionID=SubQuestions.QuestionID";
+$SurveyReportSQL = "
+  INSERT INTO SurveyReport (SurvID, QuestionID, SubQuestionID, Answer_Percentage, Activity_Involvement, Activity_Historical)
+  SELECT 
+    SurveyQuestions.SurvID, 
+    SurveyQuestions.QuestionID, 
+    CASE WHEN SubQuestions.SubQuestionID IS NOT NULL THEN SubQuestions.SubQuestionID ELSE NULL END AS SubQuestionID, 
+    0.5, 
+    3, 
+    4
+  FROM SurveyQuestions
+  LEFT JOIN SubQuestions
+  ON SurveyQuestions.QuestionID = SubQuestions.QuestionID;
+";
 
 
 
@@ -180,59 +232,51 @@ ON SurveyQuestions.QuestionID=SubQuestions.QuestionID";
 // execute the query and check for errors
 if ($conn->query($UserTableSQL) === TRUE) {
     echo "Table UserTable populated successfully\n<br>";
-}
-else{
+} else {
     echo "Table UserTable error\n<br>";
 }
-    
+
 
 if ($conn->query($SurveyTableSQL) === TRUE) {
     echo "Table SurveyTable populated successfully\n<br>";
-}
-else{
+} else {
     echo "Table SurveyTable error\n<br>";
 }
 
 if ($conn->query($SurveyQuestionsTableSQL) === TRUE) {
     echo "Table SurveyQuestions populated successfully\n<br>";
-}
-else{
+} else {
     echo "Table SurveyQuestionTable error\n<br>";
 }
 
 if ($conn->query($SurveyReportSQL) === TRUE) {
     echo "Table SurveyReport populated successfully\n<br>";
-}
-else{
-    echo "Table SurveyReportTable error\n<br>";
+} else {
+    echo "Error: " . $SurveyReportSQL . "<br>" . $conn->error;
 }
 
 if ($conn->query($SubQuestionSQL) === TRUE) {
     echo "Table SubQuestions populated successfully\n<br>";
-}
-else{
+} else {
     echo "Table SubQuestions error\n<br>";
 }
 
 if ($conn->query($UserAnswerSQL) === TRUE) {
     echo "Table UserAnswer populated successfully\n<br>";
-}
-else{
+} else {
     echo "Table UserAnswerTable error\n<br>";
 }
 
 if ($conn->query($UserSQAnswerSQL) === TRUE) {
     echo "Table UserAnswer Sub-Questions populated successfully\n<br>";
-}
-else{
+} else {
     echo "Table UserAnswerTable error\n<br>";
 }
 
 
 if ($conn->query($UserAnswerNotesSQL) === TRUE) {
     echo "Table UserAnswerNotes populated successfully\n<br>";
-}
-else{
+} else {
     echo "Table UserAnswerTable error\n<br>";
 }
 

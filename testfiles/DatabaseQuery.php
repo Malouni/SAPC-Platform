@@ -55,7 +55,7 @@ $AnswerOptions = "CREATE TABLE IF NOT EXISTS AnswerOptions(
     SurvID INT,
     QuestionID INT,
     SubQuestionID INT,
-    InputValue varchar
+    InputValue varchar(200)
 )";
 
 
@@ -132,7 +132,7 @@ if ($conn->query($AnswerNotesSQL) === TRUE) {
 }
 
 if ($conn->query($AnswerOptions) === TRUE) {
-    echo "Table answer-notes created successfully\n<br>";
+    echo "Table answer-options created successfully\n<br>";
 }
 
 // close the database connection
