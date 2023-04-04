@@ -23,19 +23,19 @@ body {
 /* header section styles */
 
 #logInHeader {
-    text-align: center;    
+    text-align: center;
 }
 
 #logInHeader img {
     width: 50px;
 }
 
-#logInHeader p{
+#logInHeader p {
     color: rgb(77, 77, 77);
     font-size: large;
 }
 
-#logInHeader strong{
+#logInHeader strong {
     position: relative;
     bottom: 25px;
     margin-left: 15px;
@@ -43,14 +43,15 @@ body {
     color: #003e51;
 }
 
-/* loginform styles*/
+/* change password styles*/
 
-#loginForm {
-padding: 20px 0px 20px 40px;
-width: 300px;
+#change-passForm {
+    padding: 20px ;
+    width: 260px;
+    margin: auto;
 }
 
-#loginForm .wide{
+#change-passForm .wide {
     width: 250px;
     height: 30px;
     margin: 10px 0px;
@@ -58,7 +59,22 @@ width: 300px;
     border: 1px solid grey;
 }
 
-#submitbutton{
+/* loginform styles*/
+
+#loginForm {
+    padding: 20px 0px 20px 40px;
+    width: 300px;
+}
+
+#loginForm .wide {
+    width: 250px;
+    height: 30px;
+    margin: 10px 0px;
+    border-radius: 5px;
+    border: 1px solid grey;
+}
+
+#submitbutton {
     background-color: #003e51;
     color: white;
     position: relative;
@@ -67,11 +83,10 @@ width: 300px;
 
 /* form side text styles*/
 
-#loginFside{
+#loginFside {
     width: 250px;
     position: relative;
     bottom: 220px;
     left: 320px;
     padding-top: 20px;
 }
-

@@ -86,6 +86,7 @@ tr.rowGoals {
     padding: 0;
 }
 
+
 th.gridGoals {
     height: auto;
     margin: 0;
@@ -103,6 +104,7 @@ th.headerActivity {
     border-collapse: collapse;
     padding: 0 0 0 0.5%;
     background-color: #288f94;
+    color: white;
     text-align: left;
 }
 
@@ -110,7 +112,9 @@ th.headerRest {
     border: 1px solid rgb(105, 105, 105);
     border-collapse: collapse;
     background-color: #288f94;
-    text-align: center;
+    color: white;
+    font-weight: bold;
+    text-align: left;
 }
 
 tr.rowPastReport {
@@ -122,14 +126,16 @@ tr.rowPastReport {
 tr.rowPastReportSingle{
     border: 1px solid rgb(105, 105, 105);
     border-collapse: collapse;
-    background-color: #288f94;
+    font-weight: bold;
 }
 
 /* This is a css for a row for a composed sub-question*/
 tr.rowPastReportComposed{
     border: 1px solid rgb(105, 105, 105);
     border-collapse: collapse;
-    background-color: gray;
+    
+
+
 }
 
 td.gridActivity {
@@ -143,8 +149,7 @@ td.gridActivity {
 td.gridComposedActivity {
     border: 1px solid rgb(105, 105, 105);
     border-collapse: collapse;
-    text-align: center;
-    background-color: #288f94;
+    text-align: left;
     font-weight: bold;
 }
 
