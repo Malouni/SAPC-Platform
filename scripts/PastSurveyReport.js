@@ -97,7 +97,7 @@ function show_survey_goal_chosen(goal) {
                 if(row == 0)
                 {
                     if(result[row]['SubGoal'] == "I&D")
-                        tables += "<p class='headers'>Inclusive & Diversity</p>";
+                        tables += "<p class='headers'>Inclusion & Diversity</p>";
                     else if(result[row]['SubGoal'] == "CM")
                         tables += "<p class='headers'>Community mindedness</p>";
                     else if(result[row]['SubGoal'] == "C")
@@ -245,6 +245,66 @@ function enable_goal_buttons()
     $('#TCbutton').prop('disabled', false);
     $('#GSDbutton').prop('disabled', false);
 }
+
+//----------------------------------Scripts for charts-------------------------------------
+
+
+//circular graph
+function updateCircularProgressBar(progress) {
+    const percentage = Math.max(0, Math.min(100, progress * 100));
+    const circleProgress = document.querySelector(".circle-progress");
+    const progressPercentage = document.querySelector(".progress-percentage");
+
+    const circumference = 2 * Math.PI * 45;
+    const strokeDashArray = `${(percentage * circumference) / 100} ${circumference}`;
+    circleProgress.style.strokeDasharray = strokeDashArray;
+    progressPercentage.textContent = `${Math.round(percentage)}%`;
+}
+
+// Linear graph
+function calculateGraph(year1, year2, year3) {
+    // Get the current year
+    const currentYear = new Date().getFullYear();
+    const previousYears = [currentYear - 2, currentYear - 1, currentYear ];
+
+    const ctx = document.getElementById("lineChart").getContext("2d");
+    const chart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: previousYears,
+            datasets: [
+                {
+                    label: "survey answer percentage",
+                    data: [year1, year2, year3],
+                    backgroundColor: "rgba(255, 255, 0, 0.1)",
+                    borderColor: " rgb(255, 145, 0)",
+                    borderWidth: 2,
+                },
+            ],
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    title: {
+                        display: true,
+                        text: "Survey Answer Percentage",
+                    },
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: "Year",
+                    },
+                },
+            },
+        },
+    });
+}
+
+
+
 
 
 
