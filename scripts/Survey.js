@@ -14,14 +14,14 @@ document.addEventListener("DOMContentLoaded", function(){
     LastProgressCheck();
     QuestionGender(findIndex(CurrentQuestionID));
 });
-  
 
-//This function will get and display the next questions 
+
+//This function will get and display the next questions
 function NextQuestions(){
- 
+
     var NextQuestionID = parseInt(CurrentQuestionID) + 1;
-    var NextQuestionIndex = findIndex(NextQuestionID);    
- 
+    var NextQuestionIndex = findIndex(NextQuestionID);
+
     //if index found 
     if(NextQuestionIndex != -1){
         //update the CurrentQuestion
@@ -33,7 +33,7 @@ function NextQuestions(){
         //back to the frist question
         CurrentQuestionID = QuestionList[0]['QuestionID'];
         QuestionGender(findIndex(CurrentQuestionID));
-    }    
+    }
 }
 
 //This function will get the question before with the answer(if exit).

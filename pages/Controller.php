@@ -163,6 +163,40 @@ else if ($_POST['page'] == 'AdminPage')
             echo json_encode($result);
             break;
 
+        case 'ChangeUser':
+            if($fieldToChange = get_the_column_name_user($_POST["choice"]))
+            {
+                if($result = update_user($_POST["rowId"], $fieldToChange, $_POST["value"]))
+                    $result = "The user's ".$_POST["choice"]." was updated successfully";
+                else
+                    $result = "Error occupied while updating the user, try again";
+            }
+            else
+                $result ="No such attribute for user";
+            echo json_encode($result);
+            break;
+
+        case 'ResetPassword':
+            if($result = rest_user_password($_POST['ResetPwdUserId']))
+                $result = "The password was set to DEFAULT for user: ";
+            else
+                $result = "Error occupied while updating the user, try again";
+            echo json_encode($result);
+            break;
+
+        case 'ChangeSurv':
+            if($fieldToChange = get_the_column_name_survey($_POST["choice"]))
+            {
+                if($result = update_survey($_POST["rowId"], $fieldToChange, $_POST["value"]))
+                    $result = "The survey field ".$_POST["choice"]." was updated successfully";
+                else
+                    $result = "Error occupied while updating the survey, try again";
+            }
+            else
+                $result ="No such attribute for survey";
+            echo json_encode($result);
+            break;
+
         case 'AddNewUser':
             if(!check_if_user_exists($_POST["Email"]))
             {
@@ -188,26 +222,10 @@ else if ($_POST['page'] == 'AdminPage')
             break;
 
         case 'RemoveUser':
-            if(check_if_user_exists($_POST["EmailDelete"]))
-            {
-                if($_POST["EmailDelete"] == $_POST["EmailConDelete"])
-                {
-                    $result = remove_user($_POST["EmailDelete"]);
-                    if($result){
-                        $result = "The user: ".$_POST["EmailDelete"]." was deleted successfully!";
-                    }else{
-                        $result = "The error occupied, try again later.";
-                    }
-                }
-                else
-                {
-                    $result = "Emails for user: ".$_POST["EmailDelete"]." are not matching, please try again";
-                }
-            }
+            if($userName = remove_user($_POST["RemoveUserId"]))
+                $result = "The user: ".$userName." was deleted successfully!";
             else
-            {
-                $result = "The user: ".$_POST["EmailDelete"]." does not exists";
-            }
+                $result = "The error occupied, try again later.";
             echo json_encode($result);
             break;
 

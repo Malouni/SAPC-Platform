@@ -42,15 +42,14 @@ session_start();
             </div>
             <div class="usertable" id="user-table">
             </div>
+
+            <div class="header">
+                <h2>Surveys</h2>
+            </div>
+            <div class="surveyTable" id="survey-table">
+            </div>
         </div>
 
-        <div class="leftside">
-            <div class="header">
-                <h2>Survey Users</h2>
-            </div>
-            <div class="usertable" id="survey-table">
-            </div>
-        </div>
 
         <!------------right side container----------->
         <div class="rightside">
@@ -58,13 +57,13 @@ session_start();
                 <h2>Add Users</h2>
             </div>
 
-            <!---------file row------------>
+            <!---------user info file row------------>
             <div class="row row1">
                 <form onsubmit="addUsersFromFileFunction()">
                     <label for="csvFile">Upload CSV file containing user information:</label>
                     <input type="file" name="csvFile" id="csvFile" accept=".csv" required>
                     <br>
-                    <input type="submit" value="Upload" id="csvFileSend">
+                    <input type="submit" value="Upload" id="csvSureInfoFileSend">
                 </form>
             </div>
 
@@ -85,14 +84,17 @@ session_start();
                 </form>
             </div>
 
+            <div class="header">
+                <h2>Add Survey</h2>
+            </div>
 
-            <!---------delete row------------>
+            <!---------survey info file row------------>
             <div class="row row3">
-                <h2>Delete User</h2>
-                <form onsubmit="removeUserFunction()">
-                    <input type="text" name="emailDelete"  id="emailDelete" placeholder="User email" required>
-                    <input type="text" name="emailCDelete" id="emailCDelete" placeholder="Confirm email" required>
-                    <input type="submit" value="Delete User" id="deleteUser">
+                <form onsubmit="addUsersFromFileFunction()">
+                    <label for="csvFile">Upload CSV file containing Survey information:</label>
+                    <input type="file" name="csvFile" id="csvFile" accept=".csv" required>
+                    <br>
+                    <input type="submit" value="Upload" id="csvSurvInfoFileSend">
                 </form>
             </div>
         </div>

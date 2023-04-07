@@ -4,7 +4,7 @@ function get_users_info()
 {
     global $conn;
 
-    $sql = "SELECT Fname, Lname, UserName, Position, Department FROM UserTable ORDER BY Fname ASC";
+    $sql = "SELECT UserID, Fname, Lname, UserName, Position, Department FROM UserTable ORDER BY Fname ASC";
     $result = mysqli_query($conn, $sql);
     $data = [];
     if (mysqli_num_rows($result) > 0)
@@ -31,14 +31,17 @@ function add_new_user($email, $fName, $lName, $userType, $department)
         return false;
 }
 
-function remove_user($email)
+function remove_user($userId)
 {
     global $conn;
-    $sql = "DELETE FROM UserTable WHERE UserName = '$email'";
+    $sql = "DELETE FROM UserTable WHERE UserID = '$userId' RETURNING UserName AS UserName;";
     $result = mysqli_query($conn, $sql);
 
-    if ($result)
-        return true;
+    if (mysqli_num_rows($result) > 0)
+    {
+        $row = mysqli_fetch_assoc($result);
+        return $row['UserName'];
+    }
     else
         return false;
 }
@@ -151,6 +154,81 @@ function get_surveys_info()
     }
     else
         return $data[0] = "Failed";
+}
+
+//This function updates the specific column chosen by the admin tools
+function update_user($userID, $fieldToChange, $value)
+{
+    global $conn;
+
+    $sql = "UPDATE UserTable SET ".$fieldToChange." = '$value'  WHERE UserID = '$userID'";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result)
+        return true;
+    else
+        return false;
+}
+
+function rest_user_password($userID)
+{
+    global $conn;
+
+    $defaultPassword = "changeme";
+    $hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
+
+    $sql = "UPDATE UserTable SET Password = '$hashedPassword' WHERE UserID = '$userID'";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result)
+        return true;
+    else
+        return false;
+}
+
+function update_survey($survID, $fieldToChange, $value)
+{
+    global $conn;
+
+    $sql = "UPDATE SurveyTable SET ".$fieldToChange." = '$value'  WHERE SurvID = '$survID'";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result)
+        return true;
+    else
+        return false;
+}
+
+function get_the_column_name_user($rawData)
+{
+    if($rawData == "First Name")
+        return "Fname";
+    else if ($rawData == "Last Name")
+        return "Lname";
+    else if ($rawData == "Email")
+        return "UserName";
+    else if ($rawData == "Position")
+        return "Position";
+    else if ($rawData == "Department")
+        return "Department";
+    else
+        return false;
+}
+
+function get_the_column_name_survey($rawData)
+{
+    if($rawData == "Survey Name")
+        return "SurvName";
+    else if ($rawData == "Survey Year")
+        return "SurvYear";
+    else if ($rawData == "Survey Date Start")
+        return "SurvDateStart";
+    else if ($rawData == "Survey Date End")
+        return "SurvDateEnd";
+    else if ($rawData == "Position")
+        return "Position";
+    else
+        return false;
 }
 
 //This function deletes the survey, as well as all dependencies from other tables using the cascading.
