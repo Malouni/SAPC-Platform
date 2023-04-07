@@ -1,6 +1,3 @@
-<?php
-session_start();
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,73 +44,14 @@ session_start();
                     <div class="fill"></div>
                 </div>
                 <div class="circle end"></div>
-            </div>
-            <script>
-                updateProgressBar(0.5);
-            </script>
-
+            </div>    
         </div>
 
 
         <div class="questions section">
 
             <div class="question" id="question">
-                <h3 id="strategic-goal">Strategic goal should be here</h3>
-                <form action="">
-                    <table id="question-table">
-
-                        <!-------------- QUESTION FIELD, QUESTION SHALL BE PLACED HERE---->
-                        <tr>
-                            <th colspan="2" id="QuestionField">Question should go here</th>
-                        </tr>
-
-
-                        <!--------------SUB-QUESTIONS SPACE---->
-
-                        <tr class="option-sq SQ">                           <!--------------example for a radio option Sub-Question---->
-                            <td>Subquestion should go here</td>
-                            <td class="radio-option">                       <!--------------for a radio option answer---->
-                                <input type="radio" id="op1" name="roption" value="1">
-                                <label for="op1">label 1</label><br>
-                                <input type="radio" id="op2" name="roption" value="2">
-                                <label for="op2">label 2</label><br>
-                                <input type="radio" id="op3" name="roption" value="3">
-                                <label for="op3">label 3</label>
-                                <input type="radio" id="op1" name="roption" value="1">
-                                <label for="op1">label 1</label><br>
-                                <input type="radio" id="op2" name="roption" value="2">
-                                <label for="op2">label 2</label><br>
-                                <input type="radio" id="op3" name="roption" value="3">
-                                <label for="op3">label 3</label>
-                            </td>
-                        </tr>
-
-
-
-                        <tr class="input-sq SQ">                            <!--------------for a text input Sub-Question---->
-                            <td>Subquestion should go here</td>
-                            <td class="text-input"><input type="text" placeholder="Type your answer here"></td> <!--------------for an text input answer---->
-                        </tr>
-
-
-
-                        <!--------------IF QUESTION IS SINGLE TYPE---->
-                        <tr>
-                            <td  colspan="2" class="text-input"><input type="text"></td>
-                        </tr>  
-                        
-                        
-
-                    </table>
-
-                    <!--------------SPACE FOR COMMENTS---->
-                    <input type="text" id="userComments" placeholder="Additional Comments?">
-
-
-                    <!--------------BACK & NEXT BUTTONS---->
-                    <button class="floatleft">Back</button>
-                    <button class="floatright">Next</button>
-                </form>
+                
 
             </div>
 

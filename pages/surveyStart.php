@@ -8,9 +8,11 @@
     <title>Survey</title>
 
     <!--Links to stylesheets-->
-    <link rel="stylesheet" href="/fonts/arial-nova/stylesheet.css">
-    <link rel="stylesheet" href="/styles/generalStyles.css">
+    <link rel="stylesheet" href="../fonts/arial-nova/stylesheet.css">
+    <link rel="stylesheet" href="../styles/generalStyles.css">
     <link rel="stylesheet" href="../styles/surveyStart.css">
+    
+    <script src="../scripts/surveyStart.js"></script>
 
 </head>
 
@@ -33,8 +35,10 @@
                 Thanks for your participation, the only time constraint for this survey is the due date, otherwise you can answer the questions <br>
                 at any moment, all your progress will be automatically saved and you can come back to it at any time you like. <br><br>
                 The survey is designed to take a total of 10 minutes. <br><br>
-                Due date: Friday, 03 February 2023
             </p>
+
+            <p id="date">Due date: Friday, 03 February 2023</p>
+
 
         </div>
 
@@ -42,25 +46,32 @@
         <!-- Status section -->
         <div class="status insidebox">
             <h6 class="sectionheader2">Status</h6>
-            <p>No attempts have been made yet</p>
+            <p id ="status">No attempts have been made yet</p>
 
         </div>
 
         <!-- Progress section -->
         <div class="progress insidebox">
             <h6 class="sectionheader2">Progress</h6>
-            <p>0%</p>
-
+            <p id="progress">0%</p>
         </div>
 
 
         <!-- Begin section -->
         <div class="begin insidebox">
 
-            <button id="beginQbutton">Begin Questionarie</button>
+            <button id="beginQbutton" onclick="BeginSurvey()">Begin Questionarie</button>
 
         </div>
     </div>
+
+
+        
+<form method='post' action='Controller.php' id='BeginSurvey' style='display:none'>
+    <input type='hidden' name='page' value='SuveryStart'>
+    <input type='hidden' name='command' value='StartSurvey'>
+</form>
+
 
 
 

@@ -33,9 +33,7 @@ function upcomingSurveys (){
                 upcomingSurveys += "<button class='options' button-document-id = '" + result[row]['SurvID'] + "'>...</button>";
                 upcomingSurveys += "<div class='meter'></div>";
                 upcomingSurveys += "</div>";
-            }
-            //set upcomingSurveysID for later use in SurveyPage
-            set_upcoming_SurveysID(result[0]['SurvID']);
+            }            
         }
 
 
@@ -43,6 +41,8 @@ function upcomingSurveys (){
 
         $('button[button-document-id]').click(function() {
             var id = $(this).attr('button-document-id');
+            document.getElementById("upcomingSurveyID").value = id; 
+            $('#surveystart').submit();
         });
 
     });
@@ -84,13 +84,4 @@ function historyOfSurveys(){
         });
 
     });
-}
-
-
-function set_upcoming_SurveysID(id)
-{
-    var url = 'Controller.php';
-    var ID = parseInt(id) ;
-    var query = {page: 'MainPage', command: 'upcomingSurveysID', ID : ''+ ID +''};
-    $.post(url, query);
 }

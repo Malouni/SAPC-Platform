@@ -74,6 +74,12 @@
 
 
 
+    
+<form method='post' action='Controller.php' id='surveystart' style='display:none'>
+    <input type='hidden' name='page' value='MainPage'>
+    <input type='hidden' name='command' value='upcomingSurveysID'>
+    <input type='hidden' id='upcomingSurveyID' name='ID' value='0'>
+</form>
 
 
 </body>

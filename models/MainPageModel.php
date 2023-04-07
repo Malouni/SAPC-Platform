@@ -1,66 +1,5 @@
 <?php
 
-// If Exit return SurveyName , ExpiryDate , ProgressPrecent  
-function GetPresentSurveyInfo($position)
-{
-    // Get the Current Date
-    $date = date('Y-m-d');
-
-    global $conn;
-
-    //Get the SurveyName , Progress and DateEnd.
-    $survey_sql = "SELECT SurveyTable.SurvName ,
-                       SurveyTable.SurvDateEnd ,
-                       UserAnswer.Progress
-                       FROM UserAnswer
-                       RIGHT JOIN SurveyTable ON SurveyTable.SurvID = UserAnswer.SurvID
-                       AND SurveyTable.SurvDateEnd >= '$date' AND SurveyTable.Position = '$position' OR SurveyTable.Position = 'everyone' ";
-
-    $survey_result = mysqli_query($conn, $survey_sql);
-
-    $data = [];
-
-    //if exit return the data in form of Array.
-    if (mysqli_num_rows($survey_result) > 0) {
-        while ($survey_row = mysqli_fetch_assoc($survey_result))
-            $data[] = $survey_row;
-        return $data;
-    } else
-        return -1;
-}
-
-
-// If Exit return SurveyName
-function GetPastSurveyInfo($userid)
-{
-    // Get the Current Date
-    $date = date('Y-m-d');
-
-    //Check if exit any old survey by check the ExpiryDate vs CurrentDate
-    global $conn;
-
-
-    //Get the SurvName that user did before
-    $survey_sql = "SELECT SurveyTable.SurvName
-                    FROM  UserAnswer
-                    JOIN  SurveyTable ON SurveyTable.SurvID = UserAnswer.SurvID
-                    AND UserAnswer.UserID = '$userid' AND SurveyTable.SurvDateEnd < '$date'";
-
-    $survey_result = mysqli_query($conn, $survey_sql);
-
-    $data = [];
-
-    //if exit return the data in form of Array.
-    if (mysqli_num_rows($survey_result) > 0)
-    {
-        while ($survey_row = mysqli_fetch_assoc($survey_result))
-            $data[] = $survey_row;
-        return $data;
-    }
-    else
-        return -1;
-}
-
 function get_upcoming_surveys($userid)
 {
     global $conn;
@@ -106,6 +45,27 @@ function get_surveys_completed_by_user($userid)
     }
     else
         return $data[0] = "NoResults";
+}
+
+//This function will calculate and return the user progress
+function get_user_progress($userid , $survID)
+{
+    global $conn;
+
+    $sql = "SELECT ROUND(((COUNT(UA.QuestionID) +  COUNT(SUA.QuestionID) *100 )/ COUNT(SQ.QuestionID)),0) as Progress
+                            FROM surveyquestions SQ
+                            LEFT JOIN subquestions SQS 
+                            ON SQ.QuestionID = SQS.QuestionID
+                            LEFT JOIN useranswer UA  
+                            ON UA.QuestionID = SQ.QuestionID AND UA.UserID = '".$userid."' AND UA.Answer IS NOT NULL  
+                            LEFT JOIN subquestionanswer SUA 
+                            ON SUA.SubQuestionID = SQS.SubQuestionID AND SUA.UserID = '".$userid."' AND SUA.Answer IS NOT NULL               
+                            WHERE SQ.SurvID = '".$survID."' ";
+    
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+
+    return $row;
 }
 
 ?>

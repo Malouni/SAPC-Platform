@@ -1,5 +1,6 @@
 <?php
 
+
 // for update the user answer 
 function UpdateAnswers($survId , $userID , $Q_ID , $SubQ_ID , $Answer)
 {   
@@ -24,21 +25,29 @@ function UpdateAnswers($survId , $userID , $Q_ID , $SubQ_ID , $Answer)
 }
 
 // for load the user answer 
-function LoadAnswers($survId , $userID , $Q_ID)
+function LoadAnswers($survId , $userID , $Q_ID , $Type)
 {
     global $conn;
 
-    // load the ansewer for the question    
-    $sql = " SELECT useranswer.QuestionID, subquestionanswer.SubQuestionID,
-                    useranswer.Answer As MainAnswer, subquestionanswer.Answer As SubAnswer
-                FROM useranswer
-                LEFT JOIN subquestionanswer ON useranswer.QuestionID = subquestionanswer.QuestionID
-                WHERE useranswer.QuestionID = ".$Q_ID." AND useranswer.UserID = ".$userID." 
-                AND (useranswer.Answer IS NOT NULL OR subquestionanswer.Answer  IS NOT NULL)
-                ORDER BY SubQuestionID;";       
+    if($Type == 'single'){
+        
+        // load the ansewer for the only single questions    
+        $sql = " SELECT QuestionID, Answer As MainAnswer
+                    FROM useranswer
+                    WHERE QuestionID = ".$Q_ID." AND UserID = ".$userID." 
+                    AND Answer IS NOT NULL";
+    }else{
+
+        // load the ansewer for the only composed questions    
+        $sql = " SELECT subquestionanswer.QuestionID, subquestionanswer.SubQuestionID, subquestionanswer.Answer As SubAnswer
+                    FROM subquestionanswer
+                    LEFT JOIN subquestions ON subquestions.SubQuestionID = subquestionanswer.SubQuestionID
+                    WHERE subquestionanswer.QuestionID =  ".$Q_ID." AND UserID = ".$userID."
+                    AND Answer IS NOT NULL
+                    ORDER BY subquestions.SubType ";                   
+    }
 
     $result = mysqli_query($conn, $sql);
-
    
     //put the data to array and return 
     $data = [];
@@ -62,6 +71,7 @@ function LoadQuestions($survId)
     $sql = "SELECT
                 SQ.Goal,
                 SQ.Type,
+                SQS.SubType,
                 SQ.QuestionID,
                 SQS.SubQuestionID,
                 SQ.Question,
@@ -70,7 +80,29 @@ function LoadQuestions($survId)
             FROM SurveyQuestions SQ
             LEFT JOIN SubQuestions SQS ON SQ.QuestionID = SQS.QuestionID
             WHERE SQ.SurvID = '$survId' 
-            ORDER BY SQ.QuestionID, SQS.SubQuestionID;";
+            ORDER BY SQ.QuestionID, SQS.SubType;";
+
+    $result = mysqli_query($conn, $sql);
+    $data = [];
+
+    if (mysqli_num_rows($result) > 0)
+    {
+        while($row = mysqli_fetch_assoc($result))
+            $data[] = $row;
+        return $data;
+    }
+    else
+        return $data[0] = "Failed";
+}
+
+//load AnswerOption(label)
+function LoadLabel($survId){
+    global $conn;
+
+    $sql = "SELECT  QuestionID , SubQuestionID , InputValue 
+                FROM  answeroptions
+                WHERE SurvID = '$survId' 
+                ORDER BY QuestionID , SubQuestionID ,InputValue ";
 
     $result = mysqli_query($conn, $sql);
     $data = [];
@@ -139,6 +171,9 @@ function LoadComment($userID , $Q_ID)
     }
     else
         return NULL;
-    }
+}
+
+
+
 
 ?>

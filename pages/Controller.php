@@ -13,6 +13,9 @@ require('../models/LogInModel.php');
 require('../models/PastSurveyReportModel.php');
 require('../models/MainPageModel.php');
 require('../models/SurveyModel.php');
+require('../models/surveyStartModel.php');
+
+
 
 
 session_start();
@@ -110,12 +113,15 @@ else if($_POST['page'] == 'MainPage')
         break;
     
     case 'upcomingSurveysID':
-        $_SESSION['NewSurveysID'] = $_POST['ID'];
+        $_SESSION['NewSurveysID'] = (int) $_POST['ID'] ;
+        include('surveyStart.php');
         break;
     }
 }
 
-else if ($_POST['page'] == 'MainPage')
+
+
+else if ($_POST['page'] == 'SuveryStart')
 {
     if (!isset($_SESSION['LogIn'])) {
         $display_type = 'none';
@@ -125,12 +131,23 @@ else if ($_POST['page'] == 'MainPage')
 
     $command = $_POST['command'];
     switch($command) {
-        case '':
-
+        case 'IsSurveyOpen':
+            $result = isSurveyOpen($_SESSION['NewSurveysID']);
+            echo json_encode($result);
             break;
 
+        case 'GetProgress':
+            $result = get_user_progress($_SESSION['userId'],$_SESSION['NewSurveysID']);
+            echo json_encode($result);
+            break;
+
+        case 'StartSurvey':
+            header('location: survey.php');
+            exit();
+            break;
     }
 }
+
 
 else if($_POST['page'] == 'Suvery'){
     if (!isset($_SESSION['LogIn'])) {
@@ -154,9 +171,14 @@ else if($_POST['page'] == 'Suvery'){
             $result = LoadQuestions($_SESSION['NewSurveysID']);
             echo json_encode($result);
             break;
+        
+        case 'LoadLabelList':
+            $result = LoadLabel($_SESSION['NewSurveysID']);
+            echo json_encode($result);
+            break;
 
         case 'LoadAnswers':
-            $result = LoadAnswers($_SESSION['NewSurveysID'],$_SESSION['userId'],$_POST['Q_ID']);
+            $result = LoadAnswers($_SESSION['NewSurveysID'],$_SESSION['userId'],$_POST['Q_ID'],$_POST['Q_Type']);
             echo json_encode($result);
             break;
         
