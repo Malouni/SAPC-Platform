@@ -50,25 +50,6 @@ function hideShowNotifications() {
     }
 }
 
-function showorderdocs() {
-    var subDocs = document.getElementById("orderbydocs");
-    if (subDocs.style.display == "block") {
-        subDocs.style.display = "none";
-    }
-    else {
-        subDocs.style.display = "block";
-    }
-}
-
-function showordertime() {
-    var subTime = document.getElementById("orderbytime");
-    if (subTime.style.display == "block") {
-        subTime.style.display = "none";
-    }
-    else {
-        subTime.style.display = "block";
-    }
-}
 
 function mainPage() {
     $('#form-main-page').submit();

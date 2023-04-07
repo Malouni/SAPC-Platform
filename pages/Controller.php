@@ -198,5 +198,9 @@ else if ($_POST['page'] == 'PastReport')
 
     }
 }
+else if ($_POST['page'] == 'userReview')
+{
+    include('userReview.php');
+}
 else {
 }
