@@ -1,18 +1,28 @@
 var CurrentQuestionID;
 var QuestionList;
-//setup the QuestionList and CurrentQuestion
-QuestionList = JSON.parse(sessionStorage.getItem("QuestionList"));
-CurrentQuestionID = JSON.parse(sessionStorage.getItem("CurrentQuestion"));
-
-// 0 is mean this is the first time user open the survey
-if(CurrentQuestionID == 0){
-    CurrentQuestionID = QuestionList[0]["QuestionID"];
-}
+var LabelList;
+var QuestionNum;
+var totalQuestion; 
 
 document.addEventListener("DOMContentLoaded", function(){
+    //setup the QuestionList , LabelList and CurrentQuestion 
     QuestionLoad();    
+    QuestionList = JSON.parse(sessionStorage.getItem("QuestionList"));
+
+    LabelLoad();
+    LabelList = JSON.parse(sessionStorage.getItem("LabelList"));
+
     LastProgressCheck();
-    QuestionGender(findIndex(CurrentQuestionID));
+    // 0 is mean this is the first time user open the survey
+    if(JSON.parse(sessionStorage.getItem("CurrentQuestion")) == 0){
+        CurrentQuestionID = QuestionList[0]["QuestionID"];
+    }else{
+        CurrentQuestionID = JSON.parse(sessionStorage.getItem("CurrentQuestion"));
+    }
+
+    QuestionNumber(CurrentQuestionID);
+    updateProgressBar(QuestionNum);
+    QuestionGender(findIndex(CurrentQuestionID));     
 });
   
 
@@ -23,16 +33,18 @@ function NextQuestions(){
     var NextQuestionIndex = findIndex(NextQuestionID);    
  
     //if index found 
-    if(NextQuestionIndex != -1){
+    if(NextQuestionIndex != -1 && QuestionNum != totalQuestion + 1){
         //update the CurrentQuestion
         CurrentQuestionID = NextQuestionID;
         // render the UI
-        QuestionGender(NextQuestionIndex);
+        QuestionGender(NextQuestionIndex);               
 
     }else{
-        //back to the frist question
-        CurrentQuestionID = QuestionList[0]['QuestionID'];
-        QuestionGender(findIndex(CurrentQuestionID));
+         //update the CurrentQuestion
+         CurrentQuestionID = NextQuestionID;
+         // render the UI
+         QuestionGender(NextQuestionIndex);
+         btnShow();
     }    
 }
 
@@ -43,30 +55,32 @@ function BackQuestions(){
     var BackQuestionIndex = findIndex(BackQuestionID);
     
     //if index found 
-    if(BackQuestionIndex != -1){
+    if(BackQuestionIndex != -1 && BackQuestionIndex != 0){
         //update the CurrentQuestion
         CurrentQuestionID = BackQuestionID;
         // render the UI
         QuestionGender(BackQuestionIndex);
+
     }else{
-        //go to the last question
-        length = QuestionList.length - 1;
-        CurrentQuestionID = QuestionList[length]['QuestionID'];
-        QuestionGender(findIndex(CurrentQuestionID));
+         //update the CurrentQuestion
+         CurrentQuestionID = BackQuestionID;
+         // render the UI
+         QuestionGender(BackQuestionIndex);
+         //Disable Button
+         DisableButton('floatleft');
     }    
 }
 
 // this will gender the question html based on data got from db
-function QuestionGender(QuestionIndex){
-    
+function QuestionGender(QuestionIndex){    
     
     if(sessionStorage.getItem("QuestionList") == "Failed"){
         var document ="<p class='headers'>No connection to the DataBase, Please try again latter</p>";
         $('#question').html(document);
     }
     else{
-        var IsSubQ;
         var document;
+        var QNum = "Q"+ QuestionNum + ". " ; 
 
         //Set goal for the question
         if(QuestionList[QuestionIndex]['Goal'] == "DIEL")
@@ -80,167 +94,171 @@ function QuestionGender(QuestionIndex){
             else if(QuestionList[QuestionIndex]['Goal']  == "GSD")
             document = "<h3 id='S_tochange'>Guided skill development</h3>";
 
+        //Answer form
+        document +="<form>";
+        document +=" <table id='question-table'>";
+
         //Set Question
-        document += "<p id='Q_tochange'>"+QuestionList[QuestionIndex]['Question'] +"</p>";
+        document +="<tr>";
+        document += "<th colspan='2' id='QuestionField'>"+QNum+""+QuestionList[QuestionIndex]['Question']+"</th>";
+        document +="</tr>";
 
-        //Set the question form based on the question type
-        //Check the question type 
-        //this for the multi choice questions
-
-        if(QuestionList[QuestionIndex]['Type'] == 'multi')
-        {   
-            //check if it's is contain subquestion or not 
-            if(QuestionList[QuestionIndex]['SubQuestionID'] != null){
-                //this use to know the Q_ID and SQ_ID when the answer is return 
-                //this will be put in name of the radio button
-                var Update_ID = QuestionList[QuestionIndex]['QuestionID']+"_"+QuestionList[QuestionIndex]['SubQuestionID'];     
-                IsSubQ = 'yes';
-
-                document +="<form class='MultiQForm'>";
-                document +="<table class='MultiQTable>";
-                document +="<tr class='RowMultiQ>";
-                document +="<th></th>";
-                document +="<th class='ColMultiQ'>None</th>";
-                document +="<th class='ColMultiQ'>1</th>";
-                document +="<th class='ColMultiQ'>2</th>";
-                document +="<th class='ColMultiQ'>3</th>";
-                document +="<th class='ColMultiQ'>4</th>";
-                document +="<th class='ColMultiQ'>5</th>";
-                document +="<th class='ColMultiQ'>6</th>";
-                document +="</tr>";
-
-
-                document += "<tr class='RowMultiQ'>";
-                document += "<td class='gridMultiQ'>"+QuestionList[QuestionIndex]['Sub_Q']+"</td>";
-                document += "<td class='gridMultiQ'><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='0'></td>";
-                document += "<td class='gridMultiQ'><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='1'></td>";
-                document += "<td class='gridMultiQ'><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='2'></td>";
-                document += "<td class='gridMultiQ'><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='3'></td>";
-                document += "<td class='gridMultiQ'><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='4'></td>";
-                document += "<td class='gridMultiQ'><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='5'></td>";
-                document += "<td class='gridMultiQ'><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='6'></td>";
-                document += "</tr>";
-                
-                //Gender all the subquestion by using while loops
-                //if the next CurrentQuestionIndex has same QuestionID => still have more subquestions
-                while(QuestionList[QuestionIndex]['QuestionID'] == QuestionList[QuestionIndex + 1]['QuestionID'] ){
-                    Update_ID = QuestionList[QuestionIndex+1]['QuestionID']+"_"+QuestionList[QuestionIndex+1]['SubQuestionID'];
-
-                    document += "<tr class='RowMultiQ'>";
-                    document += "<td class='gridMultiQ'>"+QuestionList[QuestionIndex+1]['Sub_Q']+"</td>";
-                    document += "<td class='gridMultiQ'><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='0'></td>";
-                    document += "<td class='gridMultiQ'><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='1'></td>";
-                    document += "<td class='gridMultiQ'><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='2'></td>";
-                    document += "<td class='gridMultiQ'><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='3'></td>";
-                    document += "<td class='gridMultiQ'><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='4'></td>";
-                    document += "<td class='gridMultiQ'><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='5'></td>";
-                    document += "<td class='gridMultiQ'><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='6'></td>";
-                    document += "</tr>";
-
-
-                    //update the CurrentQuestionIndex to check the next one
-                    QuestionIndex += 1; 
-                }
-                document += "</table>";
-                document += "<input type='text' id='userComments' placeholder='Additional comments'>";
-                document += " <button class='floatleft' onclick='BackQuestions()'>Back</button>";
-                document += "<button class='floatright' onclick='multiNextButton()'>Next</button>";
-                document += "</form>";               
-           
-
-            }else{
-                //For only one question => non sub-Question 
-                var Update_ID = QuestionList[QuestionIndex]['QuestionID'];
-                IsSubQ = 'no';
-
-                document += "<form>";
-                document += "<input type='radio' id='option1' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='0'>";
-                document += " <label for='option1'>None</label><br>";
-                document += "<input type='radio' id='option2' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='1'>";
-                document += "<label for='option2'>1</label><br>"; 
-                document += "<input type='radio' id='option3' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='2'>";
-                document += "<label for='option3'>2</label><br>"; 
-                document += "<input type='radio' id='option4' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='3'>";
-                document += "<label for='option4'>3</label><br>"; 
-                document += "<input type='radio' id='option5' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='4'>";
-                document += "<label for='option5'>4</label><br>"; 
-                document += "<input type='radio' id='option6' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='5'>";
-                document += "<label for='option5'>5</label><br>"; 
-                document += "<input type='radio' id='option7' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value='6'>";
-                document += "<label for='option5'>6</label><br>"; 
-                document += "<input type='text' id='userComments' placeholder='Additional comments'>";
-                document += " <button class='floatleft' onclick='BackQuestions()'>Back</button>";
-                document += "<button class='floatright' onclick='multiNextButton()'>Next</button>";
-                document += "</form>"; 
-    
-
-            }
-            $('#question').html(document);
-            NoteLoad();
-            AnswerLoad(QuestionList[QuestionIndex]['QuestionID'],'multi',IsSubQ);
-
-
-        }else{
-
-            // for the short questions 
-            //check if it's is contain subquestion or not 
-            if(QuestionList[QuestionIndex]['SubQuestionID'] != null){
-                var Update_ID = QuestionList[QuestionIndex]['QuestionID']+"_"+QuestionList[QuestionIndex]['SubQuestionID'];
-                IsSubQ='yes';  
-
-                document += "<form class='ShortQForm'>";
-                document += "<table class='ShortQTable'>";
-                document +="<tr class='RowShortQ'>";
-                document +="<th class='ColShortQ'>"+ QuestionList[QuestionIndex]['Sub_Q'] +"</th>";
-                document +="<td class='gridShortQ'><input type='number' id='text_answer' name='"+Update_ID+"'></td>";
-                document +="</tr>";        
-
-
-                //Gender all the subquestion by using while loops
-                //if the next CurrentQuestionIndex has same QuestionID => still have more subquestions
-                while(QuestionList[QuestionIndex]['QuestionID'] == QuestionList[QuestionIndex + 1]['QuestionID'] ){
-                    Update_ID = QuestionList[QuestionIndex+1]['QuestionID']+"_"+QuestionList[QuestionIndex+1]['SubQuestionID'];
-
-
-                    document +="<tr class='RowShortQ'>";
-                    document +="<th class='ColShortQ'>"+ QuestionList[QuestionIndex]['Sub_Q'] +"</th>";
-                    document +="<td class='gridShortQ'><input type='number' id='text_answer' name='"+Update_ID+"'></td>";
-                    document += "</tr>";
-
-                    //update the CurrentQuestionIndex to check the next one
-                    QuestionIndex += 1; 
-                }
-                document += "</table>";
-                document += "<input type='text' id='userComments' placeholder='Additional comments'>";
-                document += " <button class='floatleft' onclick='BackQuestions()'>Back</button>";
-                document += "<button class='floatright' onclick='shortNextButton()'>Next</button>";
-                document += "</form>";
-
-            }else{
-                var Update_ID = QuestionList[QuestionIndex]['QuestionID'];
-                IsSubQ='no';
-
-                document += "<form class='ShortQForm'>";
-                
-                document += "<table class='ShortQTable'>";
-                document +="<tr class='RowShortQ'>";
-                document +="<th class='ColShortQ'>Enter Your Answer Here: </th>";
-                document +="<td class='gridShortQ'><input type='number' id='text_answer' name='"+Update_ID+"'></td>";
-                document +="</tr>";
-                document +=" </table>";
-
-                document += "<input type='text' id='userComments' placeholder='Additional comments'>";
-                document += " <button class='floatleft' onclick='BackQuestions()'>Back</button>";
-                document += "<button class='floatright' onclick='shortNextButton()'>Next</button>";
-                
-                document +=" </form>";
-             
-            }
-            $('#question').html(document);
-            NoteLoad();
-            AnswerLoad(QuestionList[QuestionIndex]['QuestionID'],'short',IsSubQ );
-        }
+        var QuesetionType = (QuestionList[QuestionIndex]['Type']).split("_");
         
+        
+        if(QuesetionType[0] == 'single'){   
+            var Update_ID = QuestionList[QuestionIndex]['QuestionID'];
+
+            if(QuesetionType[1] == 'multi' ){
+
+                //For Multi Choice Questions
+                document += "<tr class='option-sq'>";
+                document += "<td class='radio-option'>";
+                document += "<br>";
+
+                //connect label and radio button
+                var IdNum = 1;  
+                for(let i =0 ; i < LabelList.length ; i++){
+
+                    if(LabelList[i]['QuestionID'] == Update_ID){
+                        var id = 'op' + IdNum;
+                        document += "<input type='radio' id='"+id+"' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value= "+LabelList[i]['InputValue']+">";
+                        document += "<label for='"+id+"'> "+LabelList[i]['InputValue']+" </label><br>"; 
+                        IdNum += 1 ;
+                    }
+                }         
+                                
+                document += "</td>";
+                document += "</tr>";
+                document +="</table>";
+               
+                document += "<input type='text' id='userComments' placeholder='Additional comments'>";
+                document += " <button class='floatleft' onclick='BackBtn()'>Back</button>";
+                document += "<button class='floatright' id='nextBtn' onclick='multiNextButton()'>Next</button>";
+                document += "<button class='floatright' id='finBtn' style='display:none;' onclick='surveyFin()'>Finish</button>";
+
+                
+                document +="</form>";
+
+            }else{  
+
+                //For short answer Questions                
+                document +="<tr>";
+                document +="<td  colspan='2' class='text-input'><input type='number' id='text_answer' name='"+Update_ID+"'></td>";
+                document +="</tr>";
+                document +="</table>";
+
+                document += "<input type='text' id='userComments' placeholder='Additional comments'>";
+                document += " <button class='floatleft' onclick='BackBtn()'>Back</button>";
+                document += "<button class='floatright' id='nextBtn' onclick='multiNextButton()'>Next</button>";
+                document += "<button class='floatright' id='finBtn' style='display:none;' onclick='surveyFin()'>Finish</button>";
+
+
+                document +="</form>";                
+            }
+
+            $('#question').html(document);
+            NoteLoad();
+            SingleAnswerLoad(QuestionList[QuestionIndex]['QuestionID'],QuesetionType[1]);
+        
+        }else{
+            //Gender all the subquestion by using while loops
+            //if the next CurrentQuestionIndex has same QuestionID => still have more subquestions
+            var multi_document = "";
+            var multi_title = "";
+            var short_document= "";
+            var typeArray = [];
+            var LabelArray = [];
+            var IdNum = 1;  
+            
+            var Update_ID = QuestionList[QuestionIndex]['QuestionID']+"_"+QuestionList[QuestionIndex]['SubQuestionID'];
+            var IsFrist = true;             
+            do { 
+
+                if(!IsFrist){       
+
+                    //update the QuestionIndex to check the next one
+                    QuestionIndex += 1;
+                    Update_ID = QuestionList[QuestionIndex]['QuestionID']+"_"+QuestionList[QuestionIndex]['SubQuestionID'];
+
+                }else{
+                    IsFrist = false;                        
+                }      
+
+                typeArray.push(QuestionList[QuestionIndex]['SubType']);
+
+                if(QuestionList[QuestionIndex]['SubType'] == 'multi'){
+                    var LabelCount = 0;
+                    //For Multi Choice Sub-Questions  
+                    if(IdNum == 1)
+                    {   
+                        //Open the table 
+                        multi_document += "<tr class='multioption-SQ'>";; 
+                        multi_document += "<table class='multioption-SQ-table'>" ;  
+                        
+                        //Open the multi_title
+                        multi_title += "<tr>";
+                        multi_title += "<th id='sub-table-header0'>Answer</th>"; 
+                    }  
+
+                    // put the sub questions in multi_title
+                    multi_title += "<th id='sub-table-header"+IdNum+"'>"+QuestionList[QuestionIndex]['Sub_Q']+"</th>";                             
+                   
+                    //List of radio button                   
+                    for(let i =0 ; i < LabelList.length ; i++){
+             
+                        if(LabelList[i]['QuestionID'] == QuestionList[QuestionIndex]['QuestionID']){
+                            if(IdNum == 1){
+                                LabelArray[LabelCount] = "<td id='subTanswer"+LabelCount+"'>"+LabelList[i]['InputValue']+"</td>" ;                              
+                            }
+                            
+                            //setup the radio button for each subquestions 
+                            LabelArray[LabelCount] += "<td><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value="+LabelList[i]['InputValue']+"></td>";
+                            
+                            LabelCount += 1 ;                            
+                        }
+                    }
+                    IdNum += 1 ;                 
+                }else{                    
+
+                    //For ShortAnswer Sub-Questions
+                    short_document += "<tr class='input-sq SQ'>";
+                    short_document += "<td>"+QuestionList[QuestionIndex]['Sub_Q']+"</td>";
+                    short_document += "<td class='text-input'><input type='number' id='text_answer' name='"+Update_ID+"' placeholder='Type your answer here'></td>";
+                    short_document += "</tr>";
+
+                }
+            }while(QuestionList[QuestionIndex]['QuestionID'] == QuestionList[QuestionIndex + 1]['QuestionID'] );
+
+            //close off the multichoice table 
+            //close the multi_title
+            multi_title += "</tr>";
+            multi_document += multi_title;
+
+            if(IdNum - 1 > 0 )
+                for(let i =0 ; i < LabelCount ; i++){
+                    LabelArray[i] += "</tr>";
+                    multi_document += LabelArray[i];                    
+                }
+            
+            multi_document += " </table>";
+            multi_document += "</tr>";
+
+            //close off the table 
+            document += multi_document + short_document;
+            document +="</table>";
+
+            document += "<input type='text' id='userComments' placeholder='Additional comments'>";
+            document += " <button class='floatleft' onclick='BackBtn()'>Back</button>";
+            document += "<button class='floatright' id='nextBtn' onclick='multiNextButton()'>Next</button>";
+            document += "<button class='floatright' id='finBtn' style='display:none;' onclick='surveyFin()'>Finish</button>";
+
+            document +="</form>";         
+
+            $('#question').html(document);
+            NoteLoad();
+            ComposedAnswerLoad(QuestionList[QuestionIndex]['QuestionID'], typeArray);
+        } 
     }
 }
 
@@ -277,30 +295,33 @@ function multiAnswerUpdate(src){
 //this function use to update the shortAnswer
 function shortAnswerUpdate(){
     var textInputs = document.querySelectorAll('form input[type="number"]');
-    var inputArray = [];
-    for (var i = 0; i < textInputs.length; i++){
 
-        //get all input (value , Q_ID and QSubID from its name)
-        var input = textInputs[i];
-        var name = input.getAttribute('name');
-        var answer = input.value;
-        var nameParts = name.split("_");
-        var Q_ID = parseInt(nameParts[0]);
-        var QSubID = parseInt(nameParts[1]);
+    if(textInputs != null){
+        var inputArray = [];
+        for (var i = 0; i < textInputs.length; i++){
 
-        //send the infomation to controller for update 
-        if(QSubID != null && answer != null){
-            
-            var url = 'Controller.php';
-            var query = {page: 'Suvery', command: 'AnswerUpdate' , Q_ID: ''+Q_ID+'' , SubQID: ''+QSubID+'' , Answer:''+answer+'' };            
-            $.post(url, query)
+            //get all input (value , Q_ID and QSubID from its name)
+            var input = textInputs[i];
+            var name = input.getAttribute('name');
+            var answer = input.value;
+            var nameParts = name.split("_");
+            var Q_ID = parseInt(nameParts[0]);
+            var QSubID = parseInt(nameParts[1]);
 
-        }else if(QSubID == null && answer != null){
-            
-            var url = 'Controller.php';
-            var query = {page: 'Suvery', command: 'AnswerUpdate' , Q_ID: ''+Q_ID+'' , SubQID: 0 , Answer:''+answer+'' };            
-            $.post(url, query)
-            
+            //send the infomation to controller for update 
+            if(QSubID != null && answer != null){
+                
+                var url = 'Controller.php';
+                var query = {page: 'Suvery', command: 'AnswerUpdate' , Q_ID: ''+Q_ID+'' , SubQID: ''+QSubID+'' , Answer:''+answer+'' };            
+                $.post(url, query)
+
+            }else if(QSubID == null && answer != null){
+                
+                var url = 'Controller.php';
+                var query = {page: 'Suvery', command: 'AnswerUpdate' , Q_ID: ''+Q_ID+'' , SubQID: 0 , Answer:''+answer+'' };            
+                $.post(url, query)
+                
+            }
         }
     }   
 }
@@ -340,71 +361,78 @@ function NoteLoad(){
     });
 }
 
-//load answer for questions 
-function AnswerLoad(Q_ID ,type, IsSubQ){
+//load answer for Single questions 
+function SingleAnswerLoad(Q_ID ,type){
     var url = 'Controller.php';
-    var query = {page: 'Suvery', command: 'LoadAnswers' , Q_ID: ''+Q_ID+''};            
+    var query = {page: 'Suvery', command: 'LoadAnswers' , Q_ID: ''+Q_ID+'' , Q_Type: 'single'};           
+    
+ 
+    $.post(url, query , function(data){
+        var result = JSON.parse(data);
+
+        if(result != "Failed"){
+            var name = (result[0]['QuestionID']).toString();
+            var answer = result[0]['MainAnswer'];
+            
+            if(type == 'multi'){
+                
+                // Retrieve the radio button group by its name
+                var radioGroup = document.getElementsByName(name);
+
+                radioGroup.forEach(function(radioButton) {
+                // Check if the radio button matches the desired value
+                    if (radioButton.value === (answer.toString())) {
+                        radioButton.checked = true;
+                    }
+                });
+            }else{
+                // Retrieve the textbox by its name
+                var textbox = document.getElementsByName(name);
+                textbox.defaultValue = answer;
+            }                      
+        }
+    });
+}
+
+//load answer for composed questions 
+function ComposedAnswerLoad(Q_ID ,typeArray){
+    var url = 'Controller.php';
+    var query = {page: 'Suvery', command: 'LoadAnswers' , Q_ID: ''+Q_ID+'' , Q_Type: 'composed'};            
     $.post(url, query , function(data){
 
         var result = JSON.parse(data);
 
         if(result != "Failed"){
-            
-            //if check it contain sub question or not 
-            if(IsSubQ == 'yes'){
+            var name = (result[0]['QuestionID']).toString();
+            var answer = result[0]['MainAnswer'];
 
-                for(var i = 0; i < result.length; i++)
-                {   
-                    //Get data
-                    var name = (result[i]['QuestionID']+"_"+ result[i]['SubQuestionID']).toString();
-                    var answer = result[i]['SubAnswer'];
-
-                    //for multi question
-                    if(type == 'multi'){
-
-                        // Retrieve the radio button group by its name
-                        var radioGroup = document.getElementsByName(name);
-
-                        radioGroup.forEach(function(radioButton) {
-                        // Check if the radio button matches the desired value
-                            if (radioButton.value === (answer.toString())) {
-                                radioButton.checked = true;
-                            }
-                        });
-                    }else{    
-                        // Retrieve the textbox by its name
-                        var textbox = document.getElementsByName(name)[0];
-                        textbox.defaultValue = answer;
-                    }
-                }           
-                
-            }else{
-
-                var name = (result[0]['QuestionID']).toString();
-                var answer = result[0]['MainAnswer'];
-                
-                if(type == 'multi'){
-                   
+            for(var i = 0; i < result.length; i++)
+            {   
+                //Get data
+                var name = (result[i]['QuestionID']+"_"+ result[i]['SubQuestionID']).toString();
+                var answer = result[i]['SubAnswer'];
+        
+                //for multi question
+                if(typeArray[i] == 'multi'){
+        
                     // Retrieve the radio button group by its name
                     var radioGroup = document.getElementsByName(name);
-
+        
                     radioGroup.forEach(function(radioButton) {
                     // Check if the radio button matches the desired value
                         if (radioButton.value === (answer.toString())) {
                             radioButton.checked = true;
                         }
                     });
-                }else{
-
+                }else{    
                     // Retrieve the textbox by its name
-                    var textbox = document.getElementsByName(name);
+                    var textbox = document.getElementsByName(name)[0];
                     textbox.defaultValue = answer;
                 }
-            }          
+            }                      
         }
     });
 }
-
 
 //This function will connect to Controller for get the question list 
 //And save it to sessionStorage
@@ -418,10 +446,21 @@ function QuestionLoad(){
     });
 }
 
+//Load the Label for the Multi choice Questions 
+function LabelLoad(){
+
+    var url = 'Controller.php';
+    var query = {page: 'Suvery', command: 'LoadLabelList'};        
+    
+    $.post(url, query, function(data) {
+        sessionStorage.setItem("LabelList", data);   
+    });
+    
+}
+
 // load the last index that user stop working on berfore 
 //return the QuestionID
 function LastProgressCheck(){
-    var Q_ID; 
     var url = 'Controller.php';
     var query = {page: 'Suvery', command: 'LastProgress'};        
     
@@ -444,12 +483,60 @@ function findIndex(num) {
   }
     
 function shortNextButton(){
+    QuestionNum += 1;
+    updateProgressBar(QuestionNum);
     shortAnswerUpdate();
+    NoteUpdate(); 
+    NextQuestions(); 
+}
+
+function multiNextButton(){
+    QuestionNum += 1;
+    updateProgressBar(QuestionNum);
     NoteUpdate(); 
     NextQuestions();
 }
 
-function multiNextButton(){
-    NoteUpdate(); 
-    NextQuestions();
+function BackBtn(){
+    QuestionNum -= 1;
+    updateProgressBar(QuestionNum);
+    BackQuestions();
 }
+
+//for disable the button 
+function DisableButton(btnClass) {
+    var buttons = document.getElementsByClassName(btnClass);
+    buttons[0].disabled = true;
+}
+
+function updateProgressBar(progress) {    
+    const fill = document.querySelector(".fill");
+    const percentage = Math.max(0, Math.min(100, ((progress -1) / totalQuestion) * 100));
+    fill.style.width = `${percentage}%`;
+}
+
+function QuestionNumber(QuestionID){
+    var endIndex = QuestionList.length - 1; 
+    totalQuestion =  QuestionList[endIndex]['QuestionID'] - QuestionList[0]['QuestionID'] ;
+    QuestionNum = (QuestionID - QuestionList[0]['QuestionID']) + 1;
+}
+
+function btnShow(){
+
+    var Nextbtn = document.getElementById("nextBtn");
+    var Finbtn = document.getElementById("finBtn");
+    
+    Nextbtn.style.display = "none";
+    Finbtn.style.display = "block";      
+}
+
+//go to user review btn
+function surveyFin(){
+}
+
+
+
+
+
+
+
