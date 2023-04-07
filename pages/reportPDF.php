@@ -1,8 +1,7 @@
 <?php
-    require_once '../dompdf/autoload.inc.php';
+    require_once '../dompdf/autoload.inc.php';  
     ob_start();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,20 +10,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
 </head>
 <style>
-        /* container styles */
 
-
-    body {
-        background: rgb(255, 255, 255); 
-    }
     
-   
-    div.pastReports {
-        width: 98%;
+        /* container styles */
+    .pastReports {
+        border: 1px solid rgb(185, 185, 185);
+        width: 21cm;
         height: auto;
-        margin: 0.5% 0.5% 0% 0.5%;
+        margin: 10px auto;
+        min-width: 1000px;
         padding: 0 0.5% 0.5% 0.5%;
     }
 
@@ -43,36 +43,58 @@
         width: auto;
     }
 
-    div.report{
-        width: 98.65%;
+    div.report {
+        border: 1px solid rgb(105, 105, 105);
+        width: 99.8%;
         height: auto;
         padding: 0 0.5% 0.5% 0.5%;
         margin: 0 0 0 2px;
     }
 
-    /* images styles */
+    /* button images styles */
     button.pdf {
+        width: 20px;
+        height: 20px;
         margin: 0 5px;
     }
 
-    /* buttons styles */
-    button.buttonGoals {
-        width:100%;
+    .icon {
+        width: 15px;
+    }
+
+
+    /* strategic goals tabs styles */
+    .buttonGoals {
+        width: 100%;
         background-color: #003e51;
         color: white;
         text-align: center;
+        height: 40px;
+        border: none;
+        border-radius: 3px 3px 0 0;
+        cursor: pointer;
+    }
+
+
+    #coverpattern {
+        width: 100%;
+        height: 60px;
+        background-image: url(../images/backgrounds/hexa.jpg);
+        background-size: cover;
+        border: 2px solid white;
     }
 
     /* table style for documents */
-    table.tr.rowDocuments{
+    table.tr.rowDocuments {
         width: auto;
     }
-    table.td.gridDocuments{
+
+    table.td.gridDocuments {
         width: auto;
     }
 
     /* table styles */
-    table.tableGoals{
+    table.tableGoals {
         width: 100%;
         margin: 0;
         padding: 0;
@@ -84,143 +106,127 @@
         padding: 0;
     }
 
+
     th.gridGoals {
         height: auto;
         margin: 0;
         padding: 0;
     }
 
-    table.tablePastReport{
-        width: 100%;
+    table.tablePastReport {
+        width: 700px;
         border-collapse: collapse;
     }
-    th.headerActivity{
+
+    th.headerActivity {
         width: 60%;
         border: 1px solid rgb(105, 105, 105);
         border-collapse: collapse;
         padding: 0 0 0 0.5%;
         background-color: #288f94;
+        color: white;
         text-align: left;
     }
-    th.headerRest{
+
+    th.headerRest {
         border: 1px solid rgb(105, 105, 105);
         border-collapse: collapse;
         background-color: #288f94;
-        text-align: center;
+        color: white;
+        font-weight: bold;
+        text-align: left;
     }
-    tr.rowPastReport{
+
+    tr.rowPastReport {
         border: 1px solid rgb(105, 105, 105);
         border-collapse: collapse;
     }
-    td.gridActivity{
+
+    /* This is a css for a row of the single question  */
+    tr.rowPastReportSingle{
+        border: 1px solid rgb(105, 105, 105);
+        border-collapse: collapse;
+        font-weight: bold;
+    }
+
+    /* This is a css for a row for a composed sub-question*/
+    tr.rowPastReportComposed{
+        border: 1px solid rgb(105, 105, 105);
+        border-collapse: collapse;
+    }
+
+    td.gridActivity {
         border: 1px solid rgb(105, 105, 105);
         border-collapse: collapse;
         text-align: left;
         padding: 0 0 0 0.3%;
     }
-    td.gridRest{
+
+    /* This is a css for a grid of the composed main question*/
+    td.gridComposedActivity {
+        border: 1px solid rgb(105, 105, 105);
+        border-collapse: collapse;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    td.gridRest {
         border: 1px solid rgb(105, 105, 105);
         border-collapse: collapse;
         text-align: center;
     }
+
     /* text styles*/
-    p.headers{
+    p.headers {
         font-weight: bold;
         margin: 0.5% 0 0.3% 1px;
         font-size: large;
     }
-    p.regularText{
+
+    p.regularText {
         margin: 0 0 0.2% 1px;
         font-size: medium;
     }
-    p.document{
+
+    p.document {
         color: black;
     }
-    p.date{
+
+    p.date {
         color: #040120;
     }
-    p.SPRtext{
+
+    p.SPRtext {
         color: rgb(0, 225, 255);
     }
-    p.facility{
-        color:rgb(105, 105, 105);
+
+    p.facility {
+        color: rgb(105, 105, 105);
     }
 </style>
 
 <body>
-    <div class="pastReports">
 
-    <?php
-        echo "Test for the php";
-    ?>
-        <p class="headers">Science Strategic Plan 2023</p>
-        <p class="headers">Goals</p>
-                <div class="report">
-                    <p class="headers">Diverse, Inclusive & Equitable Learning</p>
-                    <p class="headers">Inclusion and Diversity</p>
-                    <p class="regularText">Ensure the staff and facility compliment is equitable, diverse and inclusive</p>
-                    <table class="tablePastReport">
-                        <tr class="rowPastReport">
-                            <th class="headerActivity">Activity</th>
-                            <th class="headerRest">Involvement</th>
-                            <th class="headerRest">Historical</th>
-                        </tr>
-                        <tr class="rowPastReport">
-                            <td class="gridActivity">Indigenous presenters in classroom</td>
-                            <td class="gridRest">3</td>
-                            <td class="gridRest">+2</td>
-                        </tr>
-                        <tr class="rowPastReport">
-                            <td class="gridActivity"> &nbsp; </td>
-                            <td class="gridRest"> &nbsp; </td>
-                            <td class="gridRest"> &nbsp; </td>
-                        </tr>
-                        <tr class="rowPastReport">
-                            <td class="gridActivity"> &nbsp; </td>
-                            <td class="gridRest"> &nbsp; </td>
-                            <td class="gridRest"> &nbsp; </td>
-                        </tr>
-  
-                    </table>
 
-                    <p class="headers">Community mindedness</p>
-                    <p class="regularText">Promote, support and strengthen a respectful, inclusive, equitable and welcoming culture for all faculty, staff and students</p>
+   
+<?php
+    require('../models/ReportPDFModel.php');
+?>
+    
 
-                    <table class="tablePastReport">
-                        <tr class="rowPastReport">
-                            <th class="headerActivity">Activity</th>
-                            <th class="headerRest">Involvement</th>
-                        </tr>
-                        <tr class="rowPastReport">
-                            <td class="gridActivity"> &nbsp; </td>
-                            <td class="gridRest"> &nbsp; </td>
-                        </tr>
-                        <tr class="rowPastReport">
-                            <td class="gridActivity"> &nbsp; </td>
-                            <td class="gridRest"> &nbsp; </td>
-                        </tr>
-                        <tr class="rowPastReport">
-                            <td class="gridActivity"> &nbsp; </td>
-                            <td class="gridRest"> &nbsp; </td>
-                        </tr>
-                    </table>
-                </div>
-     </div>
 </body>
 </html>
 
+
+
 <?php
-    $html = ob_get_contents();
+    $html = ob_get_contents();    
     ob_end_clean();
-    // reference the Dompdf namespace
+
     use Dompdf\Dompdf;
-
-
-    // instantiate and use the dompdf class
     $dompdf = new Dompdf();
-
-    $dompdf->loadHtml($html);
-
+      
+    $dompdf->load_html($html);
 
     // (Optional) Setup the paper size and orientation
     $dompdf->setPaper('A4', 'portrait');
@@ -229,7 +235,6 @@
     $dompdf->render();
 
     // Output the generated PDF to Browser
-    $dompdf->stream();
-    echo $html;
+    $dompdf->stream("sample.pdf");
     
 ?>
