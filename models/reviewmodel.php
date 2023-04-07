@@ -1,16 +1,6 @@
 <?php
 
-
-$servername = "localhost";
-$username = "Oleg";
-$password = "asd123@#4";
-$dbname = "sciencestrategicplan";
-
-// Create a connection to the database
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+global $conn;
 
 $userId = $_SESSION['userId'];
 
@@ -28,16 +18,6 @@ $stmt->bind_param('ii', $userId, $survYear);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Dropdown list for year selection
-echo '<form method="post">';
-echo '<label for="year">Select year: </label>';
-echo '<select name="year" onchange="this.form.submit()">';
-for ($i = date('Y'); $i >= date('Y') - 5; $i--) {
-    $selected = $i == $survYear ? 'selected' : '';
-    echo "<option value='$i' $selected>$i</option>";
-}
-echo '</select>';
-echo '</form>';
 
 // Display table if data is found
 if ($result->num_rows > 0) {
