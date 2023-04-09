@@ -122,8 +122,10 @@ function QuestionGender(QuestionIndex){
 
                     if(LabelList[i]['QuestionID'] == Update_ID){
                         var id = 'op' + IdNum;
+                        document += "<div>";
                         document += "<input type='radio' id='"+id+"' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value= "+LabelList[i]['InputValue']+">";
                         document += "<label for='"+id+"'> "+LabelList[i]['InputValue']+" </label><br>"; 
+                        document += "</div>";
                         IdNum += 1 ;
                     }
                 }         
@@ -144,7 +146,7 @@ function QuestionGender(QuestionIndex){
 
                 //For short answer Questions                
                 document +="<tr>";
-                document +="<td  colspan='2' class='text-input'><input type='number' id='text_answer' name='"+Update_ID+"'></td>";
+                document +="<td  colspan='2' class='text-input'><input type='number' id='text_answer' name='"+Update_ID+"' placeholder='enter number'></td>";
                 document +="</tr>";
                 document +="</table>";
 
@@ -223,8 +225,10 @@ function QuestionGender(QuestionIndex){
 
                     //For ShortAnswer Sub-Questions
                     short_document += "<tr class='input-sq SQ'>";
+                    short_document += "<div class='shortSQ'>"
                     short_document += "<td>"+QuestionList[QuestionIndex]['Sub_Q']+"</td>";
                     short_document += "<td class='text-input'><input type='number' id='text_answer' name='"+Update_ID+"' placeholder='Type your answer here'></td>";
+                    short_document += "</div>"
                     short_document += "</tr>";
 
                 }

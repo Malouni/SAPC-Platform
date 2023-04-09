@@ -68,6 +68,7 @@
 
 .question {
     width: 80%;
+    height: calc(calc(100% - 20px));
     position: absolute;
     top: 50%;
     left: 50%;
@@ -75,7 +76,7 @@
     border: 1px solid rgb(173, 173, 173);
     border-top: 5px solid rgb(0, 184, 197);
     padding: 10px;
-    text-align: center;
+    text-align: left;
 }
 
 .question form {
@@ -88,45 +89,80 @@ table {
     border-spacing: 10px;
 }
 
-table td{
+table th{
     text-align: left;
 }
 
-/*-------styles for subquestion table-------*/
+table td {
+    text-align: left;
+}
 
-.multioption-SQ{
+.question h3{
+    text-align: center;
+}
+
+/*------------------------styles for subquestion table----------------------------*/
+
+.multioption-SQ {
     column-span: 2;
-    
+
 }
 
-.text-input>input{
-    width: 100%;
+.text-input>input {
+    width: 20%;
+    height: 30px;
 }
 
-.radio-option{
+/*------------input type subquestions----------*/
+
+.shortSQ{
+    column-span: all;
+    margin-bottom: 10px;
+    padding-left: 10px;
+}
+
+.shortSQ input{
+    margin-left: 10px;
+    height: 30px;
+}
+
+
+
+/*------------radio option questions----------*/
+.radio-option {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
 }
 
+.radio-option div{
+    margin-bottom: 10px;
+}
+
+
+
+/*----------user comments--------------*/
 #userComments {
-    width: 100%;
+    width: calc(100% - 20px);
     height: 60px;
-    margin-top: 60px;
-    margin-bottom: 60px;
+    position: absolute;
+    bottom: 60px;
+    left: 10px;
 }
 
-.floatleft {
-    float: left;
-}
-
-.floatright {
-    float: right
-}
-
+/*----------previous and next buttons--------------*/
 .question form button {
     width: 150px;
     height: 40px;
     padding: 10px;
+    position: absolute;
+    bottom: 10px;
 }
 
+.floatleft {
+    left: 10px;
+}
+
+.floatright {
+    right: 10px;
+}
