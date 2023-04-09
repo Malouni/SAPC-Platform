@@ -222,7 +222,26 @@ else if ($_POST['page'] == 'PastReport')
 }
 else if ($_POST['page'] == 'userReview')
 {
-    include('userReview.php');
+    if (!isset($_SESSION['LogIn'])) {
+        $display_type = 'none';
+        include('LogInPage.php');
+        exit();
+    }
+
+    $command = $_POST['command'];
+    switch($command) {
+       
+        case 'getUserAnswerReview':
+            $result = getUserReview($_SESSION['userId'] , $_POST['SurveyYear']);
+            echo json_encode($result);
+            break;
+        
+        case 'getYearSurvey':
+            $result = getYearSurvey($_SESSION['userPosition']);
+            echo json_encode($result);
+            break;
+    }
 }
-else {
+else{
+
 }
