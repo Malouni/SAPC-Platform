@@ -30,7 +30,7 @@ function upcomingSurveys (){
                 upcomingSurveys += "<div class='activity'>";
                 upcomingSurveys += "<img src='../images/cover-textures/1.png' alt='cover'>";
                 upcomingSurveys += "<p class='title'>Faculty of Science<br><span>" + result[row]['SurvName'] + "</span></p>";
-                upcomingSurveys += "<button class='options' button-document-id = '" + result[row]['SurvID'] + "'>...</button>";
+                upcomingSurveys += "<button class='UpcomingBtn' button-document-id = '" + result[row]['SurvID'] + "'>...</button>";
                 upcomingSurveys += "<div class='meter'></div>";
                 upcomingSurveys += "</div>";
             }            
@@ -39,7 +39,7 @@ function upcomingSurveys (){
 
         $('#upcoming-pane').html(upcomingSurveys);
 
-        $('button[button-document-id]').click(function() {
+        $('.UpcomingBtn').click(function() {
             var id = $(this).attr('button-document-id');
             document.getElementById("upcomingSurveyID").value = id; 
             $('#surveystart').submit();
@@ -72,15 +72,17 @@ function historyOfSurveys(){
                 historySurveys += "<div class='activity'>";
                 historySurveys += "<img src='../images/cover-textures/1.png' alt='cover'>";
                 historySurveys += "<p class='title'>Faculty of Science<br><span>" + result[row]['SurvName'] + "</span></p>";
-                historySurveys += "<button class='options' button-document-id = '" + result[row]['SurvID'] + "'>...</button>";
+                historySurveys += "<button class='HistoryBtn' button-document-id = '" + result[row]['SurvID'] + "'>...</button>";
                 historySurveys += "</div>";
             }
         }
 
         $('#history-pane').html(historySurveys);
 
-        $('button[button-document-id]').click(function() {
+        $('.HistoryBtn').click(function() {
             var id = $(this).attr('button-document-id');
+            document.getElementById("HSurveyID").value = id; 
+            $('#HistoryView').submit();
         });
 
     });

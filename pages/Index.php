@@ -81,6 +81,14 @@
     <input type='hidden' id='upcomingSurveyID' name='ID' value='0'>
 </form>
 
+    
+<form method='post' action='Controller.php' id='HistoryView' style='display:none'>
+    <input type='hidden' name='page' value='MainPage'>
+    <input type='hidden' name='command' value='HistorySurveysID'>
+    <input type='hidden' id='HSurveyID' name='P_ID' value='0'>
+</form>
+
+
 
 </body>
 

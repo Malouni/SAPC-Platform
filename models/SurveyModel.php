@@ -1,66 +1,6 @@
 <?php
 
-
-// for update the user answer 
-function UpdateAnswers($survId , $userID , $Q_ID , $SubQ_ID , $Answer)
-{   
-    global $conn;
-
-    // update the ansewer for the question without the sub questions when SubQ_ID == 0(Note: the SubQuestionID = 0 in db is not exit )  
-    if($SubQ_ID == 0)
-    {
-        $Update = "UPDATE UserAnswer SET Answer = ".$Answer."   
-                        WHERE SurvID = ".$survId." AND QuestionID = ".$Q_ID." AND UserID = ".$userID."";
-
-        $result = mysqli_query($conn, $Update);
-    
-    }else
-    {
-        $Update = "UPDATE SubQuestionAnswer SET Answer = ".$Answer."   
-                        WHERE  QuestionID = ".$Q_ID." AND UserID = ".$userID." AND SubQuestionID = ".$SubQ_ID."";
-        
-        $result = mysqli_query($conn, $Update);
-    }
-
-}
-
-// for load the user answer 
-function LoadAnswers($survId , $userID , $Q_ID , $Type)
-{
-    global $conn;
-
-    if($Type == 'single'){
-        
-        // load the ansewer for the only single questions    
-        $sql = " SELECT QuestionID, Answer As MainAnswer
-                    FROM useranswer
-                    WHERE QuestionID = ".$Q_ID." AND UserID = ".$userID." 
-                    AND Answer IS NOT NULL";
-    }else{
-
-        // load the ansewer for the only composed questions    
-        $sql = " SELECT subquestionanswer.QuestionID, subquestionanswer.SubQuestionID, subquestionanswer.Answer As SubAnswer
-                    FROM subquestionanswer
-                    LEFT JOIN subquestions ON subquestions.SubQuestionID = subquestionanswer.SubQuestionID
-                    WHERE subquestionanswer.QuestionID =  ".$Q_ID." AND UserID = ".$userID."
-                    AND Answer IS NOT NULL
-                    ORDER BY subquestions.SubType ";                   
-    }
-
-    $result = mysqli_query($conn, $sql);
-   
-    //put the data to array and return 
-    $data = [];
-    if (mysqli_num_rows($result)) 
-    {
-        while($row = mysqli_fetch_assoc($result))
-            $data[] = $row;
-        return $data;
-
-    }else
-        return $data[0] = "Failed";
-
-}
+//========================== LOAD SESSION ===================================
 
 // for load all the questions and goal
 function LoadQuestions($survId)
@@ -139,6 +79,68 @@ function LoadLastProgress($survId , $userID)
     }
     else
         return 0;
+
+}
+
+// for load the user answer 
+function LoadAnswers($survId , $userID , $Q_ID , $Type)
+{
+    global $conn;
+
+    if($Type == 'single'){
+        
+        // load the ansewer for the only single questions    
+        $sql = " SELECT QuestionID, Answer As MainAnswer
+                    FROM useranswer
+                    WHERE QuestionID = ".$Q_ID." AND UserID = ".$userID." 
+                    AND Answer IS NOT NULL";
+    }else{
+
+        // load the ansewer for the only composed questions    
+        $sql = " SELECT subquestionanswer.QuestionID, subquestionanswer.SubQuestionID, subquestionanswer.Answer As SubAnswer
+                    FROM subquestionanswer
+                    LEFT JOIN subquestions ON subquestions.SubQuestionID = subquestionanswer.SubQuestionID
+                    WHERE subquestionanswer.QuestionID =  ".$Q_ID." AND UserID = ".$userID."
+                    AND Answer IS NOT NULL
+                    ORDER BY subquestions.SubType ";                   
+    }
+
+    $result = mysqli_query($conn, $sql);
+   
+    //put the data to array and return 
+    $data = [];
+    if (mysqli_num_rows($result)) 
+    {
+        while($row = mysqli_fetch_assoc($result))
+            $data[] = $row;
+        return $data;
+
+    }else
+        return $data[0] = "Failed";
+
+}
+
+//========================== UPDATE SESSION ===================================
+// for update the user answer 
+function UpdateAnswers($survId , $userID , $Q_ID , $SubQ_ID , $Answer)
+{   
+    global $conn;
+
+    // update the ansewer for the question without the sub questions when SubQ_ID == 0(Note: the SubQuestionID = 0 in db is not exit )  
+    if($SubQ_ID == 0)
+    {
+        $Update = "UPDATE UserAnswer SET Answer = ".$Answer."   
+                        WHERE SurvID = ".$survId." AND QuestionID = ".$Q_ID." AND UserID = ".$userID."";
+
+        $result = mysqli_query($conn, $Update);
+    
+    }else
+    {
+        $Update = "UPDATE SubQuestionAnswer SET Answer = ".$Answer."   
+                        WHERE  QuestionID = ".$Q_ID." AND UserID = ".$userID." AND SubQuestionID = ".$SubQ_ID."";
+        
+        $result = mysqli_query($conn, $Update);
+    }
 
 }
 

@@ -4,14 +4,28 @@ function getUserReview($userId , $survYear){
 
     global $conn;
 
-    // Fetch the data for the selected year
-    $sql = "SELECT  SQ.Type,  SQ.QuestionID , SQ.Question , UA.Answer as MainAnsewer , SQS.Sub_Q , UAS.Answer as SubAnsewer
+    if(is_string($survYear) != 1){
+
+        // Fetch the data by using SurvID
+        $sql = "SELECT  ST.SurvYear , SQ.Type,  SQ.QuestionID , SQ.Question , UA.Answer as MainAnsewer , SQS.Sub_Q , UAS.Answer as SubAnsewer
+                        FROM surveyquestions SQ 
+                        LEFT JOIN surveytable ST ON SQ.SurvID =  ST.SurvID
+                        LEFT JOIN subquestions SQS ON SQS.QuestionID =  SQ.QuestionID
+                        LEFT JOIN useranswer UA ON UA.QuestionID = SQ.QuestionID AND UA.UserID = '".$userId."'
+                        LEFT JOIN subquestionanswer UAS ON UAS.SubQuestionID = SQS.SubQuestionID AND UAS.UserID = '".$userId."' 
+                        WHERE SQ.SurvID = '".$survYear."' 
+                        ORDER BY SQ.QuestionID";
+    }else{
+        
+        // Fetch the data for the selected year
+        $sql = "SELECT  SQ.Type,  SQ.QuestionID , SQ.Question , UA.Answer as MainAnsewer , SQS.Sub_Q , UAS.Answer as SubAnsewer
                     FROM surveyquestions SQ 
                     LEFT JOIN subquestions SQS ON SQS.QuestionID =  SQ.QuestionID
                     LEFT JOIN useranswer UA ON UA.QuestionID = SQ.QuestionID AND UA.UserID = '".$userId."'
                     LEFT JOIN subquestionanswer UAS ON UAS.SubQuestionID = SQS.SubQuestionID AND UAS.UserID = '".$userId."' 
                     WHERE SQ.SurvID IN (SELECT SurvID FROM surveytable WHERE  SurvYear = '$survYear' )  
                     ORDER BY SQ.QuestionID";
+    }
 
     $stmt = $conn->prepare($sql);
     //$stmt->bind_param('ii', $userId, $survYear);

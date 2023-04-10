@@ -14,6 +14,7 @@ require('../models/PastSurveyReportModel.php');
 require('../models/MainPageModel.php');
 require('../models/SurveyModel.php');
 require('../models/surveyStartModel.php');
+require('../models/reviewmodel.php');
 
 
 
@@ -116,6 +117,12 @@ else if($_POST['page'] == 'MainPage')
         $_SESSION['NewSurveysID'] = (int) $_POST['ID'] ;
         include('surveyStart.php');
         break;
+
+    case 'HistorySurveysID':
+        $_SESSION['PastSurveysID'] = (int) $_POST['P_ID'] ;
+        include('userReview.php');
+        break;
+
     }
 }
 
@@ -142,8 +149,7 @@ else if ($_POST['page'] == 'SuveryStart')
             break;
 
         case 'StartSurvey':
-            header('location: survey.php');
-            exit();
+            include('survey.php');  
             break;
     }
 }
@@ -190,6 +196,10 @@ else if($_POST['page'] == 'Suvery'){
         case 'LastProgress':
             $result = LoadLastProgress($_SESSION['NewSurveysID'],$_SESSION['userId']);
             echo json_encode($result);
+            break;       
+            
+        case 'SurveyFin':
+            include('SurveySubmit.php');
             break;       
     }
 }
@@ -238,6 +248,16 @@ else if ($_POST['page'] == 'userReview')
         
         case 'getYearSurvey':
             $result = getYearSurvey($_SESSION['userPosition']);
+            echo json_encode($result);
+            break;
+
+        case 'SurveySubmitAnswer':
+            $result = getUserReview($_SESSION['userId'] , $_SESSION['NewSurveysID'] );
+            echo json_encode($result);
+            break;
+    
+        case 'HistorySurveyReview':
+            $result = getUserReview($_SESSION['userId'] , $_SESSION['PastSurveysID'] );
             echo json_encode($result);
             break;
     }

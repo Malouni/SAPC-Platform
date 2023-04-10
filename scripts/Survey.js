@@ -5,24 +5,7 @@ var QuestionNum;
 var totalQuestion; 
 
 document.addEventListener("DOMContentLoaded", function(){
-    //setup the QuestionList , LabelList and CurrentQuestion 
-    QuestionLoad();    
-    QuestionList = JSON.parse(sessionStorage.getItem("QuestionList"));
-
-    LabelLoad();
-    LabelList = JSON.parse(sessionStorage.getItem("LabelList"));
-
-    LastProgressCheck();
-    // 0 is mean this is the first time user open the survey
-    if(JSON.parse(sessionStorage.getItem("CurrentQuestion")) == 0){
-        CurrentQuestionID = QuestionList[0]["QuestionID"];
-    }else{
-        CurrentQuestionID = JSON.parse(sessionStorage.getItem("CurrentQuestion"));
-    }
-
-    QuestionNumber(CurrentQuestionID);
-    updateProgressBar(QuestionNum);
-    QuestionGender(findIndex(CurrentQuestionID));     
+    QuestionLoad(); 
 });
   
 
@@ -122,10 +105,8 @@ function QuestionGender(QuestionIndex){
 
                     if(LabelList[i]['QuestionID'] == Update_ID){
                         var id = 'op' + IdNum;
-                        document += "<div>";
                         document += "<input type='radio' id='"+id+"' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value= "+LabelList[i]['InputValue']+">";
                         document += "<label for='"+id+"'> "+LabelList[i]['InputValue']+" </label><br>"; 
-                        document += "</div>";
                         IdNum += 1 ;
                     }
                 }         
@@ -137,26 +118,28 @@ function QuestionGender(QuestionIndex){
                 document += "<input type='text' id='userComments' placeholder='Additional comments'>";
                 document += " <button class='floatleft' onclick='BackBtn()'>Back</button>";
                 document += "<button class='floatright' id='nextBtn' onclick='multiNextButton()'>Next</button>";
-                document += "<button class='floatright' id='finBtn' style='display:none;' onclick='surveyFin()'>Finish</button>";
 
                 
                 document +="</form>";
+                document += "<button class='floatright' id='finBtn' style='display:none;' onclick='surveyFin()'>Finish</button>";
+
 
             }else{  
 
                 //For short answer Questions                
                 document +="<tr>";
-                document +="<td  colspan='2' class='text-input'><input type='number' id='text_answer' name='"+Update_ID+"' placeholder='enter number'></td>";
+                document +="<td  colspan='2' class='text-input'><input type='number' id='text_answer' name='"+Update_ID+"'></td>";
                 document +="</tr>";
                 document +="</table>";
 
                 document += "<input type='text' id='userComments' placeholder='Additional comments'>";
                 document += " <button class='floatleft' onclick='BackBtn()'>Back</button>";
                 document += "<button class='floatright' id='nextBtn' onclick='multiNextButton()'>Next</button>";
-                document += "<button class='floatright' id='finBtn' style='display:none;' onclick='surveyFin()'>Finish</button>";
 
 
                 document +="</form>";                
+                document += "<button class='floatright' id='finBtn' style='display:none;' onclick='surveyFin()'>Finish</button>";
+
             }
 
             $('#question').html(document);
@@ -225,10 +208,8 @@ function QuestionGender(QuestionIndex){
 
                     //For ShortAnswer Sub-Questions
                     short_document += "<tr class='input-sq SQ'>";
-                    short_document += "<div class='shortSQ'>"
                     short_document += "<td>"+QuestionList[QuestionIndex]['Sub_Q']+"</td>";
                     short_document += "<td class='text-input'><input type='number' id='text_answer' name='"+Update_ID+"' placeholder='Type your answer here'></td>";
-                    short_document += "</div>"
                     short_document += "</tr>";
 
                 }
@@ -255,9 +236,10 @@ function QuestionGender(QuestionIndex){
             document += "<input type='text' id='userComments' placeholder='Additional comments'>";
             document += " <button class='floatleft' onclick='BackBtn()'>Back</button>";
             document += "<button class='floatright' id='nextBtn' onclick='multiNextButton()'>Next</button>";
-            document += "<button class='floatright' id='finBtn' style='display:none;' onclick='surveyFin()'>Finish</button>";
 
             document +="</form>";         
+            document += "<button class='floatright' id='finBtn' style='display:none;' onclick='surveyFin()'>Finish</button>";
+
 
             $('#question').html(document);
             NoteLoad();
@@ -444,9 +426,10 @@ function QuestionLoad(){
 
     var url = 'Controller.php';
     var query = {page: 'Suvery', command: 'LoadQuestionList'};        
-    
+
     $.post(url, query, function(data) {
         sessionStorage.setItem("QuestionList", data);   
+        LabelLoad();
     });
 }
 
@@ -455,11 +438,11 @@ function LabelLoad(){
 
     var url = 'Controller.php';
     var query = {page: 'Suvery', command: 'LoadLabelList'};        
-    
+
     $.post(url, query, function(data) {
         sessionStorage.setItem("LabelList", data);   
-    });
-    
+        LastProgressCheck();
+    });    
 }
 
 // load the last index that user stop working on berfore 
@@ -470,8 +453,28 @@ function LastProgressCheck(){
     
     $.post(url, query, function(data) {
         sessionStorage.setItem("CurrentQuestion", data);  
+        fristUpdate();
     });
 }
+
+
+function fristUpdate(){
+
+    QuestionList = JSON.parse(sessionStorage.getItem("QuestionList"));
+    LabelList = JSON.parse(sessionStorage.getItem("LabelList"));
+    
+    // 0 is mean this is the first time user open the survey
+    if(JSON.parse(sessionStorage.getItem("CurrentQuestion")) == 0){
+        CurrentQuestionID = QuestionList[0]["QuestionID"];
+    }else{
+        CurrentQuestionID = JSON.parse(sessionStorage.getItem("CurrentQuestion"));
+    }
+
+    QuestionNumber(CurrentQuestionID);
+    updateProgressBar(QuestionNum);
+    QuestionGender(findIndex(CurrentQuestionID));  
+}
+
 
 //================ Button Function ==================    
 
@@ -536,6 +539,7 @@ function btnShow(){
 
 //go to user review btn
 function surveyFin(){
+    $('#SurveyFinSubmit').submit();
 }
 
 
