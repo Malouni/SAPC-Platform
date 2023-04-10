@@ -59,8 +59,10 @@
 
     </div>
 
-
-
+<form method='post' action='Controller.php' id='SurveyFinSubmit' style='display:none'>
+    <input type='hidden' name='page' value='Suvery'>
+    <input type='hidden' name='command' value='SurveyFin'>
+</form>
 
 </body>
 

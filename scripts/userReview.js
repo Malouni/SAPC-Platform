@@ -1,15 +1,19 @@
 
-document.addEventListener("DOMContentLoaded", function(){
-    getUserAnswer('2021')
-    getSelectMenu();
-});
-
-
 function getUserAnswer(surveyYear){
 
     //call to Controller to get the data 
     var url = 'Controller.php';
-    var query = {page: 'userReview', command: 'getUserAnswerReview' , SurveyYear: ''+surveyYear+'' };        
+
+   
+    //called from surveysubmit.php will set the surveyYear == 0 
+    //called from history(main) will set the surveyYear == 1
+    if(surveyYear == 0){
+        var query = {page: 'userReview', command: 'SurveySubmitAnswer'};
+    }else if(surveyYear == 1){
+        var query = {page: 'userReview', command: 'HistorySurveyReview'};
+    }else{
+        var query = {page: 'userReview', command: 'getUserAnswerReview' , SurveyYear: ''+surveyYear+'' };                
+    }
 
     $.post(url, query, function(data) {
         var result = JSON.parse(data);
@@ -24,8 +28,9 @@ function getUserAnswer(surveyYear){
             table +=  "<tr><th>Questions</th><th>Answer</th></tr>";
 
             for(let row = 0 ; row < result.length ; row++)
-            {
+            {   
                 var QuesetionType = (result[row]['Type']).split("_");
+
 
                 if (QuesetionType[0] == 'composed') {
                     if(IDcheck != result[row]['QuestionID'])
@@ -46,16 +51,19 @@ function getUserAnswer(surveyYear){
                 }
             }
 
-            table += "</table>";
+            table += "</table>";    
 
         }else{
             table = "<p>No data found for the selected year.</p>";
-        }
+        }       
+          
 
     //print the table
     $('#report').html(table);
+    if(surveyYear == 1){
+        setDefaultSelect(result[1]['SurvYear']);
+    }
     });
-
 }
 
 
@@ -82,8 +90,7 @@ function getSelectMenu(){
         }
 
         //print the selectButton 
-        $('#selectBTN').html(select);
-    
+        $('#selectBTN').html(select); 
     });     
  
 }
@@ -91,4 +98,30 @@ function getSelectMenu(){
 function yearSelect(){
     var year = document.getElementById("year").value;
     getUserAnswer(year);
+}
+
+// this function will only be called in the surveySubmit page 
+// This will use the 
+function SurveySumbit(){
+    getUserAnswer(0);
+}
+
+
+function SurveyHistory(){
+    getSelectMenu();
+    getUserAnswer(1);
+}
+
+function setDefaultSelect(year){
+
+    var valueSelect = year;
+    var mySelect = document.getElementById('year');
+
+    for(var i, j = 0; i = mySelect.options[j]; j++) {
+
+        if(i.value == valueSelect) {
+            mySelect.selectedIndex = j;
+            break;
+        }
+    }   
 }
