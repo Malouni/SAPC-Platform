@@ -36,10 +36,12 @@ h2 {
     grid-area: leftside;
     padding: 10px;
     display: grid;
-    grid-template-rows: 0.5fr 9fr;
+    grid-template-rows: 0.5fr 4fr 0.5fr 4fr;
     grid-template-areas:
         "header"
         "row1"
+        "header"
+        "row2"
     ;
 }
 
@@ -65,6 +67,33 @@ h2 {
     background-color: rgb(231, 231, 231);
 }
 
+.surveyTable{
+    border: 1px solid rgb(121, 121, 121);
+    padding: 10px;
+    overflow: auto;
+    margin: 10px 0;
+}
+
+.surveyTable table{
+    border: 1px solid rgb(121, 121, 121);
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.surveyTable th{
+    background-color: #003e51;
+    color: white;
+}
+
+.surveyTable tr:nth-child(odd) td{
+    background-color: rgb(231, 231, 231);
+}
+
+.surveyTable tr:nth-child(odd) td.buttonForEdit{
+    background-color: rgb(231, 231, 231);
+    text-align: center;
+}
+
 
 
 /* ---------right column-----------*/
@@ -72,7 +101,7 @@ h2 {
     grid-area: rightside;
     padding: 10px;
     display: grid;
-    grid-template-rows: 0.5fr 2.5fr 4fr 2.5fr;
+    grid-template-rows: 0.5fr 2.5fr 3.5fr 0.5fr 2.5fr;
 }
 
 
@@ -85,7 +114,7 @@ h2 {
     display: block;
 }
 
-.row1 form #submitr1{
+.row1 form #csvSureInfoFileSend{
     position: absolute;
     bottom: 10px;
     right: 10px;
@@ -117,7 +146,7 @@ h2 {
     margin: 10px 0px;
 }
 
-.row2 form #submitr2{
+.row2 form #addNewUser{
     position: absolute;
     bottom: 10px;
     right: 10px;
@@ -137,24 +166,30 @@ h2 {
 }
 
 .row3 form *{
-    width: 300px;
-    height: 40px;
-    margin: 10px 0px;
+    display: block;
 }
 
-.row3 form #submitr3{
+.row3 form #csvSurvInfoFileSend{
     position: absolute;
     bottom: 10px;
     right: 10px;
     width: 300px;
     height: 40px;
-    background-color:#ffcd00;
+    background-color: rgb(219, 219, 219);
     border-radius: 5px;
     border: none;
     cursor: pointer;
 
 }
 
+/*------css buttons for adding, deleting --------*/
+button.editDelete
+{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 
 
 
