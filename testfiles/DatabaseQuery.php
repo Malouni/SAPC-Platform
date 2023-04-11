@@ -38,7 +38,7 @@ $SurveyQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SurveyQuestions (
     SurvID INT,
     Goal VARCHAR(200),
     SubGoal VARCHAR(200),
-    Question VARCHAR(200),
+    Question VARCHAR(800),
     Type VARCHAR(200)
 )";
 
@@ -47,7 +47,7 @@ $SubQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SubQuestions (
     SubQuestionID INT PRIMARY KEY AUTO_INCREMENT,
     SurvID INT,
     QuestionID INT,
-    Sub_Q VARCHAR(200),
+    Sub_Q VARCHAR(800),
     SubType VARCHAR(200)
 )";
 
