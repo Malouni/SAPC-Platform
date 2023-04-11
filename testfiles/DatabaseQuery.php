@@ -27,7 +27,7 @@ $SurveyTableSQL = "CREATE TABLE IF NOT EXISTS SurveyTable (
     SurvName varchar(100),
     SurvDateStart DATE,
     SurvDateEnd DATE,
-    AmPeopleFin INT,
+    TotalAnswersAvg FLOAT,
     LastUpdatedDate DATE,
     Position varchar(100)
   )";
@@ -47,7 +47,8 @@ $SubQuestionsTableSQL = "CREATE TABLE IF NOT EXISTS SubQuestions (
     SubQuestionID INT PRIMARY KEY AUTO_INCREMENT,
     SurvID INT,
     QuestionID INT,
-    Sub_Q VARCHAR(200)
+    Sub_Q VARCHAR(200),
+    SubType VARCHAR(200)
 )";
 
 //Options for possible answers
