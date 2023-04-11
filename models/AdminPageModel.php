@@ -66,13 +66,22 @@ function add_new_survey($survYear, $survName, $survDateStart, $survDateEnd, $pos
     $AmPeopleFin = 0;
 
 
-    $sql = "INSERT INTO SurveyTable (SurvYear, SurvName, SurvDateStart, SurvDateEnd, AmPeopleFin, LastUpdatedDate, Position) OUTPUT INSERTED.SurvID VALUES ('$survYear', '$survName', '$survDateStart', '$survDateEnd', '$AmPeopleFin', '$lastUpdatedDate', '$position')";
+    $sql = "INSERT INTO SurveyTable (SurvYear, SurvName, SurvDateStart, SurvDateEnd, AmPeopleFin, LastUpdatedDate, Position)
+            VALUES ('$survYear', '$survName', '$survDateStart', '$survDateEnd', '$AmPeopleFin', '$lastUpdatedDate', '$position')";
     $result = mysqli_query($conn, $sql);
 
-    if (mysqli_num_rows($result) > 0)
+    if ($result)
     {
-        $row = mysqli_fetch_assoc($result);
-        return $row['SurvID'];
+        $sql = "SELECT SurvID FROM SurveyTable
+                WHERE SurvYear = '$survYear' AND SurvName = '$survName' and Position = '$position'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0)
+        {
+            $row = mysqli_fetch_assoc($result);
+            return $row['SurvID'];
+        }
+        else
+            return false;
     }
     else
         return false;
@@ -95,30 +104,48 @@ function add_survey_question($survID, $goal, $subGoal, $question, $type)
 {
     global $conn;
 
-    $sql = "INSERT INTO SurveyQuestions (SurvID, Goal, SubGoal, Question, Type) OUTPUT INSERTED.QuestionID VALUES ('$survID', '$goal', '$subGoal', '$question', '$type')";
+    $sql = "INSERT INTO SurveyQuestions (SurvID, Goal, SubGoal, Question, Type)
+            VALUES ('$survID', '$goal', '$subGoal', '$question', '$type')";
     $result = mysqli_query($conn, $sql);
 
-    if (mysqli_num_rows($result) > 0)
+    if ($result)
     {
-        $row = mysqli_fetch_assoc($result);
-        return $row['QuestionID'];
+        $sql = "SELECT QuestionID FROM SurveyQuestions
+                WHERE SurvID = '$survID' AND Goal = '$goal' and SubGoal = '$subGoal' and Question = '$question' and Type = '$type'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0)
+        {
+            $row = mysqli_fetch_assoc($result);
+            return $row['QuestionID'];
+        }
+        else
+            return false;
     }
     else
         return false;
 }
 
 //This function creates a SubQuestions record and outputs its id from the SurveyQuestions table
-function add_survey_sub_question($survID, $questionID, $sub_Q)
+function add_survey_sub_question($survID, $questionID, $sub_Q, $subType)
 {
     global $conn;
 
-    $sql = "INSERT INTO SubQuestions (SurvID, QuestionID, Sub_Q ) OUTPUT INSERTED.SubQuestionID VALUES ('$survID', '$questionID', '$sub_Q')";
+    $sql = "INSERT INTO SubQuestions (SurvID, QuestionID, Sub_Q, SubType)
+            VALUES ('$survID', '$questionID', '$sub_Q', '$subType')";
     $result = mysqli_query($conn, $sql);
 
-    if (mysqli_num_rows($result) > 0)
+    if ($result)
     {
-        $row = mysqli_fetch_assoc($result);
-        return $row['SubQuestionID'];
+        $sql = "SELECT SubQuestionID FROM SubQuestions
+                WHERE SurvID = '$survID' AND QuestionID = '$questionID' and Sub_Q = '$sub_Q'";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0)
+        {
+            $row = mysqli_fetch_assoc($result);
+            return $row['SubQuestionID'];
+        }
+        else
+            return false;
     }
     else
         return false;
@@ -129,11 +156,18 @@ function add_possible_answer_to_question($survID, $questionID, $subQuestionID, $
 {
     global $conn;
 
-    $sql = "INSERT INTO AnswerOptions (SurvID, QuestionID, SubQuestionID, InputValue) VALUES ('$survID', '$questionID', '$subQuestionID', '$inputValue')";
+    $sql = "INSERT INTO AnswerOptions (SurvID, QuestionID, SubQuestionID, InputValue)
+            VALUES ('$survID', '$questionID', '$subQuestionID', '$inputValue')";
     $result = mysqli_query($conn, $sql);
 
     if ($result)
+    {
+        $sql = "UPDATE AnswerOptions
+                SET SubQuestionID = NULL
+                WHERE SubQuestionID = 0;";
+        $result = mysqli_query($conn, $sql);
         return true;
+    }
     else
         return false;
 }
@@ -153,7 +187,7 @@ function get_surveys_info()
         return $data;
     }
     else
-        return $data[0] = "Failed";
+        return $data[0] = "NoResults";
 }
 
 //This function updates the specific column chosen by the admin tools
@@ -174,7 +208,8 @@ function rest_user_password($userID)
 {
     global $conn;
 
-    $defaultPassword = "changeme";
+    //This is the field for changing the default password for new users
+    $defaultPassword = "password";
     $hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
 
     $sql = "UPDATE UserTable SET Password = '$hashedPassword' WHERE UserID = '$userID'";
@@ -245,7 +280,6 @@ function delete_survey($survID)
         return false;
 }
 
-//This function ..... TODO
 function add_questions_to_new_survey($dataQuestions, $dataSubQuestions, $newSurvId)
 {
     $result = true;
@@ -255,9 +289,9 @@ function add_questions_to_new_survey($dataQuestions, $dataSubQuestions, $newSurv
         {
             if($dataQuestions[$lineQuestion]["Type"] != "composed")
             {
-                for($linePossibleAns = 0; $linePossibleAns < count($dataQuestions[$lineQuestion]["InputValue"]); $linePossibleAns++)
+                for($linePossibleAns = 0; $linePossibleAns < count($dataQuestions[$lineQuestion]["PossibleAnswers"]); $linePossibleAns++)
                 {
-                    if(!add_possible_answer_to_question($newSurvId, $newQuestionId, null, $dataQuestions[$lineQuestion]["InputValue"][$linePossibleAns]))
+                    if(!add_possible_answer_to_question($newSurvId, $newQuestionId, NULL, $dataQuestions[$lineQuestion]["PossibleAnswers"][$linePossibleAns]))
                     {
                         $result = false;
                         break;
@@ -268,13 +302,13 @@ function add_questions_to_new_survey($dataQuestions, $dataSubQuestions, $newSurv
             {
                 for($lineSubQuestion = 0; $lineSubQuestion < count($dataSubQuestions); $lineSubQuestion++)
                 {
-                    if($dataQuestions[$lineQuestion]["Question"] == $dataSubQuestions[$lineSubQuestion]["Sub_Q"])
+                    if($dataQuestions[$lineQuestion]["Question"] == $dataSubQuestions[$lineSubQuestion]["Question"])
                     {
-                        if($newSubQuestionId = add_survey_sub_question($newSurvId, $newQuestionId, $dataSubQuestions[$lineSubQuestion]["Sub_Q"]))
+                        if($newSubQuestionId = add_survey_sub_question($newSurvId, $newQuestionId, $dataSubQuestions[$lineSubQuestion]["Sub_Q"], $dataSubQuestions[$lineSubQuestion]["SubType"]))
                         {
-                            for($linePossibleAns = 0; $linePossibleAns < count($dataSubQuestions[$lineSubQuestion]["InputValue"]); $linePossibleAns++)
+                            for($linePossibleAns = 0; $linePossibleAns < count($dataSubQuestions[$lineSubQuestion]["PossibleAnswers"]); $linePossibleAns++)
                             {
-                                if(!add_possible_answer_to_question($newSurvId, $newQuestionId, $newSubQuestionId, $dataSubQuestions[$lineSubQuestion]["InputValue"][$linePossibleAns]))
+                                if(!add_possible_answer_to_question($newSurvId, $newQuestionId, $newSubQuestionId, $dataSubQuestions[$lineSubQuestion]["PossibleAnswers"][$linePossibleAns]))
                                 {
                                     $result = false;
                                     break;

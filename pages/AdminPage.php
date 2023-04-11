@@ -61,7 +61,7 @@ session_start();
             <div class="row row1">
                 <form onsubmit="addUsersFromFileFunction()">
                     <label for="csvFile">Upload CSV file containing user information:</label>
-                    <input type="file" name="csvFile" id="csvFile" accept=".csv" required>
+                    <input type="file" name="csvUserFile" id="csvUserFile" accept=".csv" required>
                     <br>
                     <input type="submit" value="Upload" id="csvSureInfoFileSend">
                 </form>
@@ -90,9 +90,9 @@ session_start();
 
             <!---------survey info file row------------>
             <div class="row row3">
-                <form onsubmit="addUsersFromFileFunction()">
+                <form onsubmit="addSurveyFromFileFunction()">
                     <label for="csvFile">Upload CSV file containing Survey information:</label>
-                    <input type="file" name="csvFile" id="csvFile" accept=".csv" required>
+                    <input type="file" name="csvSurveyFile" id="csvSurveyFile" accept=".csv" required>
                     <br>
                     <input type="submit" value="Upload" id="csvSurvInfoFileSend">
                 </form>

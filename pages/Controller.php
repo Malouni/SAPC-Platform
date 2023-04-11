@@ -230,27 +230,29 @@ else if ($_POST['page'] == 'AdminPage')
             break;
 
         case 'csvAddUsers':
-            $data = json_decode($_POST["csvFileDataUsers"]);
-            for($line = 0; $line < count($data) - 1; $line++)
+            $data = $_POST["csvFileDataUsers"];
+            $result = "";
+            for($line = 0; $line < count($data); $line++)
             {
-                if(check_if_user_exists($data[$line]["Username"]))
+                if(!check_if_user_exists($data[$line]["Username"]))
                 {
                     if(add_new_user($data[$line]["Username"],$data[$line]["FirstName"], $data[$line]["LastName"], $data[$line]["UserType"], $data[$line]["Department"])){
-                        $result += "The user "+ $data[$line]["Username"] +" was added successfully!\n";
+                        $result .= "The user ".$data[$line]["Username"]." was added successfully!\n";
                     }else{
-                        $result += "The user "+ $data[$line]["Username"] +" was not added due to the error!, try again\n";
+                        $result .= "The user ".$data[$line]["Username"]." was not added due to the error!, try again\n";
                     }
                 }
                 else
                 {
-                    $result += "User already exists: "+ $data[$line]["Username"] +"\n";
+                    $result .= "User already exists: ".$data[$line]["Username"]."\n";
                 }
             }
             echo json_encode($result);
             break;
 
         case 'csvAddSurvey':
-            $data = json_decode($_POST["csvFileDataSurveys"]);
+            $data = $_POST["csvFileDataSurveys"];
+            $result;
             if(!check_if_survey_exists($data[0][0]["SurvYear"], $data[0][0]["SurvName"]))
             {
                 $newSurvId = add_new_survey($data[0][0]["SurvYear"], $data[0][0]["SurvName"], $data[0][0]["SurvDateStart"], $data[0][0]["SurvDateEnd"], $data[0][0]["Position"]);
@@ -258,21 +260,21 @@ else if ($_POST['page'] == 'AdminPage')
                 {
                     if($result = add_questions_to_new_survey($data[1], $data[2], $newSurvId))
                     {
-                        $result = "The survey: " + $data[0][0]["SurvName"] + " was added successfully!";
+                        $result = "The survey: ".$data[0][0]["SurvName"]." was added successfully!";
                     }
                     else
                     {
-                        $result = "The survey: " + $data[0][0]["SurvName"] + " addition failed, check the csv file (Questions Part)";
+                        $result = "The survey: ".$data[0][0]["SurvName"]." addition failed, check the csv file (Questions Part)";
                     }
                 }
                 else
                 {
-                    $result = "The survey: " + $data[0][0]["SurvName"] + " addition failed, check the csv file (Survey Details)";
+                    $result = "The survey: ".$data[0][0]["SurvName"]." addition failed, check the csv file (Survey Details)";
                 }
             }
             else
             {
-                $result ="The survey: "+ $data[0][0]["SurvName"] + " already exists";
+                $result ="The survey: ".$data[0][0]["SurvName"]." already exists";
             }
             echo json_encode($result);
             break;
