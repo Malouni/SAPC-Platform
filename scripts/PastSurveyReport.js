@@ -60,7 +60,8 @@ function show_survey_documents() {
 
         $('td > button[button-document-download-id]').click(function() {
             var id = $(this).attr('button-document-download-id');
-            download_chosen_document(id);
+            document.getElementById("PDFID").value = id; 
+            $('#GetPDF').submit();
         });
     });
 
@@ -190,6 +191,9 @@ function show_survey_goal_chosen(goal) {
                     tables += "</table>";
                 }
             }
+            
+            var progress = result[0]['Answer_Percentage']; 
+            updateCircularProgressBar(progress);
         }
         $('#report-pane').html(tables);
     });
@@ -204,28 +208,38 @@ function set_current_document (id)
 }
 
 function diel_goal_show()
-{
+{   
     show_survey_goal_chosen('DIEL');
+    if(chart != null){ chart.destroy();}
+    load_charts('DIEL');
 }
 
 function sppb_goal_show()
 {
     show_survey_goal_chosen('SPP');
+    chart.destroy();
+    load_charts('SPP');
 }
 
 function ttl_goal_show()
 {
     show_survey_goal_chosen('TTL');
+    chart.destroy();
+    load_charts('TTL');
 }
 
 function tc_goal_show()
 {
     show_survey_goal_chosen('TC');
+    chart.destroy();
+    load_charts('TC');
 }
 
 function gcd_goal_show()
 {
     show_survey_goal_chosen('GSD');
+    chart.destroy();
+    load_charts('GSD');
 }
 
 function disable_goal_buttons()
@@ -246,14 +260,44 @@ function enable_goal_buttons()
     $('#GSDbutton').prop('disabled', false);
 }
 
+
 //----------------------------------Scripts for charts-------------------------------------
+
+function load_charts(goal){
+
+    var url = 'Controller.php';
+    var query = {page: 'PastReport', command: 'AnswerPercentage', goal: ''+goal+''};
+
+    $.post(url, query, function(data) {
+        var result = JSON.parse(data);
+
+        if(result != "No Data")
+        {   
+            //list of year
+            var CurrentYear = result[0]['CurrentYear'];
+            var Year1 = result[0]['Year1'];
+            var Year2 = result[0]['Year2'];
+
+            //list of Answer_Percentage
+            var Value  = result[0]['Value'];
+            var Value1 = result[0]['Value1'];
+            var Value2 = result[0]['Value2'];
+
+            calculateGraph(CurrentYear , Year1 , Year2 ,Value , Value1 ,Value2);            
+        }else{
+            calculateGraph(0 , 0 , 0 ,0 , 0 ,0);       
+        }
+    });
+
+}
+
 
 
 //circular graph
 function updateCircularProgressBar(progress) {
-    const percentage = Math.max(0, Math.min(100, progress * 100));
     const circleProgress = document.querySelector(".circle-progress");
     const progressPercentage = document.querySelector(".progress-percentage");
+    const percentage = Math.max(0, Math.min(100, progress * 100));
 
     const circumference = 2 * Math.PI * 45;
     const strokeDashArray = `${(percentage * circumference) / 100} ${circumference}`;
@@ -261,21 +305,27 @@ function updateCircularProgressBar(progress) {
     progressPercentage.textContent = `${Math.round(percentage)}%`;
 }
 
+var chart;
 // Linear graph
-function calculateGraph(year1, year2, year3) {
-    // Get the current year
-    const currentYear = new Date().getFullYear();
-    const previousYears = [currentYear - 2, currentYear - 1, currentYear ];
+function calculateGraph(CurrentYear, year1 , year2 ,value, value1, value2) {
+
+    if(year2 == null ){
+        var previousYears = [year1 , CurrentYear];
+        var dataNum = [value1 * 100 , value * 100];
+    }else{
+        var previousYears = [year2 , year1 , CurrentYear];
+        var dataNum = [value2 * 100 , value1 * 100 , value * 100 ];
+    }
 
     const ctx = document.getElementById("lineChart").getContext("2d");
-    const chart = new Chart(ctx, {
+    chart = new Chart(ctx, {
         type: "line",
         data: {
             labels: previousYears,
             datasets: [
                 {
                     label: "survey answer percentage",
-                    data: [year1, year2, year3],
+                    data: dataNum,
                     backgroundColor: "rgba(255, 255, 0, 0.1)",
                     borderColor: " rgb(255, 145, 0)",
                     borderWidth: 2,
@@ -301,6 +351,7 @@ function calculateGraph(year1, year2, year3) {
             },
         },
     });
+    
 }
 
 

@@ -16,6 +16,8 @@ require('../models/SurveyModel.php');
 require('../models/surveyStartModel.php');
 require('../models/reviewmodel.php');
 require('../models/AdminPageModel.php');
+require('../models/chartPDFModel.php');
+require('../models/PresentSurveyReportModel.php');
 
 
 
@@ -211,7 +213,7 @@ else if ($_POST['page'] == 'PastReport')
         include('LogInPage.php');
         exit();
     }
-
+   
     $command = $_POST['command'];
     switch($command) {
         case 'SurveyDocuments':
@@ -224,10 +226,20 @@ else if ($_POST['page'] == 'PastReport')
             echo json_encode($result);
             break;
 
-        case 'CurrentSurveyDocumentID':
-            $_SESSION['documentId'] = $_POST['CurrentDocumentID'];
+        case 'AnswerPercentage':    
+            $result = get_survey_answer_percentage($_SESSION['documentId'], $_POST['goal']);
+            echo json_encode($result);
             break;
 
+        case 'GetPDFReport':
+            $_SESSION['ID_PDF'] = (int) $_POST['PDF_ID'];
+            include('chartPDF.php');
+            break;
+
+        case 'CurrentSurveyDocumentID':
+            $_SESSION['documentId'] = $_POST['CurrentDocumentID'];
+            CheckUpdate($_SESSION['documentId']);
+            break;
     }
 }
 else if ($_POST['page'] == 'userReview')
@@ -401,7 +413,28 @@ else if ($_POST['page'] == 'AdminPage')
     }
 }
 
+else if ($_POST['page'] == 'ReportPDF')
+{
+    if (!isset($_SESSION['LogIn'])) {
+        $display_type = 'none';
+        include('LogInPage.php');
+        exit();
+    }
 
-else{
+    $command = $_POST['command'];
+    switch($command) {
+       
+        case 'getPDFRport':
+           $_SESSION['lineChart'] = $_POST['lineChart'] ;
+           $_SESSION['circleChart'] = $_POST['circleChart'] ;
+           CheckUpdate($_SESSION['documentId']);
+           include('reportPDF.php');
+           break;        
 
+        case 'LoadCharts':
+            $result = getChartData($_SESSION['ID_PDF']);
+            echo json_encode($result);
+            break;
+      
+    }
 }
