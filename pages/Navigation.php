@@ -12,7 +12,6 @@
     <button class="closebutton" onclick="hideShowMenu()">X</button>
     <ul id="submenulist">
         <li onclick='mainPage()'> <p>Dashboard </p> </li>
-        <li onclick='survey()'> <p>Survey</p> </li>
         <li onclick='currentReport()'> <p>Current Report</p> </li>
         <li onclick='signOut()' id="signout-btn"> <p> Log Out </p> </li>
     </ul>
@@ -23,11 +22,6 @@
 <form method='post' action='Controller.php' id='form-main-page' style='display:none'>
     <input type='hidden' name='page' value='Navigation'>
     <input type='hidden' name='command' value='MainPage'>
-</form>
-
-<form method='post' action='Controller.php' id='form-survey' style='display:none'>
-    <input type='hidden' name='page' value='Navigation'>
-    <input type='hidden' name='command' value='SurveyStart'>
 </form>
 
 <form method='post' action='Controller.php' id='form-current-Report' style='display:none'>
