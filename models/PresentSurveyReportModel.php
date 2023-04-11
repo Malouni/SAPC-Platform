@@ -3,14 +3,6 @@
 //It's will calculate and Update 3 main columns: Answer_Percentage, Activity_Involvement ,Activity_Historical
 //This will be called before go to the surveyView(Pastsurveyreport.php) or when download pdf is called 
 
-
-define('DB_HOST', 'localhost');
-define('DB_USER', 'Oleg');
-define('DB_PASS', 'asd123@#4');
-define('DB_NAME', 'sciencestrategicplan');
-
-$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
 //This will check the last update of the survey report by compare the last update vs the Date_end of the survey
 function CheckUpdate($survID)
 {

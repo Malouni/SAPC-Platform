@@ -15,7 +15,7 @@ require('../models/MainPageModel.php');
 require('../models/SurveyModel.php');
 require('../models/surveyStartModel.php');
 require('../models/reviewmodel.php');
-
+require('../models/PresentSurveyReportModel.php');
 
 
 
@@ -214,7 +214,7 @@ else if ($_POST['page'] == 'PastReport')
 
     $command = $_POST['command'];
     switch($command) {
-        case 'SurveyDocuments':
+        case 'SurveyDocuments':            
             $result = get_survey_documents();
             echo json_encode($result);
             break;
@@ -226,6 +226,7 @@ else if ($_POST['page'] == 'PastReport')
 
         case 'CurrentSurveyDocumentID':
             $_SESSION['documentId'] = $_POST['CurrentDocumentID'];
+            CheckUpdate($_SESSION['documentId']);
             break;
 
     }

@@ -234,7 +234,10 @@
     // Render the HTML as PDF
     $dompdf->render();
 
-    // Output the generated PDF to Browser
-    $dompdf->stream("sample.pdf");
+    // Output the PDF to the browser as a preview
+    $dompdf->stream('output.pdf', array('Attachment' => false));
+
+    // Output the PDF to a file and force download
+    $dompdf->stream('output.pdf', array('Attachment' => true));
     
 ?>

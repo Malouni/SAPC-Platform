@@ -20,13 +20,13 @@ function NextQuestions(){
         //update the CurrentQuestion
         CurrentQuestionID = NextQuestionID;
         // render the UI
-        QuestionGender(NextQuestionIndex);               
+        QuestionRender(NextQuestionIndex);               
 
     }else{
          //update the CurrentQuestion
          CurrentQuestionID = NextQuestionID;
          // render the UI
-         QuestionGender(NextQuestionIndex);
+         QuestionRender(NextQuestionIndex);
          btnShow();
     }    
 }
@@ -42,20 +42,20 @@ function BackQuestions(){
         //update the CurrentQuestion
         CurrentQuestionID = BackQuestionID;
         // render the UI
-        QuestionGender(BackQuestionIndex);
+        QuestionRender(BackQuestionIndex);
 
     }else{
          //update the CurrentQuestion
          CurrentQuestionID = BackQuestionID;
          // render the UI
-         QuestionGender(BackQuestionIndex);
+         QuestionRender(BackQuestionIndex);
          //Disable Button
          DisableButton('floatleft');
     }    
 }
 
 // this will gender the question html based on data got from db
-function QuestionGender(QuestionIndex){    
+function QuestionRender(QuestionIndex){    
     
     if(sessionStorage.getItem("QuestionList") == "Failed"){
         var document ="<p class='headers'>No connection to the DataBase, Please try again latter</p>";
@@ -155,7 +155,7 @@ function QuestionGender(QuestionIndex){
             var typeArray = [];
             var LabelArray = [];
             var IdNum = 1;  
-            
+            var id = 0;            
             var Update_ID = QuestionList[QuestionIndex]['QuestionID']+"_"+QuestionList[QuestionIndex]['SubQuestionID'];
             var IsFrist = true;             
             do { 
@@ -173,37 +173,23 @@ function QuestionGender(QuestionIndex){
                 typeArray.push(QuestionList[QuestionIndex]['SubType']);
 
                 if(QuestionList[QuestionIndex]['SubType'] == 'multi'){
-                    var LabelCount = 0;
-                    //For Multi Choice Sub-Questions  
-                    if(IdNum == 1)
-                    {   
-                        //Open the table 
-                        multi_document += "<tr class='multioption-SQ'>";; 
-                        multi_document += "<table class='multioption-SQ-table'>" ;  
-                        
-                        //Open the multi_title
-                        multi_title += "<tr>";
-                        multi_title += "<th id='sub-table-header0'>Answer</th>"; 
-                    }  
+                      
+                    //For Multi Choice Questions
+                    multi_document += "<tr class='option-sq'>";
+                    multi_document += "<td id='sub-table-header"+IdNum+"'>"+QuestionList[QuestionIndex]['Sub_Q']+"</td>";    
 
-                    // put the sub questions in multi_title
-                    multi_title += "<th id='sub-table-header"+IdNum+"'>"+QuestionList[QuestionIndex]['Sub_Q']+"</th>";                             
-                   
-                    //List of radio button                   
+                    //connect label and radio button
                     for(let i =0 ; i < LabelList.length ; i++){
-             
-                        if(LabelList[i]['QuestionID'] == QuestionList[QuestionIndex]['QuestionID']){
-                            if(IdNum == 1){
-                                LabelArray[LabelCount] = "<td id='subTanswer"+LabelCount+"'>"+LabelList[i]['InputValue']+"</td>" ;                              
-                            }
-                            
-                            //setup the radio button for each subquestions 
-                            LabelArray[LabelCount] += "<td><input type='radio' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value="+LabelList[i]['InputValue']+"></td>";
-                            
-                            LabelCount += 1 ;                            
+
+                        if(LabelList[i]['QuestionID'] == QuestionList[QuestionIndex]['QuestionID'] && LabelList[i]['SubQuestionID'] == QuestionList[QuestionIndex]['SubQuestionID'] ){
+                            var id = 'op' + IdNum;
+                            multi_document += "<td class='radio-option'><input type='radio' id='"+id+"' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value= "+LabelList[i]['InputValue']+"></td>";
+                            multi_document += "<td class='label-option'><label for='"+id+"'> "+LabelList[i]['InputValue']+" </label><br></td>"; 
+                            IdNum += 1 ;
                         }
-                    }
-                    IdNum += 1 ;                 
+                    }                        
+                    multi_document += "</tr>";           
+                       
                 }else{                    
 
                     //For ShortAnswer Sub-Questions
@@ -215,16 +201,6 @@ function QuestionGender(QuestionIndex){
                 }
             }while(QuestionList[QuestionIndex]['QuestionID'] == QuestionList[QuestionIndex + 1]['QuestionID'] );
 
-            //close off the multichoice table 
-            //close the multi_title
-            multi_title += "</tr>";
-            multi_document += multi_title;
-
-            if(IdNum - 1 > 0 )
-                for(let i =0 ; i < LabelCount ; i++){
-                    LabelArray[i] += "</tr>";
-                    multi_document += LabelArray[i];                    
-                }
             
             multi_document += " </table>";
             multi_document += "</tr>";
@@ -472,7 +448,7 @@ function fristUpdate(){
 
     QuestionNumber(CurrentQuestionID);
     updateProgressBar(QuestionNum);
-    QuestionGender(findIndex(CurrentQuestionID));  
+    QuestionRender(findIndex(CurrentQuestionID));  
 }
 
 
