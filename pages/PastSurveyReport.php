@@ -12,8 +12,8 @@
     <title>Reports</title>
 
     <!-- links to stylesheets -->
-    <link rel="stylesheet" href="/fonts/arial-nova/stylesheet.css">
-    <link rel="stylesheet" href="/styles/generalStyles.css">
+    <link rel="stylesheet" href="../fonts/arial-nova/stylesheet.css">
+    <link rel="stylesheet" href="../styles/generalStyles.css">
     <link rel="stylesheet" href="../styles/PastSurveyReport.css">
 
     <script src="../scripts/PastSurveyReport.js"></script>
@@ -54,18 +54,13 @@
                 </div>
             </div>
 
-            <script>
-                updateCircularProgressBar(0.36);
-            </script>
-
             <!--------------Line graph container---------------->
             <div class="line-chart metrics">
                 <canvas id="lineChart"></canvas>
             </div>
 
-
             <script>
-                calculateGraph(60, 47, 72);
+                calculateGraph(0 , 0 , 0 ,0 , 0 ,0);       
             </script>
         </div>
 
@@ -89,6 +84,13 @@
         </div>
 
     </div>
+
+        
+    <form method='post' action='Controller.php' id='GetPDF' style='display:none'>
+        <input type='hidden' name='page' value='PastReport'>
+        <input type='hidden' name='command' value='GetPDFReport'>
+        <input type='hidden' id = 'PDFID' name='PDF_ID' value='0'>
+    </form>
 
 
 

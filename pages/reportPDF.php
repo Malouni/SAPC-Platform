@@ -203,11 +203,14 @@
     p.facility {
         color: rgb(105, 105, 105);
     }
+    img{
+        padding-top : 20px;
+    }
+
+    
 </style>
 
 <body>
-
-
    
 <?php
     require('../models/ReportPDFModel.php');
@@ -216,8 +219,6 @@
 
 </body>
 </html>
-
-
 
 <?php
     $html = ob_get_contents();    

@@ -1,29 +1,18 @@
 <?php
 
 
-//This in here just for edit and change the css
-//Will be remove after make the link to Controller.php
-$servername = "localhost";
-$username = "Oleg";
-$password = "asd123@#4";
-$dbname = "sciencestrategicplan";
+echo '<img src="' . $_SESSION["circleChart"] .  '"/>'; 
+echo '<img src="' . $_SESSION["lineChart"] .  '"/>'; 
 
-// Create a connection to the database
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-//Survid = 1 Just for test and css change 
-echo get_survey_activity(1, 'DIEL'); 
-echo get_survey_activity(1, 'SPP'); 
-echo get_survey_activity(1, 'TTL'); 
-echo get_survey_activity(1, 'TC'); 
-echo get_survey_activity(1, 'GSD'); 
+echo get_survey($_SESSION['ID_PDF'], 'DIEL'); 
+echo get_survey($_SESSION['ID_PDF'], 'SPP'); 
+echo get_survey($_SESSION['ID_PDF'], 'TTL'); 
+echo get_survey($_SESSION['ID_PDF'], 'TC'); 
+echo get_survey($_SESSION['ID_PDF'], 'GSD'); 
 
 
 
-function get_survey_activity($survId, $goal)
+function get_survey($survId, $goal)
 {
     global $conn;
 
@@ -171,3 +160,4 @@ function get_survey_activity($survId, $goal)
 }
 
 ?>
+
