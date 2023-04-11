@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 session_start();
 session_destroy();
@@ -7,6 +7,7 @@ session_destroy();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,34 +17,44 @@ session_destroy();
     <!-- links to stylesheets -->
     <link rel="stylesheet" href="..\fonts\arial-nova\stylesheet.css">
     <link rel="stylesheet" href="../styles/LogInStyles.css">
-    
+
+    <script>
+        function showEmailPopup() {
+            var email = "example@email.com";
+            var popupMessage = "Please contact admin to this email: "+ email;
+            var popupElement = document.createElement("div");
+            popupElement.innerHTML = popupMessage;
+            alert(popupElement.innerHTML);
+        }
+    </script>
 
 
 </head>
+
 <body>
-    
+
 
     <div id="logInDiv">
         <div id="logInHeader">
             <p><img src="../images/LOGOS/TRU-LG03.png" alt="TRU-logo"><strong>THOMPSON RIVERS UNIVERSITY</strong></p>
-            <P class="subtitle">Science Strategic Plan</P>
+            <p class="subtitle">Science Strategic Plan</p>
         </div>
         <div id="loginForm">
             <form method='post' action='Controller.php'>
                 <input type='hidden' name='page' value='LogInPage'>
                 <input type='hidden' name='command' value='LogIn'>
-                <input type="text" placeholder="Please enter Username" class="wide" name = "truid" required></br>
-                <input type="password" placeholder="Please enter Password" class="wide" name = "password" required></br>
-                <input type="checkbox" id="rememberUser" value="true"><label for="rememberUser">Remember Username</label></br>
+                <input type="text" placeholder="Please enter Username" class="wide" name="truid" required></br>
+                <input type="password" placeholder="Please enter Password" class="wide" name="password" required></br>
                 <input type="submit" value="Log In" class="wide" id="submitbutton">
             </form>
         </div>
         <div id="loginFside">
-            <p><a href="" style="text-decoration: none; color:#288f94;">Forgotten your username or password?</a></p>
+            <p><a href="#" onclick="showEmailPopup()" style="text-decoration: none; color:#288f94;">Forgotten your username or password?</a></p>
             <p>Cookies must be enabled in your browser</p>
         </div>
     </div>
 
 
 </body>
+
 </html>
