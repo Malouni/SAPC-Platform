@@ -122,26 +122,44 @@ function LoadAnswers($survId , $userID , $Q_ID , $Type)
 
 //========================== UPDATE SESSION ===================================
 // for update the user answer 
-function UpdateAnswers($survId , $userID , $Q_ID , $SubQ_ID , $Answer)
+function UpdateAnswers($survId , $userID , $Q_ID , $SubQ_ID ,$IsUpdate, $Answer)
 {   
     global $conn;
 
-    // update the ansewer for the question without the sub questions when SubQ_ID == 0(Note: the SubQuestionID = 0 in db is not exit )  
-    if($SubQ_ID == 0)
-    {
-        $Update = "UPDATE UserAnswer SET Answer = ".$Answer."   
-                        WHERE SurvID = ".$survId." AND QuestionID = ".$Q_ID." AND UserID = ".$userID."";
+    if($IsUpdate == 'true'){    
+        // update the ansewer for the question without the sub questions when SubQ_ID == 0(Note: the SubQuestionID = 0 in db is not exit )  
+        if($SubQ_ID == 0)
+        {
+            $Update = "UPDATE UserAnswer SET Answer = ".$Answer."   
+                            WHERE SurvID = ".$survId." AND QuestionID = ".$Q_ID." AND UserID = ".$userID."";
 
-        $result = mysqli_query($conn, $Update);
-    
-    }else
-    {
-        $Update = "UPDATE SubQuestionAnswer SET Answer = ".$Answer."   
-                        WHERE  QuestionID = ".$Q_ID." AND UserID = ".$userID." AND SubQuestionID = ".$SubQ_ID."";
+            $result = mysqli_query($conn, $Update);
         
-        $result = mysqli_query($conn, $Update);
-    }
+        }else
+        {
+            $Update = "UPDATE SubQuestionAnswer SET Answer = ".$Answer."   
+                            WHERE  QuestionID = ".$Q_ID." AND UserID = ".$userID." AND SubQuestionID = ".$SubQ_ID."";
+            
+            $result = mysqli_query($conn, $Update);
+        }
+    }else{
 
+        // INSERT the ansewer for the question
+        if($SubQ_ID == 0)
+        {
+            $INSERT = "INSERT INTO useranswer (UserID, QuestionID, SurvID, Answer) 
+                            VALUES (".$userID.", ".$Q_ID.",  ".$survId." ,".$Answer.")";
+
+            $result = mysqli_query($conn, $INSERT);
+        
+        }else
+        {
+            $INSERT = "INSERT INTO subquestionanswer (UserID, QuestionID, SubQuestionID, Answer)
+                            VALUES (".$userID.", ".$Q_ID.",  ".$SubQ_ID.",".$Answer.")";  
+            
+            $result = mysqli_query($conn, $INSERT);
+        }
+    }
 }
 
 //Update comment 

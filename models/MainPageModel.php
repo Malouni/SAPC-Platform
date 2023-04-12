@@ -52,7 +52,7 @@ function get_user_progress($userid , $survID)
 {
     global $conn;
 
-    $sql = "SELECT ROUND(((COUNT(UA.QuestionID) +  COUNT(SUA.QuestionID) *100 )/ COUNT(SQ.QuestionID)),0) as Progress
+    $sql = "SELECT ROUND((COUNT(SQ.QuestionID) *100 ) / (COUNT(UA.QuestionID) +  COUNT(SUA.QuestionID) ),0) as Progress
                             FROM surveyquestions SQ
                             LEFT JOIN subquestions SQS 
                             ON SQ.QuestionID = SQS.QuestionID
