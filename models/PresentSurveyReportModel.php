@@ -46,6 +46,9 @@ function ReportUpdate($survID)
 
     //Update Historical
     HistoricalUpdate($survID);
+
+    //Update Avg
+    AvgTotalAnswers($survID);
 }
 
 
@@ -186,8 +189,9 @@ function ProgressPrecentUpdate($survID)
 
     //Note:TotalParticipants and TotalQueastion is 100% have the return so no need for check 
     //Get total number of Participants 
-    $TotalParticipants = "SELECT  COUNT( DISTINCT UserID) as num 
-                            FROM useranswer 
+    $TotalParticipants = "SELECT  COUNT(*) as num 
+                            FROM surveytable ST 
+                            JOIN usertable UT ON UT.Position = ST.Position
                             WHERE SurvID = ".$survID." ";
 
     $ParticipantsNumber = mysqli_query($conn, $TotalParticipants);
@@ -278,5 +282,30 @@ function ProgressPrecentUpdate($survID)
     }
 }
 
+
+
+//Caculate and Update avg total answers
+function  AvgTotalAnswers($survID)
+{
+    global $conn;
+
+    $sql = "SELECT AVG(SR.Answer_Percentage) AS avg_percentage
+            FROM surveyreport SR 
+            LEFT JOIN surveyquestions SQ ON SQ.QuestionID = SR.QuestionID   
+            WHERE SR.SurvID = '".$survID."'";
+    
+    $result = mysqli_query($conn, $sql);
+    
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $avgTotal = $row['avg_percentage'];
+        
+        // Update
+        $update = "UPDATE surveytable SET TotalAnswersAvg = '". $avgTotal."' 
+                   WHERE SurvID = '".$survID."'";
+        
+        mysqli_query($conn, $update);
+    }
+}
 ?>
 
