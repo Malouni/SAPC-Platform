@@ -168,7 +168,7 @@ else if($_POST['page'] == 'Suvery'){
     switch($command) {
 
         case 'AnswerUpdate':
-            UpdateAnswers($_SESSION['NewSurveysID'],$_SESSION['userId'],$_POST['Q_ID'],$_POST['SubQID'],$_POST['Answer']);
+            UpdateAnswers($_SESSION['NewSurveysID'],$_SESSION['userId'],$_POST['Q_ID'],$_POST['SubQID'],$_POST['IsUpdate'],$_POST['Answer']);
             break;
         
         case 'NoteUpdate':

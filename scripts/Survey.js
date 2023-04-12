@@ -3,6 +3,7 @@ var QuestionList;
 var LabelList;
 var QuestionNum;
 var totalQuestion; 
+var shortUpdateID = [];
 
 document.addEventListener("DOMContentLoaded", function(){
     QuestionLoad(); 
@@ -105,7 +106,7 @@ function QuestionRender(QuestionIndex){
 
                     if(LabelList[i]['QuestionID'] == Update_ID){
                         var id = 'op' + IdNum;
-                        document += "<input type='radio' id='"+id+"' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value= "+LabelList[i]['InputValue']+">";
+                        document += "<input type='radio' id='"+id+"' name='"+Update_ID+"' onchange='multiAnswerUpdate(this ,false);' value= "+LabelList[i]['InputValue']+">";
                         document += "<label for='"+id+"'> "+LabelList[i]['InputValue']+" </label><br>"; 
                         IdNum += 1 ;
                     }
@@ -134,7 +135,7 @@ function QuestionRender(QuestionIndex){
 
                 document += "<input type='text' id='userComments' placeholder='Additional comments'>";
                 document += " <button class='floatleft' onclick='BackBtn()'>Back</button>";
-                document += "<button class='floatright' id='nextBtn' onclick='multiNextButton()'>Next</button>";
+                document += "<button class='floatright' id='nextBtn' onclick='shortNextButton()'>Next</button>";
 
 
                 document +="</form>";                
@@ -150,10 +151,8 @@ function QuestionRender(QuestionIndex){
             //Gender all the subquestion by using while loops
             //if the next CurrentQuestionIndex has same QuestionID => still have more subquestions
             var multi_document = "";
-            var multi_title = "";
             var short_document= "";
             var typeArray = [];
-            var LabelArray = [];
             var IdNum = 1;  
             var id = 0;            
             var Update_ID = QuestionList[QuestionIndex]['QuestionID']+"_"+QuestionList[QuestionIndex]['SubQuestionID'];
@@ -183,7 +182,7 @@ function QuestionRender(QuestionIndex){
 
                         if(LabelList[i]['QuestionID'] == QuestionList[QuestionIndex]['QuestionID'] && LabelList[i]['SubQuestionID'] == QuestionList[QuestionIndex]['SubQuestionID'] ){
                             var id = 'op' + IdNum;
-                            multi_document += "<td class='radio-option'><input type='radio' id='"+id+"' name='"+Update_ID+"' onchange='multiAnswerUpdate(this);' value= "+LabelList[i]['InputValue']+"></td>";
+                            multi_document += "<td class='radio-option'><input type='radio' id='"+id+"' name='"+Update_ID+"' onchange='multiAnswerUpdate(this ,false);' value= "+LabelList[i]['InputValue']+"></td>";
                             multi_document += "<td class='label-option'><label for='"+id+"'> "+LabelList[i]['InputValue']+" </label><br></td>"; 
                             IdNum += 1 ;
                         }
@@ -211,7 +210,7 @@ function QuestionRender(QuestionIndex){
 
             document += "<input type='text' id='userComments' placeholder='Additional comments'>";
             document += " <button class='floatleft' onclick='BackBtn()'>Back</button>";
-            document += "<button class='floatright' id='nextBtn' onclick='multiNextButton()'>Next</button>";
+            document += "<button class='floatright' id='nextBtn' onclick='shortNextButton()'>Next</button>";
 
             document +="</form>";         
             document += "<button class='floatright' id='finBtn' style='display:none;' onclick='surveyFin()'>Finish</button>";
@@ -228,7 +227,7 @@ function QuestionRender(QuestionIndex){
 
 
 //Update answer function for multi chocie 
-function multiAnswerUpdate(src){
+function multiAnswerUpdate(src , IsUpdate){
     var answer = src.value
     var ID = src.name
     var updateID = ID.split("_");
@@ -240,7 +239,7 @@ function multiAnswerUpdate(src){
 
         //send the infomation to controller for update 
         var url = 'Controller.php';
-        var query = {page: 'Suvery', command: 'AnswerUpdate' , Q_ID: ''+Q_ID+'' , SubQID: ''+SubQID+'' , Answer:''+answer+'' };            
+        var query = {page: 'Suvery', command: 'AnswerUpdate' , Q_ID: ''+Q_ID+'' , SubQID: ''+SubQID+'' , IsUpdate: ''+IsUpdate+'' , Answer:''+answer+'' };            
         $.post(url, query)
 
     }else{
@@ -248,7 +247,7 @@ function multiAnswerUpdate(src){
 
         //send the infomation to controller for update 
         var url = 'Controller.php';
-        var query = {page: 'Suvery', command: 'AnswerUpdate' , Q_ID: ''+Q_ID+'' , SubQID: 0 , Answer:''+answer+'' };            
+        var query = {page: 'Suvery', command: 'AnswerUpdate' , Q_ID: ''+Q_ID+'' , SubQID: 0 , IsUpdate: ''+IsUpdate+'' , Answer:''+answer+'' };            
         $.post(url, query)
     }
 
@@ -267,23 +266,37 @@ function shortAnswerUpdate(){
             var name = input.getAttribute('name');
             var answer = input.value;
             var nameParts = name.split("_");
-            var Q_ID = parseInt(nameParts[0]);
-            var QSubID = parseInt(nameParts[1]);
+            var Q_ID = nameParts[0];
+            var QSubID = nameParts[1];
+            var IsUpdate;
+            
+            var foundMatch = false;
 
+            if (shortUpdateID.length > 0) {
+                // Check for update or insert to db
+                for (var j = 0; j < shortUpdateID.length; j++) {
+                    if (shortUpdateID[j] == name) {
+                        foundMatch = true;
+                        break;
+                    }
+                }
+
+                IsUpdate = foundMatch ? 'true' : 'false';
+            } else {
+            IsUpdate = 'false';
+            }
+                
             //send the infomation to controller for update 
             if(QSubID != null && answer != null){
-                
                 var url = 'Controller.php';
-                var query = {page: 'Suvery', command: 'AnswerUpdate' , Q_ID: ''+Q_ID+'' , SubQID: ''+QSubID+'' , Answer:''+answer+'' };            
+                var query = {page: 'Suvery', command: 'AnswerUpdate' , Q_ID: ''+parseInt(Q_ID)+'' , SubQID: ''+parseInt(QSubID)+'' , IsUpdate: ''+IsUpdate+'' , Answer:''+answer+'' };            
                 $.post(url, query)
 
             }else if(QSubID == null && answer != null){
-                
                 var url = 'Controller.php';
-                var query = {page: 'Suvery', command: 'AnswerUpdate' , Q_ID: ''+Q_ID+'' , SubQID: 0 , Answer:''+answer+'' };            
-                $.post(url, query)
-                
-            }
+                var query = {page: 'Suvery', command: 'AnswerUpdate' , Q_ID: ''+parseInt(Q_ID)+'' , SubQID: 0 , IsUpdate: ''+IsUpdate+'' , Answer:''+answer+'' };            
+                $.post(url, query)                
+            }            
         }
     }   
 }
@@ -318,7 +331,7 @@ function NoteLoad(){
             var textbox = document.getElementById("userComments");
 
             //set the note
-            textbox.defaultValue = result;
+            textbox.defaultValue = result;            
         }
     });
 }
@@ -342,15 +355,20 @@ function SingleAnswerLoad(Q_ID ,type){
                 var radioGroup = document.getElementsByName(name);
 
                 radioGroup.forEach(function(radioButton) {
-                // Check if the radio button matches the desired value
+                    radioButton.onchange = function() {
+                      multiAnswerUpdate(this , 'true');
+                    };
+
+                    // Check if the radio button matches the desired value
                     if (radioButton.value === (answer.toString())) {
-                        radioButton.checked = true;
-                    }
+                      radioButton.checked = true;
+                  }
                 });
             }else{
                 // Retrieve the textbox by its name
-                var textbox = document.getElementsByName(name);
+                var textbox = document.getElementsByName(name)[0];
                 textbox.defaultValue = answer;
+                shortUpdateID.push(name);
             }                      
         }
     });
@@ -365,32 +383,37 @@ function ComposedAnswerLoad(Q_ID ,typeArray){
         var result = JSON.parse(data);
 
         if(result != "Failed"){
-            var name = (result[0]['QuestionID']).toString();
-            var answer = result[0]['MainAnswer'];
+            var radioGroup ;
 
             for(var i = 0; i < result.length; i++)
             {   
                 //Get data
                 var name = (result[i]['QuestionID']+"_"+ result[i]['SubQuestionID']).toString();
                 var answer = result[i]['SubAnswer'];
-        
+    
                 //for multi question
                 if(typeArray[i] == 'multi'){
         
                     // Retrieve the radio button group by its name
                     var radioGroup = document.getElementsByName(name);
-        
+                    
                     radioGroup.forEach(function(radioButton) {
-                    // Check if the radio button matches the desired value
-                        if (radioButton.value === (answer.toString())) {
-                            radioButton.checked = true;
-                        }
+                      radioButton.onchange = function() {
+                        multiAnswerUpdate(this , 'true');
+                      };
+
+                      // Check if the radio button matches the desired value
+                      if (radioButton.value === (answer.toString())) {
+                        radioButton.checked = true;
+                    }
                     });
+                        
                 }else{    
                     // Retrieve the textbox by its name
                     var textbox = document.getElementsByName(name)[0];
+                    shortUpdateID.push(name);
                     textbox.defaultValue = answer;
-                }
+                }          
             }                      
         }
     });
@@ -483,6 +506,7 @@ function multiNextButton(){
 function BackBtn(){
     QuestionNum -= 1;
     updateProgressBar(QuestionNum);
+    shortAnswerUpdate();
     BackQuestions();
 }
 
@@ -515,6 +539,7 @@ function btnShow(){
 
 //go to user review btn
 function surveyFin(){
+    shortAnswerUpdate();
     $('#SurveyFinSubmit').submit();
 }
 
