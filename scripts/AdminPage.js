@@ -229,9 +229,9 @@ function addUsersFromFileFunction(){
         var url = 'Controller.php';
         var query = {page: 'AdminPage', command: 'csvAddUsers', csvFileDataUsers: data};
         $.post(url, query, function(data) {
-        var result = JSON.parse(data);
-        alert(result);
-        showUsersTable();
+            var result = JSON.parse(data);
+            alert(result);
+            showUsersTable();
         });
     };
 }
@@ -243,7 +243,6 @@ function csvToArrayUsers(text)
     var array = [];
     var headers;
     var delimiter = ",";
-    var cells;
 
     for(singleRow = 0; singleRow < rows.length; singleRow++)
     {
@@ -277,14 +276,12 @@ function addSurveyFromFileFunction(){
     reader.onload = function (e) {
         var text = e.target.result;
         var data = csvToArraySurvey(text);
-        //var result = JSON.stringify(data);
-        //alert(result);
         var url = 'Controller.php';
         var query = {page: 'AdminPage', command: 'csvAddSurvey', csvFileDataSurveys: data};
         $.post(url, query, function(data) {
-        var result = JSON.parse(data);
-        alert(result);
-        showSurveysTable();
+            var result = JSON.parse(data);
+            alert(result);
+            showSurveysTable();
         });
     };
 }
@@ -310,12 +307,12 @@ function csvToArraySurvey(text)
         cells = rows[singleRow].split(delimiter);
         for(singleCell = 0; singleCell < cells.length; singleCell++)
         {
-            //alert(rows[singleRow]);
             if(singleCell == 0 && (cells[singleCell] == "SurvYear" || cells[singleCell] == "Goal" || cells[singleCell] == "Question"))
             {
                 headers = rows[singleRow].split(delimiter);
                 //Filters headers array from empty elements
                 headers = headers.filter(item => item);
+                singleRow++;
                 if(singleCell == 0 && cells[singleCell] == "SurvYear")
                 {
                     dataSection = 0;
@@ -328,57 +325,67 @@ function csvToArraySurvey(text)
                 {
                     dataSection = 2;
                 }
-                singleRow++;
+            }
+            else if(cells[0] == "Goal" || cells[0] == "Question")
+            {
+                if(cells[singleCell] == "PossibleAnswers")
+                {
+                    possibleAnsPositionHolder = singleCell;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        cells = rows[singleRow].split(delimiter);
+        if (cells[0] !="")
+        {
+            if(possibleAnsPositionHolder)
+            {
+                for(possibleAns = 0; possibleAns < (rows.length - possibleAnsPositionHolder - 1); possibleAns++)
+                {
+                    arrayOfPossibleAns[possibleAns] = cells[possibleAnsPositionHolder+possibleAns];
+                }
+                arrayOfPossibleAns = arrayOfPossibleAns.filter(item => item);
             }
 
-            if(cells[singleCell] == "PossibleAnswers")
+            if(dataSection == 0)
             {
-                possibleAnsPositionHolder = singleCell;
+                var values = rows[singleRow].split(delimiter);
+                values = values.filter(item => item);
+                surveyInfoArray.push(
+                    headers.reduce(function (object, header, index) {
+                        object[header] = values[index];
+                        return object;
+                        }, {})
+                );
             }
-            else if(possibleAnsPositionHolder && singleCell >= possibleAnsPositionHolder)
+            else if(dataSection == 1)
             {
-                arrayOfPossibleAns[singleCell - possibleAnsPositionHolder] = cells[singleCell];
+                var values = rows[singleRow].split(delimiter, possibleAnsPositionHolder + 1);
+                values[possibleAnsPositionHolder] = arrayOfPossibleAns;
+                questionArray.push(
+                    headers.reduce(function (object, header, index) {
+                        object[header] = values[index];
+                        return object;
+                        }, {})
+                );
+            }
+            else if(dataSection == 2)
+            {
+                var values = rows[singleRow].split(delimiter, possibleAnsPositionHolder + 1);
+                values[possibleAnsPositionHolder] = arrayOfPossibleAns;
+                subQuestionArray.push(
+                    headers.reduce(function (object, header, index) {
+                        object[header] = values[index];
+                        return object;
+                        }, {})
+                );
             }
         }
-        cells = rows[singleRow].split(delimiter);
-        for(possibleAns = 0; possibleAns < (rows.length - possibleAnsPositionHolder - 1); possibleAns++)
-        {
-            arrayOfPossibleAns[possibleAns] = cells[possibleAnsPositionHolder+possibleAns];
-        }
-        arrayOfPossibleAns = arrayOfPossibleAns.filter(item => item);
-        if(dataSection == 0)
-        {
-            var values = rows[singleRow].split(delimiter);
-            values = values.filter(item => item);
-            surveyInfoArray.push(
-                headers.reduce(function (object, header, index) {
-                    object[header] = values[index];
-                    return object;
-                    }, {})
-            );
-        }
-        else if(dataSection == 1)
-        {
-            var values = rows[singleRow].split(delimiter, possibleAnsPositionHolder + 1);
-            values[possibleAnsPositionHolder] = arrayOfPossibleAns;
-            questionArray.push(
-                headers.reduce(function (object, header, index) {
-                    object[header] = values[index];
-                    return object;
-                    }, {})
-            );
-        }
-        else if(dataSection == 2)
-        {
-            var values = rows[singleRow].split(delimiter, possibleAnsPositionHolder + 1);
-            values[possibleAnsPositionHolder] = arrayOfPossibleAns;
-            subQuestionArray.push(
-                headers.reduce(function (object, header, index) {
-                    object[header] = values[index];
-                    return object;
-                    }, {})
-            );
-        }
+
         arrayOfPossibleAns = [];
     }
     array[0] = surveyInfoArray;
