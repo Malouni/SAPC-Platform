@@ -270,17 +270,20 @@ function shortAnswerUpdate(){
             var QSubID = nameParts[1];
             var IsUpdate;
             
-            if(shortUpdateID.length > 0 ){
-                //check for update or insert to db
-                for(var j = 0; j < shortUpdateID.length; j++){
-                    if(shortUpdateID[j] ==  name){
-                        IsUpdate = 'true';
-                    }else{
-                        IsUpdate = 'false';
+            var foundMatch = false;
+
+            if (shortUpdateID.length > 0) {
+                // Check for update or insert to db
+                for (var j = 0; j < shortUpdateID.length; j++) {
+                    if (shortUpdateID[j] == name) {
+                        foundMatch = true;
+                        break;
                     }
                 }
-            }else {
-                IsUpdate = 'false';
+
+                IsUpdate = foundMatch ? 'true' : 'false';
+            } else {
+            IsUpdate = 'false';
             }
                 
             //send the infomation to controller for update 
@@ -328,7 +331,7 @@ function NoteLoad(){
             var textbox = document.getElementById("userComments");
 
             //set the note
-            textbox.defaultValue = result;
+            textbox.defaultValue = result;            
         }
     });
 }
