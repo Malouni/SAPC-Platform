@@ -1,15 +1,25 @@
 <?php
 
-function get_upcoming_surveys($userid)
+function get_upcoming_surveys($userid, $userPosition)
 {
     global $conn;
 
     $date = date('Y-m-d');
-    $sql = "SELECT SurveyTable.SurvID, SurveyTable.SurvName
-            FROM SurveyTable
-            INNER JOIN UserTable
-            ON SurveyTable.Position = UserTable.Position
-            WHERE SurveyTable.SurvDateEnd >= '$date' and UserTable.UserID = '$userid'";
+
+    if($userPosition == 'chair' || $userPosition == 'Chair')
+    {
+        $sql = "SELECT SurveyTable.SurvID, SurveyTable.SurvName
+                FROM SurveyTable
+                WHERE SurveyTable.SurvDateEnd >= '$date' and SurveyTable.Position = '$userPosition' and SurveyTable.Position = 'user'";
+    }
+    else
+    {
+        $sql = "SELECT SurveyTable.SurvID, SurveyTable.SurvName
+                FROM SurveyTable
+                INNER JOIN UserTable
+                ON SurveyTable.Position = UserTable.Position
+                WHERE SurveyTable.SurvDateEnd >= '$date' and UserTable.UserID = '$userid'";
+    }
     $result = mysqli_query($conn, $sql);
     $data = [];
     if (mysqli_num_rows($result) > 0)

@@ -59,10 +59,6 @@ $AnswerOptions = "CREATE TABLE IF NOT EXISTS AnswerOptions(
     InputValue varchar(200)
 )";
 
-
-
-
-
 // SurveyReportTable query
 $SurveyReportSQL = "CREATE TABLE IF NOT EXISTS SurveyReport (
     SurvID INT,

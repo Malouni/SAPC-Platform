@@ -106,7 +106,7 @@ else if($_POST['page'] == 'MainPage')
     switch($command) {
 
     case 'UpcomingSurveys':
-        $result = get_upcoming_surveys($_SESSION['userId']);
+        $result = get_upcoming_surveys($_SESSION['userId'], $_SESSION['userPosition']);
         echo json_encode($result);
         break;
 

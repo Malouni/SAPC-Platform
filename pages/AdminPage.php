@@ -1,5 +1,4 @@
 <?php
-session_start();
 ?>
 
 <!DOCTYPE html>
@@ -90,6 +89,10 @@ session_start();
 
             <!---------survey info file row------------>
             <div class="row row3">
+                <!-----
+                <input type="file" name="csvSurveyFile" id="csvSurveyFile" accept=".csv" required>
+                <button onclick="addSurveyFromFileFunction()">Click</button>
+                ------>
                 <form onsubmit="addSurveyFromFileFunction()">
                     <label for="csvFile">Upload CSV file containing Survey information:</label>
                     <input type="file" name="csvSurveyFile" id="csvSurveyFile" accept=".csv" required>
