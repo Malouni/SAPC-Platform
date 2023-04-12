@@ -30,7 +30,7 @@ if ($_POST['page'] == 'LogInPage')
     switch($command) {
         case 'LogIn':
 
-            if (!check_validity($_POST['truid'], $_POST['password'])) {
+            if (!check_validity($_POST['userName'], $_POST['password'])) {
                 $error_msg_username = '* Wrong username, or';
                 $error_msg_password = '* Wrong password';
 
@@ -40,10 +40,10 @@ if ($_POST['page'] == 'LogInPage')
             }
             else {
                 $_SESSION['LogIn'] = 'Yes';
-                $_SESSION['userFirstName'] = get_user_first_name ($_POST['truid']);
-                $_SESSION['userLastName'] = get_user_last_name ($_POST['truid']);
-                $_SESSION['userPosition'] = get_user_position ($_POST['truid']);
-                $_SESSION['userId'] = get_user_id($_POST['truid']);
+                $_SESSION['userFirstName'] = get_user_first_name ($_POST['userName']);
+                $_SESSION['userLastName'] = get_user_last_name ($_POST['userName']);
+                $_SESSION['userPosition'] = get_user_position ($_POST['userName']);
+                $_SESSION['userId'] = get_user_id($_POST['userName']);
                 require('Index.php');
             }
             exit();
