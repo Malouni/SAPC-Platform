@@ -30,7 +30,7 @@ function upcomingSurveys (){
                 upcomingSurveys += "<div class='activity'>";
                 upcomingSurveys += "<img src='../images/cover-textures/1.png' alt='cover'>";
                 upcomingSurveys += "<p class='title'>Faculty of Science<br><span>" + result[row]['SurvName'] + "</span></p>";
-                upcomingSurveys += "<button class='UpcomingBtn' button-document-id = '" + result[row]['SurvID'] + "'>...</button>";
+                upcomingSurveys += "<button class='UpcomingBtn' button-survey-upcoming-id = '" + result[row]['SurvID'] + "'>...</button>";
                 upcomingSurveys += "<div class='meter'></div>";
                 upcomingSurveys += "</div>";
             }            
@@ -39,8 +39,8 @@ function upcomingSurveys (){
 
         $('#upcoming-pane').html(upcomingSurveys);
 
-        $('.UpcomingBtn').click(function() {
-            var id = $(this).attr('button-document-id');
+        $('button[button-survey-upcoming-id]').click(function() {
+            var id = $(this).attr('button-survey-upcoming-id');
             document.getElementById("upcomingSurveyID").value = id; 
             $('#surveystart').submit();
         });
@@ -72,16 +72,16 @@ function historyOfSurveys(){
                 historySurveys += "<div class='activity'>";
                 historySurveys += "<img src='../images/cover-textures/1.png' alt='cover'>";
                 historySurveys += "<p class='title'>Faculty of Science<br><span>" + result[row]['SurvName'] + "</span></p>";
-                historySurveys += "<button class='HistoryBtn' button-document-id = '" + result[row]['SurvID'] + "'>...</button>";
+                historySurveys += "<button class='HistoryBtn' button-survey-history-id = '" + result[row]['SurvID'] + "'>...</button>";
                 historySurveys += "</div>";
             }
         }
 
         $('#history-pane').html(historySurveys);
 
-        $('.HistoryBtn').click(function() {
-            var id = $(this).attr('button-document-id');
-            document.getElementById("HSurveyID").value = id; 
+        $('button[button-survey-history-id]').click(function() {
+            var id = $(this).attr('button-survey-history-id');
+            document.getElementById("HSurveyID").value = id;
             $('#HistoryView').submit();
         });
 
