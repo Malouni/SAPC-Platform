@@ -25,6 +25,9 @@ require('../models/AdminPageModel.php');
 require('../models/chartPDFModel.php');
 require('../models/PresentSurveyReportModel.php');
 
+header('Cache-Control: no cache'); //no cache
+session_cache_limiter('private_no_expire'); // works
+//session_cache_limiter('public'); // works too
 session_status() === PHP_SESSION_ACTIVE ?: session_start();
 
 
