@@ -8,7 +8,6 @@ function upcomingSurveys (){
     var url = 'Controller.php';
 
     var query = {page: 'MainPage', command: 'UpcomingSurveys'};
-    
 
     $.post(url, query, function(data) {
         var result = JSON.parse(data);
@@ -21,31 +20,27 @@ function upcomingSurveys (){
             //upcomingSurveys += "<img src='../images/cover-textures/1.png' alt='cover'>";
             upcomingSurveys += "<p class='title'>No Upcoming Surveys</p>";
             upcomingSurveys += "</div>";
-            
         }
         else
         {
             for (var row = 0; row < result.length; row++) {
 
-                upcomingSurveys += "<div class='activity'>";
+                upcomingSurveys += "<div class='activity' onclick='upcomingSurveySelected(this.id)' id='" + result[row]['SurvID'] + "'>";
                 upcomingSurveys += "<img src='../images/cover-textures/1.png' alt='cover'>";
                 upcomingSurveys += "<p class='title'>Faculty of Science<br><span>" + result[row]['SurvName'] + "</span></p>";
-                upcomingSurveys += "<button class='UpcomingBtn' button-survey-upcoming-id = '" + result[row]['SurvID'] + "'>...</button>";
                 upcomingSurveys += "<div class='meter'></div>";
                 upcomingSurveys += "</div>";
-            }            
+            }
         }
 
-
         $('#upcoming-pane').html(upcomingSurveys);
-
-        $('button[button-survey-upcoming-id]').click(function() {
-            var id = $(this).attr('button-survey-upcoming-id');
-            document.getElementById("upcomingSurveyID").value = id; 
-            $('#surveystart').submit();
-        });
-
     });
+}
+
+function upcomingSurveySelected(surveyId)
+{
+    document.getElementById("upcomingSurveyID").value = surveyId;
+    $('#surveystart').submit();
 }
 
 function historyOfSurveys(){
@@ -69,21 +64,20 @@ function historyOfSurveys(){
         {
             for (var row = 0; row < result.length; row++) {
 
-                historySurveys += "<div class='activity'>";
+                historySurveys += "<div class='activity' onclick='historySurveySelected(this.id)' id='" + result[row]['SurvID'] + "'>";
                 historySurveys += "<img src='../images/cover-textures/1.png' alt='cover'>";
                 historySurveys += "<p class='title'>Faculty of Science<br><span>" + result[row]['SurvName'] + "</span></p>";
-                historySurveys += "<button class='HistoryBtn' button-survey-history-id = '" + result[row]['SurvID'] + "'>...</button>";
                 historySurveys += "</div>";
             }
         }
 
         $('#history-pane').html(historySurveys);
-
-        $('button[button-survey-history-id]').click(function() {
-            var id = $(this).attr('button-survey-history-id');
-            document.getElementById("HSurveyID").value = id;
-            $('#HistoryView').submit();
-        });
-
     });
+}
+
+
+function historySurveySelected(surveyId)
+{
+    document.getElementById("HSurveyID").value = surveyId;
+    $('#HistoryView').submit();
 }

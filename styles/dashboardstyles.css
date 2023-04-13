@@ -127,6 +127,7 @@ iframe{
     border: 1px solid  rgb(190, 190, 190);
     border-radius: 3px;
     float: left;
+    /*cursor: pointer; TODO: Decide where to put this style attribute*/
 }
 
 .activity img{
