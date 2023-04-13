@@ -17,7 +17,6 @@ function StartPageRender(){
     var query = {page: 'SuveryStart', command: 'IsSurveyOpen'};        
     
     $.post(url, query, function(data) {
-        sessionStorage.setItem("QuestionList", data);
         var result = JSON.parse(data);
 
         //1 is not open yet 
@@ -36,11 +35,9 @@ function StartPageRender(){
     url = 'Controller.php';
     query = {page: 'SuveryStart', command: 'GetProgress'};
     $.post(url, query, function(data) {
-        sessionStorage.setItem("QuestionList", data);
         var result = JSON.parse(data);
-
         //1 is not open yet 
-        if(result['Progress'] != 0){
+        if(result['Progress'] != null){
 
             //set the due date to start date
             status.innerHTML = "Continuing";

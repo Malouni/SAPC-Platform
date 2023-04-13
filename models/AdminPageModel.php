@@ -162,11 +162,22 @@ function add_possible_answer_to_question($survID, $questionID, $subQuestionID, $
     $result = mysqli_query($conn, $sql);
 
     if ($result)
+        return true;
+    else
+        return false;
+}
+
+function update_table_where_subQstID_is_zero ($tableName)
+{
+    global $conn;
+
+    $sql = "UPDATE ".$tableName."
+            SET SubQuestionID = NULL
+            WHERE SubQuestionID = 0;";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result)
     {
-        $sql = "UPDATE AnswerOptions
-                SET SubQuestionID = NULL
-                WHERE SubQuestionID = 0;";
-        $result = mysqli_query($conn, $sql);
         return true;
     }
     else
@@ -235,6 +246,20 @@ function update_survey($survID, $fieldToChange, $value)
         return false;
 }
 
+function populate_survey_report_table($survID, $questionID, $subQuestionID)
+{
+    global $conn;
+
+    $sql = "INSERT INTO SurveyReport (SurvID, QuestionID, SubQuestionID, Answer_Percentage, Activity_Involvement, Activity_Historical)
+            VALUES ('$survID', '$questionID', '$subQuestionID', 0, 0 ,0)";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result)
+        return true;
+    else
+        return false;
+}
+
 function get_the_column_name_user($rawData)
 {
     if($rawData == "First Name")
@@ -290,13 +315,29 @@ function add_questions_to_new_survey($dataQuestions, $dataSubQuestions, $newSurv
         {
             if($dataQuestions[$lineQuestion]["Type"] != "composed" && $dataQuestions[$lineQuestion]["Type"] != "single_short")
             {
-                for($linePossibleAns = 0; $linePossibleAns < count($dataQuestions[$lineQuestion]["PossibleAnswers"]); $linePossibleAns++)
+                if(populate_survey_report_table($newSurvId, $newQuestionId, NULL))
                 {
-                    if(!add_possible_answer_to_question($newSurvId, $newQuestionId, NULL, $dataQuestions[$lineQuestion]["PossibleAnswers"][$linePossibleAns]))
+                    for($linePossibleAns = 0; $linePossibleAns < count($dataQuestions[$lineQuestion]["PossibleAnswers"]); $linePossibleAns++)
                     {
-                        $result = false;
-                        break;
+                        if(!add_possible_answer_to_question($newSurvId, $newQuestionId, NULL, $dataQuestions[$lineQuestion]["PossibleAnswers"][$linePossibleAns]))
+                        {
+                            $result = false;
+                            break;
+                        }
                     }
+                }
+                else
+                {
+                    $result = false;
+                    break;
+                }
+            }
+            else if($dataQuestions[$lineQuestion]["Type"] == "single_short")
+            {
+                if(!populate_survey_report_table($newSurvId, $newQuestionId, NULL))
+                {
+                    $result = false;
+                    break;
                 }
             }
             else
@@ -307,17 +348,30 @@ function add_questions_to_new_survey($dataQuestions, $dataSubQuestions, $newSurv
                     {
                         if($newSubQuestionId = add_survey_sub_question($newSurvId, $newQuestionId, $dataSubQuestions[$lineSubQuestion]["Sub_Q"], $dataSubQuestions[$lineSubQuestion]["SubType"]))
                         {
-                            if($dataSubQuestions[$lineSubQuestion]["SubType"] != "short")
+                            if(populate_survey_report_table($newSurvId, $newQuestionId, $newSubQuestionId))
                             {
-                                for($linePossibleAns = 0; $linePossibleAns < count($dataSubQuestions[$lineSubQuestion]["PossibleAnswers"]); $linePossibleAns++)
+                                if($dataSubQuestions[$lineSubQuestion]["SubType"] != "short")
                                 {
-                                    if(!add_possible_answer_to_question($newSurvId, $newQuestionId, $newSubQuestionId, $dataSubQuestions[$lineSubQuestion]["PossibleAnswers"][$linePossibleAns]))
+                                    for($linePossibleAns = 0; $linePossibleAns < count($dataSubQuestions[$lineSubQuestion]["PossibleAnswers"]); $linePossibleAns++)
                                     {
-                                        $result = false;
-                                        break;
+                                        if(!add_possible_answer_to_question($newSurvId, $newQuestionId, $newSubQuestionId, $dataSubQuestions[$lineSubQuestion]["PossibleAnswers"][$linePossibleAns]))
+                                        {
+                                            $result = false;
+                                            break;
+                                        }
                                     }
                                 }
                             }
+                            else
+                            {
+                                $result = false;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            $result = false;
+                            break;
                         }
                     }
                 }
