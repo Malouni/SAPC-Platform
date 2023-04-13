@@ -92,7 +92,7 @@ function InvolvementUpdate($survID)
     //for the question contain SubAnswer
     if (mysqli_num_rows($SubAnswer) > 0) 
     {
-        while ($SubAnswer_row = mysqli_fetch_assoc($SubAnswer))
+        while ($SubAnswer_row = mysqli_fetch_assoc($SubAnswer)) 
         {
               //non sub-answer update query 
             $Update = "UPDATE surveyreport SET Activity_Involvement = ".$SubAnswer_row["Involvement"]."
@@ -113,8 +113,9 @@ function HistoricalUpdate($survID)
     $LastYearReport = "SELECT PastSurvey.SurvID
                             FROM surveytable CurrentSurvey
                             JOIN  surveytable PastSurvey
-                            ON CurrentSurvey.SurvID  = ".$survID."
-                            AND PastSurvey.SurvYear = CurrentSurvey.SurvYear - 1" ;
+                            ON CurrentSurvey.Position = PastSurvey.Position
+                            AND PastSurvey.SurvYear = CurrentSurvey.SurvYear - 1
+                            AND CurrentSurvey.SurvID  = ".$survID."" ;
 
     $LastYearReportID = mysqli_query($conn, $LastYearReport);
     
@@ -218,7 +219,8 @@ function ProgressPrecentUpdate($survID)
                             LEFT JOIN subquestionanswer ON subquestions.SubQuestionID = subquestionanswer.SubQuestionID  
                             WHERE surveyquestions.SurvID = ".$survID."   AND  subquestionanswer.Answer IS NOT NULL 
                             OR surveyquestions.SurvID = ".$survID."  AND  useranswer.Answer IS NOT NULL
-                            GROUP BY surveyquestions.Goal" ;
+                            GROUP BY surveyquestions.Goal
+                            ORDER BY surveyquestions.QuestionID" ;
 
     $TotalAnswerResult = mysqli_query($conn, $TotalAnswer);
 

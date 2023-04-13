@@ -57,25 +57,4 @@ function get_surveys_completed_by_user($userid)
         return $data[0] = "NoResults";
 }
 
-//This function will calculate and return the user progress
-function get_user_progress($userid , $survID)
-{
-    global $conn;
-
-    $sql = "SELECT ROUND((COUNT(SQ.QuestionID) *100 ) / (COUNT(UA.QuestionID) +  COUNT(SUA.QuestionID) ),0) as Progress
-                            FROM surveyquestions SQ
-                            LEFT JOIN subquestions SQS 
-                            ON SQ.QuestionID = SQS.QuestionID
-                            LEFT JOIN useranswer UA  
-                            ON UA.QuestionID = SQ.QuestionID AND UA.UserID = '".$userid."' AND UA.Answer IS NOT NULL  
-                            LEFT JOIN subquestionanswer SUA 
-                            ON SUA.SubQuestionID = SQS.SubQuestionID AND SUA.UserID = '".$userid."' AND SUA.Answer IS NOT NULL               
-                            WHERE SQ.SurvID = '".$survID."' ";
-    
-    $result = mysqli_query($conn, $sql);
-    $row = mysqli_fetch_assoc($result);
-
-    return $row;
-}
-
 ?>
