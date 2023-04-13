@@ -44,7 +44,14 @@ if ($_POST['page'] == 'LogInPage')
                     $_SESSION['userLastName'] = get_user_last_name ($_POST['userName']);
                     $_SESSION['userPosition'] = get_user_position ($_POST['userName']);
                     $_SESSION['userId'] = get_user_id($_POST['userName']);
-                    require('Index.php');
+                    if(password_verify($defaultPassword, $users_password_hash))
+                    {
+                        include('changePassword.php');
+                    }
+                    else
+                    {
+                        require('Index.php');
+                    }
                 }
                 else
                 {
@@ -57,7 +64,35 @@ if ($_POST['page'] == 'LogInPage')
                 $error_msg_loginIn = '**Wrong username, or Password**';
                 include('LogInPage.php');
             }
-            exit();
+            break;
+    }
+}
+
+else if ($_POST['page'] == 'ChangePwdPage')
+{
+    $command = $_POST['command'];
+    switch($command) {
+        case 'ChangePassword':
+            if ($_POST['newPassword'] == $_POST['newPassword-C'])
+            {
+                $hashedPassword = password_hash($_POST['newPassword'], PASSWORD_DEFAULT);
+                if(change_user_password($_SESSION['userId'], $hashedPassword))
+                {
+                    $error_msg_changePwd ="";
+                    include('Index.php');
+                }
+                else
+                {
+                    $error_msg_changePwd ="Something went wrong, try again";
+                    include('changePassword.php');
+                }
+            }
+            else
+            {
+                $error_msg_changePwd ="Passwords are not matching";
+                include('changePassword.php');
+            }
+            break;
     }
 }
 
