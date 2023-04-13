@@ -58,7 +58,7 @@
 
             <!---------user info file row------------>
             <div class="row row1">
-                <form onsubmit="addUsersFromFileFunction()">
+                <form onsubmit="addUsersFromFileFunction(); return false">
                     <label for="csvFile">Upload CSV file containing user information:</label>
                     <input type="file" name="csvUserFile" id="csvUserFile" accept=".csv" required>
                     <br>
@@ -69,7 +69,7 @@
             <!---------manually row------------>
             <div class="row row2">
                 <p>Add user manually</p>
-                <form onsubmit="addNewUserFunction()">
+                <form onsubmit="addNewUserFunction(); return false">
                     <input type="text" name="fName" id = "fName" placeholder="User First Name" required>
                     <input type="text" name="lName" id = "lName" placeholder="User Last Name" required>
                     <input type="text" name="email" id = "email" placeholder="User email" required>
@@ -93,7 +93,7 @@
                 <input type="file" name="csvSurveyFile" id="csvSurveyFile" accept=".csv" required>
                 <button onclick="addSurveyFromFileFunction()">Click</button>
                 ------>
-                <form onsubmit="addSurveyFromFileFunction()">
+                <form onsubmit="addSurveyFromFileFunction(); return false">
                     <label for="csvFile">Upload CSV file containing Survey information:</label>
                     <input type="file" name="csvSurveyFile" id="csvSurveyFile" accept=".csv" required>
                     <br>
