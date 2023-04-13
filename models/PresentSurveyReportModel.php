@@ -63,11 +63,12 @@ function InvolvementUpdate($survID)
                                 WHERE SurvID = '$survID' AND Answer IS NOT NULL
                                 GROUP BY QuestionID" ;
 
-    $SubAnswerInvolvement = "SELECT QuestionID, SubQuestionID , SUM(Answer) AS Involvement
-                                FROM SubQuestionAnswer 
-                                WHERE Answer IS NOT NULL
-                                GROUP BY SubQuestionID
-                                ORDER BY QuestionID" ;
+    $SubAnswerInvolvement = "SELECT SQS.QuestionID, SQS.SubQuestionID , SUM(SQS.Answer) AS Involvement
+                                FROM SubQuestionAnswer SQS
+                                JOIN SurveyQuestions SQ ON SQS.QuestionID = SQ.QuestionID
+                                WHERE Answer IS NOT NULL AND SQ.SurvID = '$survID'
+                                GROUP BY SQS.SubQuestionID
+                                ORDER BY SQS.QuestionID" ;
     
 
     $Answer = mysqli_query($conn, $AnswerInvolvement);
@@ -267,8 +268,12 @@ function ProgressPrecentUpdate($survID)
             {  
                 $TotalAnswer_row = mysqli_fetch_assoc($TotalAnswerResult);                
                
-                //Calculate the Answer_Percentage
-                $Answer_Percentage_Result = $TotalAnswer_row["TotalAnswer"] / $answer_goal_row["answer_goal"]; 
+                //Calculate the Answer_Percentage                  
+                if ($answer_goal_row["answer_goal"] != 0) {
+                    $Answer_Percentage_Result = $TotalAnswer_row["TotalAnswer"] / $answer_goal_row["answer_goal"];
+                } else {
+                    $Answer_Percentage_Result = 0;
+                }
 
                 //Update
                 $Update = "UPDATE surveyreport
