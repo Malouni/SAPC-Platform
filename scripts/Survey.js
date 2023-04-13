@@ -461,7 +461,8 @@ function fristUpdate(){
 
     QuestionList = JSON.parse(sessionStorage.getItem("QuestionList"));
     LabelList = JSON.parse(sessionStorage.getItem("LabelList"));
-    
+    var endIndex = QuestionList.length - 1;
+
     // 0 is mean this is the first time user open the survey
     if(JSON.parse(sessionStorage.getItem("CurrentQuestion")) == 0){
         CurrentQuestionID = QuestionList[0]["QuestionID"];
@@ -472,6 +473,11 @@ function fristUpdate(){
     QuestionNumber(CurrentQuestionID);
     updateProgressBar(QuestionNum);
     QuestionRender(findIndex(CurrentQuestionID));  
+    if(QuestionList[endIndex]['QuestionID'] == CurrentQuestionID){
+        btnShow();
+    }else if(CurrentQuestionID == QuestionList[0]['QuestionID']){
+        DisableButton('floatleft');
+    }
 }
 
 
