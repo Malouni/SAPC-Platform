@@ -127,7 +127,25 @@ iframe{
     border: 1px solid  rgb(190, 190, 190);
     border-radius: 3px;
     float: left;
-    /*cursor: pointer; TODO: Decide where to put this style attribute*/
+    cursor: pointer;
+}
+
+.activityNoData{
+    margin: 10px;
+    width: 300px;
+    max-height: 400px;
+    min-height: 100px;
+    display: grid;
+    grid-template-columns: 85% 15%;
+    grid-template-rows: 60% 20% 20%;
+    grid-template-areas: 
+    "img img"
+    "title options"
+    "title meter"
+    ;
+    border: 1px solid  rgb(190, 190, 190);
+    border-radius: 3px;
+    float: left;
 }
 
 .activity img{

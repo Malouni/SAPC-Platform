@@ -55,7 +55,7 @@ function historyOfSurveys(){
 
         if(result == "NoResults")
         {
-            historySurveys += "<div class='activity'>";
+            historySurveys += "<div class='activityNoData'>";
             //historySurveys += "<img src='../images/cover-textures/1.png' alt='cover'>";
             historySurveys += "<p class='title'>No Past Reports Found<br></p>";
             historySurveys += "</div>";
