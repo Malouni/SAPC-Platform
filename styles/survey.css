@@ -89,15 +89,19 @@ table {
     border-spacing: 10px;
 }
 
-table th{
+table th {
     text-align: left;
+}
+
+table tr {
+    position: relative;
 }
 
 table td {
     text-align: left;
 }
 
-.question h3{
+.question h3 {
     text-align: center;
 }
 
@@ -115,30 +119,55 @@ table td {
 
 /*------------input type subquestions----------*/
 
-.shortSQ{
+.shortSQ {
     column-span: all;
     margin-bottom: 10px;
     padding-left: 10px;
 }
 
-.shortSQ input{
+.shortSQ input {
     margin-left: 10px;
     height: 30px;
 }
 
+.input-sq {
+    display: flex;
+    flex-direction: column;
+    height: calc(100%-120px);
+}
+
+.subQTexttd {
+    padding-left: 10px;
+}
+
+.SQinput {
+    height: 30px;
+    margin-left: 10px;
+}
 
 
 /*------------radio option questions----------*/
-.radio-option {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.label-option {
+    position: relative;
 }
 
-.radio-option div{
-    margin-bottom: 10px;
+
+.option-sq:nth-of-type(even) {
+    background-color: rgb(244, 244, 244);
 }
 
+.option-sq:nth-of-type(odd) {
+    background-color: rgb(210, 244, 247);
+}
+
+.subQ-Qtext~* {
+    float: left;
+    margin: 0 5px;
+}
+
+td.label-option:nth-child(3):last-child {
+    display: none;
+}
 
 
 /*----------user comments--------------*/
@@ -151,13 +180,16 @@ table td {
 }
 
 /*----------previous and next buttons--------------*/
-.question form button {
+.question form button,
+#finBtn {
     width: 150px;
     height: 40px;
     padding: 10px;
     position: absolute;
     bottom: 10px;
+    cursor: pointer;
 }
+
 
 .floatleft {
     left: 10px;
@@ -165,4 +197,10 @@ table td {
 
 .floatright {
     right: 10px;
+}
+
+#finBtn {
+    background-color: rgb(255, 213, 0);
+    border-radius: 3px;
+    border: 1px solid rgb(196, 196, 196);
 }
