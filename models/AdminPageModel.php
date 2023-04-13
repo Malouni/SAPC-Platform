@@ -20,7 +20,8 @@ function get_users_info()
 function add_new_user($email, $fName, $lName, $userType, $department)
 {
     global $conn;
-    $defaultPassword = "changeme";
+    global $defaultPassword;
+
     $hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
     $sql = "INSERT INTO UserTable (UserName, Password, Fname, Lname, Position, Department) VALUES ('$email', '$hashedPassword', '$fName', '$lName', '$userType', '$department')";
     $result = mysqli_query($conn, $sql);

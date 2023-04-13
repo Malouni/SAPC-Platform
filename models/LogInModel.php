@@ -1,29 +1,25 @@
 <?php
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'Oleg');
-define('DB_PASS', 'asd123@#4');
-define('DB_NAME', 'sciencestrategicplan');
-
-$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
-function check_validity($truid, $password)
+function get_users_password($userName)
 {
     global $conn;
 
-    $sql = "select * from UserTable where UserName = '$truid' and Password = '$password'";
+    $sql = "select * from UserTable where UserName = '$userName'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0)
-        return true;
+    {
+        $row = mysqli_fetch_assoc($result);
+        return $row['Password'];
+    }
     else
         return false;
 }
 
-function get_user_first_name ($truid)
+function get_user_first_name ($userName)
 {
     global $conn;
 
-    $sql = "select * from UserTable where UserName = '$truid'";
+    $sql = "select * from UserTable where UserName = '$userName'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
@@ -32,11 +28,11 @@ function get_user_first_name ($truid)
         return -1;
 }
 
-function get_user_last_name ($truid)
+function get_user_last_name ($userName)
 {
     global $conn;
 
-    $sql = "select * from UserTable where UserName = '$truid'";
+    $sql = "select * from UserTable where UserName = '$userName'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
@@ -45,11 +41,11 @@ function get_user_last_name ($truid)
         return -1;
 }
 
-function get_user_position ($truid)
+function get_user_position ($userName)
 {
     global $conn;
 
-    $sql = "select * from UserTable where UserName = '$truid'";
+    $sql = "select * from UserTable where UserName = '$userName'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
@@ -58,10 +54,10 @@ function get_user_position ($truid)
         return -1;
 }
 
-function get_user_id ($truid)
+function get_user_id ($userName)
 {
     global $conn;
-    $sql = "select * from UserTable where UserName = '$truid'";
+    $sql = "select * from UserTable where UserName = '$userName'";
     $result = mysqli_query($conn, $sql);
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);

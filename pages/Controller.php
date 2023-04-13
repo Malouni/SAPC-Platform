@@ -1,10 +1,16 @@
 <?php
+
+define('DB_HOST', 'localhost');
+define('DB_USER', 'Oleg');
+define('DB_PASS', 'asd123@#4');
+define('DB_NAME', 'sciencestrategicplan');
+
+$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+$defaultPassword = "password";
+
+
 if (empty($_POST['page'])) {
-
-    $display_type = 'none';
-
-    $error_message_username = "";
-    $error_message_password = "";
+    $error_msg_loginIn ="";
     include ('LogInPage.php');
     exit();
 }
@@ -19,32 +25,37 @@ require('../models/AdminPageModel.php');
 require('../models/chartPDFModel.php');
 require('../models/PresentSurveyReportModel.php');
 
+session_status() === PHP_SESSION_ACTIVE ?: session_start();
 
 
-
-session_start();
 
 if ($_POST['page'] == 'LogInPage')
 {
     $command = $_POST['command'];
     switch($command) {
         case 'LogIn':
-
-            if (!check_validity($_POST['userName'], $_POST['password'])) {
-                $error_msg_username = '* Wrong username, or';
-                $error_msg_password = '* Wrong password';
-
-                $display_type = 'LogIn';
-
-                include('LogInPage.php');
+            if ($users_password_hash = get_users_password($_POST['userName']))
+            {
+                if(password_verify($_POST["password"], $users_password_hash))
+                {
+                    $error_msg_loginIn ="";
+                    $_SESSION['LogIn'] = 'Yes';
+                    $_SESSION['userFirstName'] = get_user_first_name ($_POST['userName']);
+                    $_SESSION['userLastName'] = get_user_last_name ($_POST['userName']);
+                    $_SESSION['userPosition'] = get_user_position ($_POST['userName']);
+                    $_SESSION['userId'] = get_user_id($_POST['userName']);
+                    require('Index.php');
+                }
+                else
+                {
+                    $error_msg_loginIn = '**Wrong username, or Password**';
+                    include('LogInPage.php');
+                }
             }
-            else {
-                $_SESSION['LogIn'] = 'Yes';
-                $_SESSION['userFirstName'] = get_user_first_name ($_POST['userName']);
-                $_SESSION['userLastName'] = get_user_last_name ($_POST['userName']);
-                $_SESSION['userPosition'] = get_user_position ($_POST['userName']);
-                $_SESSION['userId'] = get_user_id($_POST['userName']);
-                require('Index.php');
+            else
+            {
+                $error_msg_loginIn = '**Wrong username, or Password**';
+                include('LogInPage.php');
             }
             exit();
     }
@@ -54,7 +65,7 @@ if ($_POST['page'] == 'LogInPage')
 else if($_POST['page'] == 'Navigation')
 {
     if (!isset($_SESSION['LogIn'])) {
-        $display_type = 'none';
+
         include('LogInPage.php');
         exit();
     }
@@ -87,7 +98,7 @@ else if($_POST['page'] == 'Navigation')
     case 'SignOut':
         session_unset();
         session_destroy();
-        $display_type = 'none';
+
         include ('LogInPage.php');
         break;
     }
@@ -97,7 +108,6 @@ else if($_POST['page'] == 'Navigation')
 else if($_POST['page'] == 'MainPage')
 {
     if (!isset($_SESSION['LogIn'])) {
-        $display_type = 'none';
         include('LogInPage.php');
         exit();
     }
@@ -114,7 +124,7 @@ else if($_POST['page'] == 'MainPage')
         $result = get_surveys_completed_by_user($_SESSION['userId']);
         echo json_encode($result);
         break;
-    
+
     case 'upcomingSurveysID':
         $_SESSION['NewSurveysID'] = (int) $_POST['ID'] ;
         include('surveyStart.php');
@@ -133,7 +143,6 @@ else if($_POST['page'] == 'MainPage')
 else if ($_POST['page'] == 'SuveryStart')
 {
     if (!isset($_SESSION['LogIn'])) {
-        $display_type = 'none';
         include('LogInPage.php');
         exit();
     }
@@ -151,7 +160,7 @@ else if ($_POST['page'] == 'SuveryStart')
             break;
 
         case 'StartSurvey':
-            include('survey.php');  
+            include('survey.php');
             break;
     }
 }
@@ -159,27 +168,26 @@ else if ($_POST['page'] == 'SuveryStart')
 
 else if($_POST['page'] == 'Suvery'){
     if (!isset($_SESSION['LogIn'])) {
-        $display_type = 'none';
         include('LogInPage.php');
         exit();
     }
-    
+
     $command = $_POST['command'];
     switch($command) {
 
         case 'AnswerUpdate':
             UpdateAnswers($_SESSION['NewSurveysID'],$_SESSION['userId'],$_POST['Q_ID'],$_POST['SubQID'],$_POST['IsUpdate'],$_POST['Answer']);
             break;
-        
+
         case 'NoteUpdate':
             UpdateComment($_SESSION['userId'],$_POST['Q_ID'],$_POST['note']);
             break;
-    
+
         case 'LoadQuestionList':
             $result = LoadQuestions($_SESSION['NewSurveysID']);
             echo json_encode($result);
             break;
-        
+
         case 'LoadLabelList':
             $result = LoadLabel($_SESSION['NewSurveysID']);
             echo json_encode($result);
@@ -189,7 +197,7 @@ else if($_POST['page'] == 'Suvery'){
             $result = LoadAnswers($_SESSION['NewSurveysID'],$_SESSION['userId'],$_POST['Q_ID'],$_POST['Q_Type']);
             echo json_encode($result);
             break;
-        
+
         case 'LoadNote':
             $result = LoadComment($_SESSION['NewSurveysID'],$_POST['Q_ID']);
             echo json_encode($result);
@@ -198,22 +206,21 @@ else if($_POST['page'] == 'Suvery'){
         case 'LastProgress':
             $result = LoadLastProgress($_SESSION['NewSurveysID'],$_SESSION['userId']);
             echo json_encode($result);
-            break;       
-            
+            break;
+
         case 'SurveyFin':
             include('SurveySubmit.php');
-            break;       
+            break;
     }
 }
 
 else if ($_POST['page'] == 'PastReport')
 {
     if (!isset($_SESSION['LogIn'])) {
-        $display_type = 'none';
         include('LogInPage.php');
         exit();
     }
-   
+
     $command = $_POST['command'];
     switch($command) {
         case 'SurveyDocuments':
@@ -226,7 +233,7 @@ else if ($_POST['page'] == 'PastReport')
             echo json_encode($result);
             break;
 
-        case 'AnswerPercentage':    
+        case 'AnswerPercentage':
             $result = get_survey_answer_percentage($_SESSION['documentId'], $_POST['goal']);
             echo json_encode($result);
             break;
@@ -245,19 +252,18 @@ else if ($_POST['page'] == 'PastReport')
 else if ($_POST['page'] == 'userReview')
 {
     if (!isset($_SESSION['LogIn'])) {
-        $display_type = 'none';
         include('LogInPage.php');
         exit();
     }
 
     $command = $_POST['command'];
     switch($command) {
-       
+
         case 'getUserAnswerReview':
             $result = getUserReview($_SESSION['userId'] , $_POST['SurveyYear']);
             echo json_encode($result);
             break;
-        
+
         case 'getYearSurvey':
             $result = getYearSurvey($_SESSION['userPosition']);
             echo json_encode($result);
@@ -267,7 +273,7 @@ else if ($_POST['page'] == 'userReview')
             $result = getUserReview($_SESSION['userId'] , $_SESSION['NewSurveysID'] );
             echo json_encode($result);
             break;
-    
+
         case 'HistorySurveyReview':
             $result = getUserReview($_SESSION['userId'] , $_SESSION['PastSurveysID'] );
             echo json_encode($result);
@@ -278,7 +284,6 @@ else if ($_POST['page'] == 'userReview')
 else if ($_POST['page'] == 'AdminPage')
 {
     if (!isset($_SESSION['LogIn'])) {
-        $display_type = 'none';
         include('LogInPage.php');
         exit();
     }
@@ -416,25 +421,24 @@ else if ($_POST['page'] == 'AdminPage')
 else if ($_POST['page'] == 'ReportPDF')
 {
     if (!isset($_SESSION['LogIn'])) {
-        $display_type = 'none';
         include('LogInPage.php');
         exit();
     }
 
     $command = $_POST['command'];
     switch($command) {
-       
+
         case 'getPDFRport':
            $_SESSION['lineChart'] = $_POST['lineChart'] ;
            $_SESSION['circleChart'] = $_POST['circleChart'] ;
            CheckUpdate($_SESSION['documentId']);
            include('reportPDF.php');
-           break;        
+           break;
 
         case 'LoadCharts':
             $result = getChartData($_SESSION['ID_PDF']);
             echo json_encode($result);
             break;
-      
+
     }
 }

@@ -88,5 +88,9 @@ body {
     position: relative;
     bottom: 220px;
     left: 320px;
-    padding-top: 20px;
+    padding-top: 30px;
+}
+
+#errorMessage {
+    font-weight: bold;
 }

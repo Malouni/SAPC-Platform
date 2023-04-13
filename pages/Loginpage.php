@@ -1,8 +1,4 @@
 <?php
-
-session_start();
-session_destroy();
-
 ?>
 
 <!DOCTYPE html>
@@ -18,16 +14,9 @@ session_destroy();
     <link rel="stylesheet" href="..\fonts\arial-nova\stylesheet.css">
     <link rel="stylesheet" href="../styles/LogInStyles.css">
 
-    <script>
-        function showEmailPopup() {
-            var email = "example@email.com";
-            var popupMessage = "Please contact admin to this email: "+ email;
-            var popupElement = document.createElement("div");
-            popupElement.innerHTML = popupMessage;
-            alert(popupElement.innerHTML);
-        }
-    </script>
-
+    <!-- links to scripts -->
+    <script src="../scripts/LogInPage.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 </head>
 
@@ -43,13 +32,14 @@ session_destroy();
             <form method='post' action='Controller.php'>
                 <input type='hidden' name='page' value='LogInPage'>
                 <input type='hidden' name='command' value='LogIn'>
-                <input type="text" placeholder="Please enter Username" class="wide" name="truid" required></br>
+                <div id='errorMessage'><?php if (!empty($error_msg_loginIn)) echo $error_msg_loginIn; ?></div>
+                <input type="text" placeholder="Please enter Username" class="wide" name="userName" required></br>
                 <input type="password" placeholder="Please enter Password" class="wide" name="password" required></br>
                 <input type="submit" value="Log In" class="wide" id="submitbutton">
             </form>
         </div>
         <div id="loginFside">
-            <p><a href="#" onclick="showEmailPopup()" style="text-decoration: none; color:#288f94;">Forgotten your username or password?</a></p>
+            <p><a href="" onclick="showEmailPopup()" style="text-decoration: none; color:#288f94;">Forgotten your username or password?</a></p>
             <p>Cookies must be enabled in your browser</p>
         </div>
     </div>
