@@ -435,7 +435,16 @@ else if ($_POST['page'] == 'AdminPage')
                 {
                     if($result = add_questions_to_new_survey($data[1], $data[2], $newSurvId))
                     {
-                        $result = "The survey: ".$data[0][0]["SurvName"]." was added successfully!";
+                        $resultUpdate1 = update_table_where_subQstID_is_zero("AnswerOptions");
+                        $resultUpdate2 = update_table_where_subQstID_is_zero("SurveyReport");
+                        if($resultUpdate1 && $resultUpdate2)
+                        {
+                            $result = "The survey: ".$data[0][0]["SurvName"]." was added successfully!";
+                        }
+                        else
+                        {
+                            $result = "The survey: ".$data[0][0]["SurvName"]." addition failed, database problems!";
+                        }
                     }
                     else
                     {
