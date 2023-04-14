@@ -16,10 +16,8 @@ function upcomingSurveys (){
 
         if(result == "NoResults")
         {
-            upcomingSurveys += "<div class='activity'>";
             //upcomingSurveys += "<img src='../images/cover-textures/1.png' alt='cover'>";
             upcomingSurveys += "<p class='title'>No Upcoming Surveys</p>";
-            upcomingSurveys += "</div>";
         }
         else
         {
