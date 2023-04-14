@@ -175,7 +175,7 @@ function QuestionRender(QuestionIndex){
                       
                     //For Multi Choice Questions
                     multi_document += "<tr class='option-sq'>";
-                    multi_document += "<td id='sub-table-header"+IdNum+"'>"+QuestionList[QuestionIndex]['Sub_Q']+"</td>";    
+                    multi_document += "<td class='subQ-Qtext' id='sub-table-header"+IdNum+"'>"+QuestionList[QuestionIndex]['Sub_Q']+"</td>";    
 
                     //connect label and radio button
                     for(let i =0 ; i < LabelList.length ; i++){
@@ -189,12 +189,12 @@ function QuestionRender(QuestionIndex){
                     }                        
                     multi_document += "</tr>";           
                        
-                }else{                    
+                }else {
 
                     //For ShortAnswer Sub-Questions
                     short_document += "<tr class='input-sq SQ'>";
-                    short_document += "<td>"+QuestionList[QuestionIndex]['Sub_Q']+"</td>";
-                    short_document += "<td class='text-input'><input type='number' id='text_answer' name='"+Update_ID+"' placeholder='Type your answer here'></td>";
+                    short_document += "<td><p class='subQTexttd'>" + QuestionList[QuestionIndex]['Sub_Q'] + "</p></td>";
+                    short_document += "<td class='text-input'><input class='SQinput' type='number' id='text_answer' name='" + Update_ID + "' placeholder='Type your answer here'></td>";
                     short_document += "</tr>";
 
                 }

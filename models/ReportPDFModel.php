@@ -1,8 +1,9 @@
 <?php
 
-
-echo '<img src="' . $_SESSION["circleChart"] .  '"/>'; 
-echo '<img src="' . $_SESSION["lineChart"] .  '"/>'; 
+echo '<div class= "pageheader"><h2>Science Strategic Plan</h2></div>';
+echo '<img class="chart1" src="' . $_SESSION["circleChart"] .  '"/>'; 
+echo '<img class="chart2" src="' . $_SESSION["lineChart"] .  '"/>'; 
+echo '<div class= "goalsHeader"><h4>Plan Goals</h4></div>';
 
 echo get_survey($_SESSION['ID_PDF'], 'DIEL'); 
 echo get_survey($_SESSION['ID_PDF'], 'SPP'); 
@@ -56,13 +57,13 @@ function get_survey($survId, $goal)
             if($row == 0)
             {
                 if($data[$row]['SubGoal'] == "I&D")
-                    $tables .= "<p class='headers'>Inclusive & Diversity</p>";
+                    $tables .= "<p class='subgoalsHeaders'>Inclusion & Diversity</p>";
                 elseif($data[$row]['SubGoal'] == "CM")
-                    $tables .= "<p class='headers'>Community mindedness</p>";
+                    $tables .= "<p class='subgoalsHeaders'>Community mindedness</p>";
                 elseif($data[$row]['SubGoal'] == "C")
-                    $tables .= "<p class='headers'>Curiosity</p>";
+                    $tables .= "<p class='subgoalsHeaders'>Curiosity</p>";
                 elseif($data[$row]['SubGoal'] == "S")
-                    $tables .= "<p class='headers'>Sustainability</p>";
+                    $tables .= "<p class='subgoalsHeaders'>Sustainability</p>";
                 $tables .= "<table class='tablePastReport'>";
                 $tables .= "<tr class='rowPastReport'>";
                 $tables .= "<th class='headerActivity'>Activity</th>";
@@ -73,13 +74,13 @@ function get_survey($survId, $goal)
             elseif($data[$row-1]['SubGoal'] != $data[$row]['SubGoal'])
             {
                 if($data[$row]['SubGoal'] == "I&D")
-                    $tables .= "<p class='headers'>Inclusive & Diversity</p>";
+                    $tables .= "<p class='subgoalsHeaders'>Inclusive & Diversity</p>";
                 elseif($data[$row]['SubGoal'] == "CM")
-                    $tables .= "<p class='headers'>Community mindedness</p>";
+                    $tables .= "<p class='subgoalsHeaders'>Community mindedness</p>";
                 elseif($data[$row]['SubGoal'] == "C")
-                    $tables .= "<p class='headers'>Curiosity</p>";
+                    $tables .= "<p class='subgoalsHeaders'>Curiosity</p>";
                 elseif($data[$row]['SubGoal'] == "S")
-                    $tables .= "<p class='headers'>Sustainability</p>";
+                    $tables .= "<p class='subgoalsHeaders'>Sustainability</p>";
                 $tables .= "<table class='tablePastReport'>";
                 $tables .= "<tr class='rowPastReport'>";
                 $tables .= "<th class='headerActivity'>Activity</th>";
@@ -155,7 +156,7 @@ function get_survey($survId, $goal)
 
     }  
     else
-        return $tables = "<p class='headers'>No data found</p>";    
+        return $tables = "<p class='nodata'>No data found</p>";    
         
 }
 

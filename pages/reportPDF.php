@@ -1,24 +1,59 @@
 <?php
-    require_once '../dompdf/autoload.inc.php';  
-    ob_start();
+require_once '../dompdf/autoload.inc.php';
+ob_start();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 
 </head>
 <style>
+    /*-----------------General styles-----------------------*/
 
-    
-        /* container styles */
+    * {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        box-sizing: border-box;
+    }
+
+    .pageheader {
+        width: 100%;
+        height: 60px;
+        background-color: #003e51;
+        color: white;
+        text-align: center;
+        padding-top: 5px;
+    }
+
+    .goalsHeader {
+        width: 100%;
+        background-color: #323639;
+        color: white;
+        padding-left: 10px;
+    }
+    /*------------------Charts styles---------------*/
+
+    .chart1 {
+        width: 33%;
+        position: relative;
+        bottom: 10px;
+    }
+
+    .chart2 {
+        width: 60%;
+        margin: 30px 10px;
+    }
+
+
+    /* container styles */
     .pastReports {
         border: 1px solid rgb(185, 185, 185);
         width: 21cm;
@@ -114,7 +149,7 @@
     }
 
     table.tablePastReport {
-        width: 700px;
+        width: 100%;
         border-collapse: collapse;
     }
 
@@ -143,14 +178,14 @@
     }
 
     /* This is a css for a row of the single question  */
-    tr.rowPastReportSingle{
+    tr.rowPastReportSingle {
         border: 1px solid rgb(105, 105, 105);
         border-collapse: collapse;
         font-weight: bold;
     }
 
     /* This is a css for a row for a composed sub-question*/
-    tr.rowPastReportComposed{
+    tr.rowPastReportComposed {
         border: 1px solid rgb(105, 105, 105);
         border-collapse: collapse;
     }
@@ -174,13 +209,27 @@
         border: 1px solid rgb(105, 105, 105);
         border-collapse: collapse;
         text-align: center;
+        width: 80px;
     }
 
     /* text styles*/
     p.headers {
         font-weight: bold;
-        margin: 0.5% 0 0.3% 1px;
+        margin: 30px 0 10px 1px;
         font-size: large;
+        background-color: #e8e8e8;
+        border-left: 10px solid #ffcd00;
+        padding-left: 20px;
+    }
+
+    p.subgoalsHeaders{
+        font-weight: bold;
+        margin: 0.5% 0 0.3% 1px;
+        font-size: medium;
+    }
+
+    p.nodata{
+        display: none;
     }
 
     p.regularText {
@@ -203,39 +252,40 @@
     p.facility {
         color: rgb(105, 105, 105);
     }
-    img{
-        padding-top : 20px;
-    }
 
-    
+    img {
+        padding-top: 20px;
+    }
 </style>
 
 <body>
-   
-<?php
+
+    <?php
     require('../models/ReportPDFModel.php');
-?>
-    
+    ?>
+
 
 </body>
+
 </html>
 
 <?php
-    $html = ob_get_contents();    
-    ob_end_clean();
+$html = ob_get_contents();
+ob_end_clean();
 
-    use Dompdf\Dompdf;
-    $dompdf = new Dompdf();
-      
-    $dompdf->load_html($html);
+use Dompdf\Dompdf;
 
-    // (Optional) Setup the paper size and orientation
-    $dompdf->setPaper('A4', 'portrait');
+$dompdf = new Dompdf();
 
-    // Render the HTML as PDF
-    $dompdf->render();
+$dompdf->load_html($html);
 
-    // Output the PDF to the browser as a preview
-    $dompdf->stream('output.pdf', array('Attachment' => false));
- 
+// (Optional) Setup the paper size and orientation
+$dompdf->setPaper('A4', 'portrait');
+
+// Render the HTML as PDF
+$dompdf->render();
+
+// Output the PDF to the browser as a preview
+$dompdf->stream('output.pdf', array('Attachment' => false));
+
 ?>
