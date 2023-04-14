@@ -166,7 +166,11 @@ function show_survey_goal_chosen(goal) {
                         {
                             row = composedQuestion;
                             break;
-                        }else if(result[composedQuestion]['SubGoal'] != result [composedQuestion+1]['SubGoal'])
+                        }else if(result[composedQuestion]['SubGoal'] != result[composedQuestion+1]['SubGoal'])
+                        {
+                            row = composedQuestion;
+                            break;
+                        }else if(result[composedQuestion]['QuestionID'] != result[composedQuestion+1]['QuestionID'])
                         {
                             row = composedQuestion;
                             break;

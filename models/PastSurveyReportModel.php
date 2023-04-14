@@ -24,6 +24,7 @@ function get_survey_activity($survId, $goal)
     $sql = "SELECT
                 SQ.Goal,
                 SQ.SubGoal,
+                SQ.QuestionID,
                 SQ.Question,
                 SQ.Type,
                 SQS.Sub_Q,
