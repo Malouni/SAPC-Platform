@@ -20,9 +20,11 @@ function get_survey($survId, $goal)
     $sql = "SELECT
                 SQ.Goal,
                 SQ.SubGoal,
+                SQ.QuestionID,
                 SQ.Question,
                 SQ.Type,
                 SQS.Sub_Q,
+                SR.Answer_Percentage,
                 SR.Activity_Involvement,
                 SR.Activity_Historical
             FROM SurveyReport SR
@@ -127,6 +129,10 @@ function get_survey($survId, $goal)
                         $row = $composedQuestion;
                         break;
                     }elseif($data[$composedQuestion]['SubGoal'] != $data [$composedQuestion+1]['SubGoal'])
+                    {
+                        $row = $composedQuestion;
+                        break;
+                    }else if($data[$composedQuestion]['QuestionID'] != $data[$composedQuestion+1]['QuestionID'])
                     {
                         $row = $composedQuestion;
                         break;
