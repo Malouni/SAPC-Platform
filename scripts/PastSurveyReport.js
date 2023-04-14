@@ -340,7 +340,7 @@ function calculateGraph(CurrentYear, year1 , year2 ,value, value1, value2) {
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 100,
+                    max: 110,
                     title: {
                         display: true,
                         text: "Survey Answer Percentage",

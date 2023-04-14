@@ -478,7 +478,7 @@ else if ($_POST['page'] == 'ReportPDF')
         case 'getPDFRport':
            $_SESSION['lineChart'] = $_POST['lineChart'] ;
            $_SESSION['circleChart'] = $_POST['circleChart'] ;
-           CheckUpdate($_SESSION['documentId']);
+           CheckUpdate($_SESSION['ID_PDF']);
            include('reportPDF.php');
            break;
 
