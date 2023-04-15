@@ -314,11 +314,13 @@ function delete_survey($survID)
                 ON sq.SubQuestionID = sqa.SubQuestionID
                 LEFT JOIN surveyreport as sp
                 ON st.SurvID = sp.SurvID
-WHERE st.SurvID = '$survID'";
+            WHERE st.SurvID = '$survID';";
     $result = mysqli_query($conn, $sql);
 
     if ($result)
+    {
         return true;
+    }
     else
         return false;
 }

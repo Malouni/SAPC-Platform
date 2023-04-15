@@ -150,11 +150,11 @@ function showSurveysTable(){
         $('#survey-table').html(surveyTable);
 
         $('td > button[button-Delete-SurveyId]').click(function() {
-            var suvId= $(this).attr('button-Delete-SurveyId');
-            var survName = $("#SurvName"+suvId+"").text();
+            var survId= $(this).attr('button-Delete-SurveyId');
+            var survName = $("#SurvName"+survId+"").text();
             let text = "Are you sure, you want to delete the Survey: "+survName+"?";
             if (confirm(text) == true){
-                removeUserFunction(suvId);
+                removeSurveyFunction(survId,survName);
                 showSurveysTable();
             }
         });
@@ -202,6 +202,17 @@ function removeUserFunction(userId)
         var result = JSON.parse(data);
         alert(result);
         showUsersTable();
+    });
+}
+
+function removeSurveyFunction(surveyId,survName)
+{
+    var url = 'Controller.php';
+    var query = {page: 'AdminPage', command: 'RemoveSurvey', RemoveSurveyId: surveyId};
+    $.post(url, query, function(data) {
+        var result = JSON.parse(data);
+        alert(survName+result);
+        showSurveysTable();
     });
 }
 

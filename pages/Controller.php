@@ -404,6 +404,14 @@ else if ($_POST['page'] == 'AdminPage')
             echo json_encode($result);
             break;
 
+        case 'RemoveSurvey':
+            if(delete_survey($_POST["RemoveSurveyId"]))
+                $result = " was deleted successfully!";
+            else
+                $result = "The error occupied, try again later.";
+            echo json_encode($result);
+            break;
+
         case 'csvAddUsers':
             $data = $_POST["csvFileDataUsers"];
             $result = "";
