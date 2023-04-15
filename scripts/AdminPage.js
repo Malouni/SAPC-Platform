@@ -254,10 +254,12 @@ function csvToArrayUsers(text)
     var array = [];
     var headers;
     var delimiter = ",";
+    var surveyInfoExists = false;
 
     for(singleRow = 0; singleRow < rows.length; singleRow++)
     {
-        if(singleRow == 0)
+        cells = rows[singleRow].split(delimiter);
+        if(singleRow == 0 && cells[0] !="")
         {
             headers = rows[singleRow].split(delimiter);
             //Filters headers array from empty elements
@@ -267,16 +269,19 @@ function csvToArrayUsers(text)
         }
         cells = rows[singleRow].split(delimiter);
 
-        var values = rows[singleRow].split(delimiter);
-        values = values.filter(item => item);
-        values = removeUnnecessarySpaces(values);
-        array.push(
-            headers.reduce(function (object, header, index) {
+        if(cells[0] !="" && !surveyInfoExists)
+        {
+            var values = rows[singleRow].split(delimiter);
+            values = values.filter(item => item);
+            values = removeUnnecessarySpaces(values);
+            array.push(
+                headers.reduce(function (object, header, index) {
                 object[header] = values[index];
                 return object;
                 }, {})
-        );
-
+            );
+            surveyInfoExists = true;
+        }
     }
     return array;
 }
