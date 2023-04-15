@@ -262,12 +262,14 @@ function csvToArrayUsers(text)
             headers = rows[singleRow].split(delimiter);
             //Filters headers array from empty elements
             headers = headers.filter(item => item);
+            headers = removeUnnecessarySpaces(headers);
             singleRow++;
         }
         cells = rows[singleRow].split(delimiter);
 
         var values = rows[singleRow].split(delimiter);
         values = values.filter(item => item);
+        values = removeUnnecessarySpaces(values);
         array.push(
             headers.reduce(function (object, header, index) {
                 object[header] = values[index];
