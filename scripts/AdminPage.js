@@ -312,6 +312,7 @@ function csvToArraySurvey(text)
                 headers = rows[singleRow].split(delimiter);
                 //Filters headers array from empty elements
                 headers = headers.filter(item => item);
+                headers = removeUnnecessarySpaces(headers);
                 singleRow++;
                 if(singleCell == 0 && cells[singleCell] == "SurvYear")
                 {
@@ -355,6 +356,7 @@ function csvToArraySurvey(text)
             {
                 var values = rows[singleRow].split(delimiter);
                 values = values.filter(item => item);
+                values = removeUnnecessarySpaces(values);
                 surveyInfoArray.push(
                     headers.reduce(function (object, header, index) {
                         object[header] = values[index];
@@ -365,6 +367,8 @@ function csvToArraySurvey(text)
             else if(dataSection == 1)
             {
                 var values = rows[singleRow].split(delimiter, possibleAnsPositionHolder + 1);
+                values = values.filter(item => item);
+                values = removeUnnecessarySpaces(values);
                 values[possibleAnsPositionHolder] = arrayOfPossibleAns;
                 questionArray.push(
                     headers.reduce(function (object, header, index) {
@@ -376,6 +380,8 @@ function csvToArraySurvey(text)
             else if(dataSection == 2)
             {
                 var values = rows[singleRow].split(delimiter, possibleAnsPositionHolder + 1);
+                values = values.filter(item => item);
+                values = removeUnnecessarySpaces(values);
                 values[possibleAnsPositionHolder] = arrayOfPossibleAns;
                 subQuestionArray.push(
                     headers.reduce(function (object, header, index) {
@@ -391,5 +397,14 @@ function csvToArraySurvey(text)
     array[0] = surveyInfoArray;
     array[1] = questionArray;
     array[2] = subQuestionArray;
+    return array;
+}
+
+function removeUnnecessarySpaces(array)
+{
+    for(var index = 0; index < array.length; index++)
+    {
+        array[index] = array[index].trim();
+    }
     return array;
 }

@@ -444,11 +444,13 @@ else if ($_POST['page'] == 'AdminPage')
                         else
                         {
                             $result = "The survey: ".$data[0][0]["SurvName"]." addition failed, database problems!";
+                            delete_survey($newSurvId);
                         }
                     }
                     else
                     {
                         $result = "The survey: ".$data[0][0]["SurvName"]." addition failed, check the csv file (Questions Part)";
+                        delete_survey($newSurvId);
                     }
                 }
                 else

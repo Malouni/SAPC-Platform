@@ -297,7 +297,24 @@ function delete_survey($survID)
 {
     global $conn;
 
-    $sql = "DELETE * FROM SurveyTable WHERE SurvID = '$survID'";
+    $sql = "DELETE st, survQ, sq, an , aoq, aosb, ua, sqa, sp FROM surveytable st
+                LEFT JOIN surveyquestions as survQ
+                ON st.SurvID = survQ.SurvID
+                LEFT JOIN subquestions as sq
+                ON survQ.QuestionID = sq.QuestionID
+                LEFT JOIN answernotes as an
+                ON survQ.QuestionID = an.QuestionID
+                LEFT JOIN answeroptions as aoq
+                ON survQ.QuestionID = aoq.QuestionID
+                LEFT JOIN answeroptions as aosb
+                ON sq.SubQuestionID = aosb.SubQuestionID
+                LEFT JOIN useranswer as ua
+                ON survQ.QuestionID = ua.QuestionID
+                LEFT JOIN subquestionanswer as sqa
+                ON sq.SubQuestionID = sqa.SubQuestionID
+                LEFT JOIN surveyreport as sp
+                ON st.SurvID = sp.SurvID
+WHERE st.SurvID = '$survID'";
     $result = mysqli_query($conn, $sql);
 
     if ($result)
