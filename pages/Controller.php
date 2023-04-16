@@ -218,7 +218,7 @@ else if($_POST['page'] == 'Suvery'){
             break;
 
         case 'NoteUpdate':
-            UpdateComment($_SESSION['userId'],$_POST['Q_ID'],$_POST['note']);
+            UpdateComment($_SESSION['userId'],$_POST['Q_ID'],$_POST['IsUpdateNote'],$_POST['note']);
             break;
 
         case 'LoadQuestionList':
