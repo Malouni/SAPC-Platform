@@ -3,7 +3,9 @@ document.addEventListener("DOMContentLoaded", function(){
     disable_goal_buttons();
 });
 
+//Global variables
 var detailedReport = false;
+var currentGoalDetailed ="";
 
 function show_survey_documents() {
     var url = 'Controller.php';
@@ -209,8 +211,7 @@ function show_survey_goal_chosen(goal) {
                     tables += "</table>";
                 }
             }
-            
-            var progress = result[0]['Answer_Percentage']; 
+            var progress = result[0]['Answer_Percentage'];
             updateCircularProgressBar(progress);
         }
         $('#report-pane').html(tables);
@@ -218,13 +219,13 @@ function show_survey_goal_chosen(goal) {
 
 }
 
-function show_survey_goal_detailed(goal) {
+function show_survey_goal_detailed(userNumber) {
     var url = 'Controller.php';
 
-    var query = {page: 'PastReport', command: 'SurveyActivityDetailedGoal', goal: ''+goal+''};
+    var query = {page: 'PastReport', command: 'SurveyActivityDetailedGoal', goal: ''+currentGoalDetailed+'', userNumber:userNumber};
 
     $.post(url, query, function(data) {
-        alert(data);
+        //console.log(data);
         var result = JSON.parse(data);
         //alert(result.length);
         if(result == "No Data")
@@ -243,6 +244,8 @@ function show_survey_goal_detailed(goal) {
                 var tables = "<p class='headers'>Transformation Communities</p>";
             else if(result[0]['Goal'] == "GSD")
                 var tables = "<p class='headers'>Guided skill development</p>";
+
+            tables += "<button onclick='showUserSearchPopupWindow();'>Search by user</button>";
 
             for(var row = 0; row < result.length; row++)
             {
@@ -339,6 +342,9 @@ function show_survey_goal_detailed(goal) {
                         {
                             row = composedQuestion;
                             break;
+                        }else if(result[composedQuestion]['UserNumber'] != result[composedQuestion+1]['UserNumber'])
+                        {
+                            composedMainQuestion = true;
                         }
                     }
                     composedMainQuestion = true;
@@ -369,10 +375,65 @@ function show_survey_goal_detailed(goal) {
                 }
             }
         }
-        alert(tables);
         $('#report-pane').html(tables);
     });
 
+}
+
+function showUserSearchPopupWindow()
+{
+    searchByUser(null);
+    $('#blanket').show();
+    $('#popup').show();
+}
+
+function searchByUser(searchString)
+{
+
+    var url = 'Controller.php';
+    var query = {page: 'PastReport', command: 'SendUserList', searchString:searchString};
+
+    $.post(url, query, function(data) {
+        var result = JSON.parse(data);
+
+        var usersTable = "";
+
+        usersTable += "<table>";
+        usersTable += "<tr>";
+        usersTable += "<th>First Name</th>";
+        usersTable += "<th>Last Name</th>";
+        usersTable += "<th>Department</th>";
+        usersTable += "</tr>";
+
+        if(result == "NoResults")
+        {
+            usersTable += "<tr>";
+            usersTable += "<td>No</td>";
+            usersTable += "<td>Users</td>";
+            usersTable += "<td>Found</td>";
+            usersTable += "</tr>";
+        }
+        else
+        {
+            for (var row = 0; row < result.length; row++) {
+
+                usersTable += "<tr onclick='chooseClickedUser(this.id)' id='" + result[row]['UserNumber'] + "'>";
+                usersTable += "<td name='First Name'>" + result[row]['FirstName'] + "</td>";
+                usersTable += "<td name='Last Name'>" + result[row]['LastName'] + "</td>";
+                usersTable += "<td name='Department'>" + result[row]['Department'] + "</td>";
+                usersTable += "</tr>";
+            }
+        }
+        usersTable += "</table>";
+
+        $('#searchUser').html(usersTable);
+    });
+}
+
+function chooseClickedUser(userNumber)
+{
+    show_survey_goal_detailed(userNumber);
+    hideCover();
 }
 
 function set_current_document (id)
@@ -385,7 +446,8 @@ function set_current_document (id)
 function diel_goal_show()
 {   if(detailedReport)
     {
-        show_survey_goal_detailed('DIEL');
+        currentGoalDetailed = 'DIEL';
+        show_survey_goal_detailed(null);
     }
     else
     {
@@ -397,9 +459,10 @@ function diel_goal_show()
 
 function sppb_goal_show()
 {
+    currentGoalDetailed = 'SPP';
     if(detailedReport)
     {
-        show_survey_goal_detailed('SPP');
+        show_survey_goal_detailed(null);
     }
     else
     {
@@ -411,9 +474,10 @@ function sppb_goal_show()
 
 function ttl_goal_show()
 {
+    currentGoalDetailed = 'TTL';
     if(detailedReport)
     {
-        show_survey_goal_detailed('TTL');
+        show_survey_goal_detailed(null);
     }
     else
     {
@@ -425,9 +489,10 @@ function ttl_goal_show()
 
 function tc_goal_show()
 {
+    currentGoalDetailed = 'TC';
     if(detailedReport)
     {
-        show_survey_goal_detailed('TC');
+        show_survey_goal_detailed(null);
     }
     else
     {
@@ -439,9 +504,10 @@ function tc_goal_show()
 
 function gcd_goal_show()
 {
+    currentGoalDetailed = 'GSD';
     if(detailedReport)
     {
-        show_survey_goal_detailed('GSD');
+        show_survey_goal_detailed(null);
     }
     else
     {
@@ -492,9 +558,9 @@ function load_charts(goal){
             var Value1 = result[0]['Value1'];
             var Value2 = result[0]['Value2'];
 
-            calculateGraph(CurrentYear , Year1 , Year2 ,Value , Value1 ,Value2);            
+            calculateGraph(CurrentYear , Year1 , Year2 ,Value , Value1 ,Value2);
         }else{
-            calculateGraph(0 , 0 , 0 ,0 , 0 ,0);       
+            calculateGraph(0 , 0 , 0 ,0 , 0 ,0);
         }
     });
 
@@ -564,8 +630,25 @@ function calculateGraph(CurrentYear, year1 , year2 ,value, value1, value2) {
 }
 
 
+//Blanket function
+function hideCover()
+{
+    $('#blanket').hide();
+    $('#popup').hide();
+}
 
 
+/*
+$('document').on('click','.blanket',function(){
+    $('#blanket').hide();
+    $('#popup').hide();
+});
+
+$('body').on('click','.popup',function(){
+    $('#blanket').hide();
+    $('#popup').hide();
+});
+*/
 
 
 
