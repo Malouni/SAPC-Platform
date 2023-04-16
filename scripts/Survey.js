@@ -303,7 +303,7 @@ function shortAnswerUpdate(){
 
 //call when click next to update the note from user to db
 // NoteIsUpdate is use to check should use Update or Insert in db( true if LoadNote can load the note)
-var NoteIsUpdate = 'false'; 
+var NoteIsUpdate;
 
 function NoteUpdate(IsUpdateNote){
 
@@ -336,6 +336,8 @@ function NoteLoad(){
             NoteIsUpdate = 'true';
             //set the note
             textbox.defaultValue = result;            
+        }else{
+            NoteIsUpdate = 'false';
         }
     });
 }
