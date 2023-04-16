@@ -323,11 +323,12 @@ function NoteUpdate(IsUpdateNote){
     // Get the value of the textbox element
     var note = textbox.value;
 
-    if(note != null){
+    if(note != ""){
 
         var url = 'Controller.php';
         var query = {page: 'Suvery', command: 'NoteUpdate' , Q_ID: ''+CurrentQuestionID+'' , IsUpdateNote: ''+IsUpdateNote+'' , note:''+note+'' };            
         $.post(url, query)
+
     }
 }
 
@@ -337,7 +338,7 @@ function NoteUpdate(IsUpdateNote){
 //load Note
 function NoteLoad(){
     var url = 'Controller.php';
-    var query = {page: 'Suvery', command: 'LoadNote' , Q_ID: ''+CurrentQuestionID+''};            
+    var query = {page: 'Suvery', command: 'LoadNote' , Q_ID: ''+CurrentQuestionID+''};           
     $.post(url, query , function(data){
         var result = JSON.parse(data);
 
