@@ -250,6 +250,17 @@ function multiAnswerUpdate(src , IsUpdate){
         var query = {page: 'Suvery', command: 'AnswerUpdate' , Q_ID: ''+Q_ID+'' , SubQID: 0 , IsUpdate: ''+IsUpdate+'' , Answer:''+answer+'' };            
         $.post(url, query)
     }
+    //update the radio function in case if change the answer
+    if(IsUpdate !=  'true'){
+
+        var radioGroup = document.getElementsByName(ID);
+
+        radioGroup.forEach(function(radioButton) {
+            radioButton.onchange = function() {
+              multiAnswerUpdate(this , 'true');
+            };
+        });
+    }
 
 }
    
