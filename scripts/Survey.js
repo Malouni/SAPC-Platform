@@ -302,7 +302,10 @@ function shortAnswerUpdate(){
 }
 
 //call when click next to update the note from user to db
-function NoteUpdate(){
+// NoteIsUpdate is use to check should use Update or Insert in db( true if LoadNote can load the note)
+var NoteIsUpdate = 'false'; 
+
+function NoteUpdate(IsUpdateNote){
 
     var textbox = document.getElementById("userComments");
 
@@ -312,7 +315,7 @@ function NoteUpdate(){
     if(note != null){
 
         var url = 'Controller.php';
-        var query = {page: 'Suvery', command: 'NoteUpdate' , Q_ID: ''+CurrentQuestionID+'' , note:''+note+'' };            
+        var query = {page: 'Suvery', command: 'NoteUpdate' , Q_ID: ''+CurrentQuestionID+'' , IsUpdateNote: ''+IsUpdateNote+'' , note:''+note+'' };            
         $.post(url, query)
     }
 }
@@ -329,7 +332,8 @@ function NoteLoad(){
 
         if(result != null){
             var textbox = document.getElementById("userComments");
-
+            //set IsUpdate = true for note
+            NoteIsUpdate = 'true';
             //set the note
             textbox.defaultValue = result;            
         }
@@ -498,20 +502,21 @@ function shortNextButton(){
     QuestionNum += 1;
     updateProgressBar(QuestionNum);
     shortAnswerUpdate();
-    NoteUpdate(); 
+    NoteUpdate(NoteIsUpdate); 
     NextQuestions(); 
 }
 
 function multiNextButton(){
     QuestionNum += 1;
     updateProgressBar(QuestionNum);
-    NoteUpdate(); 
+    NoteUpdate(NoteIsUpdate); 
     NextQuestions();
 }
 
 function BackBtn(){
     QuestionNum -= 1;
     updateProgressBar(QuestionNum);
+    NoteUpdate(NoteIsUpdate); 
     shortAnswerUpdate();
     BackQuestions();
 }

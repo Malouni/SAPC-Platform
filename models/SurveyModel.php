@@ -163,14 +163,24 @@ function UpdateAnswers($survId , $userID , $Q_ID , $SubQ_ID ,$IsUpdate, $Answer)
 }
 
 //Update comment 
-function UpdateComment($userID , $Q_ID , $note)
+function UpdateComment($userID , $Q_ID , $IsUpdateNote, $note)
 {
     global $conn;
 
-    $Update = "UPDATE answernotes SET NoteText = '$note' 
-                    WHERE QuestionID = ".$Q_ID." AND UserID = ".$userID."";
+    if($IsUpdateNote == 'true'){
 
-    $result = mysqli_query($conn, $Update);  
+        $Update = "UPDATE answernotes SET NoteText = '$note' 
+                        WHERE QuestionID = ".$Q_ID." AND UserID = ".$userID."";
+
+        $result = mysqli_query($conn, $Update);  
+
+    }else{
+
+        $INSERT = "INSERT INTO answernotes (UserID, QuestionID, NoteText)
+                            VALUES (".$userID.", ".$Q_ID.",'$note')";  
+            
+        $result = mysqli_query($conn, $INSERT);
+    }
 }
 
 //Load comment 
