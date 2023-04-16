@@ -50,6 +50,50 @@ function get_survey_activity($survId, $goal)
         return $data[0] = "No Data";
 }
 
+function get_survey_activity_detailed($survId, $goal)
+{
+    global $conn;
+
+    $sql = "SELECT
+                UT.Fname,
+                UT.Lname,
+                SQ.Goal,
+                SQ.SubGoal,
+                SQ.QuestionID,
+                SQ.Question,
+                UA.Answer AS QuestionAnswer,
+                SQ.Type,
+                SQS.Sub_Q,
+                SA.Answer AS SubQuestionAnswer,
+                AN.NoteText,
+                    (SELECT COUNT(SubQuestions.Sub_Q)
+                    FROM SurveyQuestions
+                    LEFT JOIN SubQuestions
+                    ON surveyquestions.QuestionID = subquestions.QuestionID 
+                    WHERE SurveyQuestions.SurvID = ST.SurvID AND SQ.Type ='composed' AND SQ.QuestionID = SubQuestions.QuestionID) AS ComposedCount
+            FROM surveytable ST
+                JOIN SurveyQuestions SQ ON ST.SurvID = SQ.SurvID
+                LEFT JOIN answernotes AN ON SQ.QuestionID = AN.QuestionID
+                LEFT JOIN useranswer UA ON SQ.QuestionID = UA.QuestionID
+                LEFT JOIN SubQuestions SQS ON SQ.QuestionID = SQS.QuestionID
+                LEFT JOIN subquestionanswer SA ON SQS.SubQuestionID = SA.SubQuestionID
+                LEFT JOIN usertable UT ON UT.UserID = UA.UserID OR UT.UserID= SA.UserID
+            WHERE ST.SurvID = '$survId' and SQ.Goal ='$goal'
+            ORDER BY UT.UserID, SQ.QuestionID, SQS.SubQuestionID;";
+
+    $result = mysqli_query($conn, $sql);
+    $data = [];
+
+    if (mysqli_num_rows($result) > 0)
+    {
+        while($row = mysqli_fetch_assoc($result))
+            $data[] = $row;
+        return $data;
+    }
+    else
+        return $data[0] = "No Data";
+}
+
 
 function get_survey_answer_percentage($survId, $goal)
 {

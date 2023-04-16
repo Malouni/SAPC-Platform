@@ -53,7 +53,7 @@ button.pdf {
     background-image: url(../images/icons/pdf.png);
     background-size: contain;
     border: none;
-    border-radius: 2px;
+    border-radius: 1px;
 }
 
 td>button.pdf:nth-child(1) {
