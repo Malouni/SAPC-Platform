@@ -61,6 +61,7 @@ function show_survey_documents() {
             var id = $(this).attr('button-document-show-average-id');
             set_current_document(id);
             enable_goal_buttons();
+            currentUserNumber = null;
             detailedReport = false;
             diel_goal_show();
         });
@@ -69,13 +70,14 @@ function show_survey_documents() {
             var id = $(this).attr('button-document-show-detailed-id');
             set_current_document(id);
             enable_goal_buttons();
+            currentUserNumber = null;
             detailedReport = true;
             diel_goal_show();
         });
 
         $('td > button[button-document-download-id]').click(function() {
             var id = $(this).attr('button-document-download-id');
-            document.getElementById("PDFID").value = id; 
+            document.getElementById("PDFID").value = id;
             $('#GetPDF').submit();
         });
     });
