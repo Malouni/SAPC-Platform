@@ -237,7 +237,7 @@ else if($_POST['page'] == 'Suvery'){
             break;
 
         case 'LoadNote':
-            $result = LoadComment($_SESSION['NewSurveysID'],$_POST['Q_ID']);
+            $result = LoadComment($_SESSION['userId'],$_POST['Q_ID']);
             echo json_encode($result);
             break;
 
