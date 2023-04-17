@@ -16,8 +16,8 @@
     <link rel="stylesheet" href="../styles/generalStyles.css">
     <link rel="stylesheet" href="../styles/PastSurveyReport.css">
 
-    <script src="../scripts/PastSurveyReport.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="../scripts/PastSurveyReport.js"></script>
     <script src="../scripts/chart.js"></script>
 
 </head>
@@ -29,7 +29,14 @@
     include('Navigation.php');
     ?>
     <!----------------------------- Main section -------------------------------->
-
+    <div class='cover' id="blanket" onclick="hideCover()">
+    </div>
+    <div class='popup' id="popup" >
+        <button id=”close” onclick="hideCover();">&times;</button>
+        <input type="text" onkeyup="searchUserFunction(this.id);" id="userInfo" placeholder="Please enter (First Name Last Name **Note** Space separated)">
+        <div id="searchUser">
+        </div>
+    </div>
 
     <div class="pastReports">
         <p class="headers">Science Strategic Plan 2023</p>

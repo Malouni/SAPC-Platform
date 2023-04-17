@@ -271,6 +271,16 @@ else if ($_POST['page'] == 'PastReport')
             echo json_encode($result);
             break;
 
+        case 'SurveyActivityDetailedGoal':
+            $result = get_survey_activity_detailed($_SESSION['documentId'], $_POST['goal'], $_POST['userNumber']);
+            echo json_encode($result);
+            break;
+
+        case 'SendUserList':
+            $result = searchUser($_POST['searchString']);
+            echo json_encode($result);
+            break;
+
         case 'AnswerPercentage':
             $result = get_survey_answer_percentage($_SESSION['documentId'], $_POST['goal']);
             echo json_encode($result);

@@ -3,6 +3,11 @@ document.addEventListener("DOMContentLoaded", function(){
     disable_goal_buttons();
 });
 
+//Global variables
+var detailedReport = false;
+var currentGoalDetailed ="";
+var currentUserNumber = null;
+
 function show_survey_documents() {
     var url = 'Controller.php';
 
@@ -37,8 +42,9 @@ function show_survey_documents() {
                 documents += "<tr class='rowDocuments'>";
                 documents += "<td class='gridDocuments'><p class='SPRtext'>" + result[row]['SurvName'] + "</p> </td>";
                 documents += "<td>";
-                documents += "<button src='../images/icons/pdf.png' class='pdf' button-document-show-id = '" + result[row]['SurvID'] + "'> </button>";
-                documents += "<button src='../images/icons/downloadpdf.png' class='pdf' button-document-download-id = '" + result[row]['SurvID'] + "'> </button>";
+                documents += "<button src='../images/icons/pdf.png' class='pdf' title='Average report' button-document-show-average-id = '" + result[row]['SurvID'] + "'> </button>";
+                documents += "<button src='../images/icons/pdf.png' class='pdf' title='Detailed report' button-document-show-detailed-id = '" + result[row]['SurvID'] + "'> </button>";
+                documents += "<button src='../images/icons/downloadpdf.png' class='pdf' title='Download Average report PDF' button-document-download-id = '" + result[row]['SurvID'] + "'> </button>";
                 documents += "</td>";
                 documents += "</tr>";
                 documents += "<tr class='rowDocuments'>";
@@ -51,10 +57,19 @@ function show_survey_documents() {
 
         $('#documents-pane').html(documents);
 
-        $('td > button[button-document-show-id]').click(function() {
-            var id = $(this).attr('button-document-show-id');
+        $('td > button[button-document-show-average-id]').click(function() {
+            var id = $(this).attr('button-document-show-average-id');
             set_current_document(id);
             enable_goal_buttons();
+            detailedReport = false;
+            diel_goal_show();
+        });
+
+        $('td > button[button-document-show-detailed-id]').click(function() {
+            var id = $(this).attr('button-document-show-detailed-id');
+            set_current_document(id);
+            enable_goal_buttons();
+            detailedReport = true;
             diel_goal_show();
         });
 
@@ -105,6 +120,7 @@ function show_survey_goal_chosen(goal) {
                         tables += "<p class='headers'>Curiosity</p>";
                     else if(result[row]['SubGoal'] == "S")
                         tables += "<p class='headers'>Sustainability</p>";
+
                     tables += "<table class='tablePastReport'>";
                     tables += "<tr class='rowPastReport'>";
                     tables += "<th class='headerActivity'>Activity</th>";
@@ -122,6 +138,7 @@ function show_survey_goal_chosen(goal) {
                         tables += "<p class='headers'>Curiosity</p>";
                     else if(result[row]['SubGoal'] == "S")
                         tables += "<p class='headers'>Sustainability</p>";
+
                     tables += "<table class='tablePastReport'>";
                     tables += "<tr class='rowPastReport'>";
                     tables += "<th class='headerActivity'>Activity</th>";
@@ -195,13 +212,296 @@ function show_survey_goal_chosen(goal) {
                     tables += "</table>";
                 }
             }
-            
-            var progress = result[0]['Answer_Percentage']; 
+            var progress = result[0]['Answer_Percentage'];
             updateCircularProgressBar(progress);
         }
         $('#report-pane').html(tables);
     });
 
+}
+
+function show_survey_goal_detailed() {
+    var url = 'Controller.php';
+
+    var query = {page: 'PastReport', command: 'SurveyActivityDetailedGoal', goal: ''+currentGoalDetailed+'', userNumber:currentUserNumber};
+
+    $.post(url, query, function(data) {
+        //console.log(data);
+        var result = JSON.parse(data);
+        //alert(result.length);
+        if(result == "No Data")
+        {
+            var tables = "<p class='headers'>No data found</p>";
+        }
+        else
+        {
+            if(result[0]['Goal'] == "DIEL")
+                var tables = "<p class='headers'>Diverse, Inclusive & Equitable Learning</p>";
+            else if(result[0]['Goal'] == "SPP")
+                var tables = "<p class='headers'>Sustainable practice to promote well being</p>";
+            else if(result[0]['Goal'] == "TTL")
+                var tables = "<p class='headers'>Transformational Teaching & Learning</p>";
+            else if(result[0]['Goal'] == "TC")
+                var tables = "<p class='headers'>Transformation Communities</p>";
+            else if(result[0]['Goal'] == "GSD")
+                var tables = "<p class='headers'>Guided skill development</p>";
+
+            tables += "<button onclick='showUserSearchPopupWindow();'>Search by user</button>";
+            tables += "<button onclick='deleteFilter();'>Remove Filter</button>";
+
+            for(var row = 0; row < result.length; row++)
+            {
+                if(row == 0)
+                {
+                    if(result[row]['SubGoal'] == "I&D")
+                        tables += "<p class='headers'>Inclusion & Diversity</p>";
+                    else if(result[row]['SubGoal'] == "CM")
+                        tables += "<p class='headers'>Community mindedness</p>";
+                    else if(result[row]['SubGoal'] == "C")
+                        tables += "<p class='headers'>Curiosity</p>";
+                    else if(result[row]['SubGoal'] == "S")
+                        tables += "<p class='headers'>Sustainability</p>";
+
+                    tables += "<table class='tablePastReport'>";
+                    tables += "<tr class='rowPastReport'>";
+                    tables += "<th class='headerRest'>First Name</th>";
+                    tables += "<th class='headerRest'>Last Name</th>";
+                    tables += "<th class='headerRest'>Question</th>";
+                    tables += "<th class='headerRest'>Sub Question</th>";
+                    tables += "<th class='headerRest'>Answer</th>";
+                    tables += "<th class='headerRest'>Comment</th>";
+                    tables += "</tr>";
+                }
+                else if(result[row-1]['SubGoal'] != result[row]['SubGoal'])
+                {
+                    if(result[row]['SubGoal'] == "I&D")
+                        tables += "<p class='headers'>Inclusive & Diversity</p>";
+                    else if(result[row]['SubGoal'] == "CM")
+                        tables += "<p class='headers'>Community mindedness</p>";
+                    else if(result[row]['SubGoal'] == "C")
+                        tables += "<p class='headers'>Curiosity</p>";
+                    else if(result[row]['SubGoal'] == "S")
+                        tables += "<p class='headers'>Sustainability</p>";
+
+                    tables += "<table class='tablePastReport'>";
+                    tables += "<tr class='rowPastReport'>";
+                    tables += "<th class='headerRest'>First Name</th>";
+                    tables += "<th class='headerRest'>Last Name</th>";
+                    tables += "<th class='headerRest'>Question</th>";
+                    tables += "<th class='headerRest'>Sub Question</th>";
+                    tables += "<th class='headerRest'>Answer</th>";
+                    tables += "<th class='headerRest'>Comment</th>";
+                    tables += "</tr>";
+                }
+
+                if(result[row]['Type'] == 'composed')
+                {
+                    var composedMainQuestion = true;
+
+                    for(var composedQuestion = row; ;composedQuestion++)
+                    {
+                        if(composedMainQuestion)
+                        {
+                            tables += "<tr class='rowPastReportComposed'>";
+                            tables += "<td class='gridRest' rowspan='" + result[composedQuestion]['ComposedCount'] + "'>" + result[composedQuestion]['Fname'] + "</td>";
+                            tables += "<td class='gridRest' rowspan='" + result[composedQuestion]['ComposedCount'] + "'>" + result[composedQuestion]['Lname'] + "</td>";
+                            tables += "<td class='gridRest' rowspan='" + result[composedQuestion]['ComposedCount'] + "'>"+ result[composedQuestion]['Question'] +"</td>";
+                            tables += "<td class='gridRest'>"+ result[composedQuestion]['Sub_Q'] +"</td>";
+                            tables += "<td class='gridRest'>"+ result[composedQuestion]['SubQuestionAnswer'] +"</td>";
+                            if(result[composedQuestion]['NoteText'] == null)
+                            {
+                                tables += "<td class='gridRest' rowspan='" + result[composedQuestion]['ComposedCount'] + "'>No Comment</td>";
+                            }
+                            else
+                            {
+                                tables += "<td class='gridRest' rowspan='" + result[composedQuestion]['ComposedCount'] + "'>"+ result[composedQuestion]['NoteText'] +"</td>";
+                            }
+                            tables += "</tr>";
+                            composedMainQuestion = false;
+                        }
+                        else
+                        {
+                            tables += "<tr class='rowPastReportComposed'>";
+                            tables += "<td class='gridRest'>" + result[composedQuestion]['Sub_Q'] + "</td>";
+                            tables += "<td class='gridRest'>" + result[composedQuestion]['SubQuestionAnswer'] + "</td>";
+                            tables += "</tr>";
+                        }
+                        //alert(composedQuestion);
+                        if(composedQuestion == result.length -1)
+                        {
+                            row = composedQuestion;
+                            break;
+                        }
+                        else if(result[composedQuestion]['Type'] != result[composedQuestion+1]['Type'])
+                        {
+                            row = composedQuestion;
+                            break;
+                        }else if(result[composedQuestion]['SubGoal'] != result[composedQuestion+1]['SubGoal'])
+                        {
+                            row = composedQuestion;
+                            break;
+                        }else if(result[composedQuestion]['QuestionID'] != result[composedQuestion+1]['QuestionID'])
+                        {
+                            row = composedQuestion;
+                            break;
+                        }else if(result[composedQuestion]['UserNumber'] != result[composedQuestion+1]['UserNumber'])
+                        {
+                            composedMainQuestion = true;
+                        }
+                    }
+                    composedMainQuestion = true;
+                }
+                else
+                {
+                    tables += "<td class='gridRest'>" + result[row]['Fname'] + "</td>";
+                    tables += "<td class='gridRest'>" + result[row]['Lname'] + "</td>";
+                    tables += "<td class='gridRest' colspan='2'>"+ result[row]['Question'] +"</td>";
+                    tables += "<td class='gridRest'>"+ result[row]['QuestionAnswer'] +"</td>";
+                    if(result[row]['NoteText'] == null)
+                    {
+                        tables += "<td class='gridRest'>No Comment</td>";
+                    }
+                    else
+                    {
+                        tables += "<td class='gridRest'>"+ result[row]['NoteText'] +"</td>";
+                    }
+                    tables += "</tr>";
+                }
+                if(row == result.length -1)
+                {
+                    tables += "</table>";
+                }
+                else if(result[row]['SubGoal'] != result[row+1]['SubGoal'])
+                {
+                    tables += "</table>";
+                }
+            }
+        }
+        $('#report-pane').html(tables);
+    });
+
+}
+
+function showUserSearchPopupWindow()
+{
+    searchByUser(null);
+    $('#blanket').show();
+    $('#popup').show();
+}
+
+function deleteFilter()
+{
+    currentUserNumber = null;
+    show_survey_goal_detailed();
+}
+
+function searchUserFunction(inputElementId)
+{
+    var stringInputUser = $("#"+inputElementId+"").val();
+    var userInfo = [];
+    var lastNameFound = false;
+    var firstName = "";
+    var lastName = "";
+    for(var indexFistName = 0; indexFistName < stringInputUser.length; indexFistName++)
+    {
+        if(stringInputUser[indexFistName] == ' ')
+        {
+            lastNameFound = true;
+            if(!(indexFistName < stringInputUser.length))
+                break;
+            else
+                indexFistName++;
+        }
+
+        if(lastNameFound)
+        {
+            for(var indexLastName = indexFistName; ;indexLastName++)
+            {
+                if(!(indexLastName < stringInputUser.length))
+                {
+                    indexFistName = indexLastName;
+                    break;
+                }
+                else if(stringInputUser[indexLastName] == ' ')
+                {
+                    indexFistName = stringInputUser.length;
+                    break;
+                    //Incase we need to get data after second space character
+                    /*
+                    if(!(indexLastName < stringInputUser.length))
+                    {
+                        indexFistName = indexLastName;
+                        break;
+                    }
+                    else
+                        indexLastName++;
+                    */
+                }
+                else
+                {
+                    lastName += stringInputUser[indexLastName];
+                }
+            }
+            lastNameFound = false;
+        }
+        else
+        {
+            firstName += stringInputUser[indexFistName];
+        }
+    }
+
+    userInfo = firstName+","+lastName;
+    searchByUser(userInfo);
+}
+
+function searchByUser(userInfoString)
+{
+
+    var url = 'Controller.php';
+    var query = {page: 'PastReport', command: 'SendUserList', searchString:userInfoString};
+
+    $.post(url, query, function(data) {
+        var result = JSON.parse(data);
+
+        var usersTable = "";
+
+        usersTable += "<table>";
+        usersTable += "<tr>";
+        usersTable += "<th>First Name</th>";
+        usersTable += "<th>Last Name</th>";
+        usersTable += "<th>Department</th>";
+        usersTable += "</tr>";
+
+        if(result == "No Data")
+        {
+            usersTable += "<tr>";
+            usersTable += "<td>No</td>";
+            usersTable += "<td>Users</td>";
+            usersTable += "<td>Found</td>";
+            usersTable += "</tr>";
+        }
+        else
+        {
+            for (var row = 0; row < result.length; row++) {
+
+                usersTable += "<tr onclick='chooseClickedUser(this.id)' id='" + result[row]['UserNumber'] + "'>";
+                usersTable += "<td name='First Name'>" + result[row]['FirstName'] + "</td>";
+                usersTable += "<td name='Last Name'>" + result[row]['LastName'] + "</td>";
+                usersTable += "<td name='Department'>" + result[row]['Department'] + "</td>";
+                usersTable += "</tr>";
+            }
+        }
+        usersTable += "</table>";
+
+        $('#searchUser').html(usersTable);
+    });
+}
+
+function chooseClickedUser(userId)
+{
+    currentUserNumber = userId;
+    show_survey_goal_detailed();
+    hideCover();
 }
 
 function set_current_document (id)
@@ -212,38 +512,78 @@ function set_current_document (id)
 }
 
 function diel_goal_show()
-{   
-    show_survey_goal_chosen('DIEL');
-    if(chart != null){ chart.destroy();}
-    load_charts('DIEL');
+{
+    currentGoalDetailed = 'DIEL';
+    if(detailedReport)
+    {
+        show_survey_goal_detailed();
+    }
+    else
+    {
+        show_survey_goal_chosen('DIEL');
+        if(chart != null){ chart.destroy();}
+        load_charts('DIEL');
+    }
 }
 
 function sppb_goal_show()
 {
-    show_survey_goal_chosen('SPP');
-    chart.destroy();
-    load_charts('SPP');
+    currentGoalDetailed = 'SPP';
+    if(detailedReport)
+    {
+        show_survey_goal_detailed();
+    }
+    else
+    {
+        show_survey_goal_chosen('SPP');
+        chart.destroy();
+        load_charts('SPP');
+    }
 }
 
 function ttl_goal_show()
 {
-    show_survey_goal_chosen('TTL');
-    chart.destroy();
-    load_charts('TTL');
+    currentGoalDetailed = 'TTL';
+    if(detailedReport)
+    {
+        show_survey_goal_detailed();
+    }
+    else
+    {
+        show_survey_goal_chosen('TTL');
+        chart.destroy();
+        load_charts('TTL');
+    }
 }
 
 function tc_goal_show()
 {
-    show_survey_goal_chosen('TC');
-    chart.destroy();
-    load_charts('TC');
+    currentGoalDetailed = 'TC';
+    if(detailedReport)
+    {
+        show_survey_goal_detailed();
+    }
+    else
+    {
+        show_survey_goal_chosen('TC');
+        chart.destroy();
+        load_charts('TC');
+    }
 }
 
 function gcd_goal_show()
 {
-    show_survey_goal_chosen('GSD');
-    chart.destroy();
-    load_charts('GSD');
+    currentGoalDetailed = 'GSD';
+    if(detailedReport)
+    {
+        show_survey_goal_detailed();
+    }
+    else
+    {
+        show_survey_goal_chosen('GSD');
+        chart.destroy();
+        load_charts('GSD');
+    }
 }
 
 function disable_goal_buttons()
@@ -287,9 +627,9 @@ function load_charts(goal){
             var Value1 = result[0]['Value1'];
             var Value2 = result[0]['Value2'];
 
-            calculateGraph(CurrentYear , Year1 , Year2 ,Value , Value1 ,Value2);            
+            calculateGraph(CurrentYear , Year1 , Year2 ,Value , Value1 ,Value2);
         }else{
-            calculateGraph(0 , 0 , 0 ,0 , 0 ,0);       
+            calculateGraph(0 , 0 , 0 ,0 , 0 ,0);
         }
     });
 
@@ -359,8 +699,25 @@ function calculateGraph(CurrentYear, year1 , year2 ,value, value1, value2) {
 }
 
 
+//Blanket function
+function hideCover()
+{
+    $('#blanket').hide();
+    $('#popup').hide();
+}
 
 
+/*
+$('document').on('click','.blanket',function(){
+    $('#blanket').hide();
+    $('#popup').hide();
+});
+
+$('body').on('click','.popup',function(){
+    $('#blanket').hide();
+    $('#popup').hide();
+});
+*/
 
 
 
