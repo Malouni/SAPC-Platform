@@ -127,14 +127,18 @@ function get_survey_activity_detailed($survId, $goal, $userNumber)
 function searchUser($searchString)
 {
     global $conn;
+
     if($searchString == null)
         $sql = "SELECT UserID AS UserNumber, Fname AS FirstName, Lname AS LastName, Department
                 FROM UserTable
                 WHERE Position != 'admin';";
     else
+    {
+        $userInfo = explode(',', $searchString);
         $sql = "SELECT UserID AS UserNumber, Fname AS FirstName, Lname AS LastName, Department
                 FROM UserTable
-                WHERE UserID = '$searchString' AND Position != 'admin';";
+                WHERE Position != 'admin' AND Fname LIKE '$userInfo[0]%' AND Lname LIKE '$userInfo[1]%';";
+    }
 
     $result = mysqli_query($conn, $sql);
     $data = [];

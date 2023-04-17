@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function(){
 //Global variables
 var detailedReport = false;
 var currentGoalDetailed ="";
+var currentUserNumber = null;
 
 function show_survey_documents() {
     var url = 'Controller.php';
@@ -219,10 +220,10 @@ function show_survey_goal_chosen(goal) {
 
 }
 
-function show_survey_goal_detailed(userNumber) {
+function show_survey_goal_detailed() {
     var url = 'Controller.php';
 
-    var query = {page: 'PastReport', command: 'SurveyActivityDetailedGoal', goal: ''+currentGoalDetailed+'', userNumber:userNumber};
+    var query = {page: 'PastReport', command: 'SurveyActivityDetailedGoal', goal: ''+currentGoalDetailed+'', userNumber:currentUserNumber};
 
     $.post(url, query, function(data) {
         //console.log(data);
@@ -246,6 +247,7 @@ function show_survey_goal_detailed(userNumber) {
                 var tables = "<p class='headers'>Guided skill development</p>";
 
             tables += "<button onclick='showUserSearchPopupWindow();'>Search by user</button>";
+            tables += "<button onclick='deleteFilter();'>Remove Filter</button>";
 
             for(var row = 0; row < result.length; row++)
             {
@@ -387,11 +389,76 @@ function showUserSearchPopupWindow()
     $('#popup').show();
 }
 
-function searchByUser(searchString)
+function deleteFilter()
+{
+    currentUserNumber = null;
+    show_survey_goal_detailed();
+}
+
+function searchUserFunction(inputElementId)
+{
+    var stringInputUser = $("#"+inputElementId+"").val();
+    var userInfo = [];
+    var lastNameFound = false;
+    var firstName = "";
+    var lastName = "";
+    for(var indexFistName = 0; indexFistName < stringInputUser.length; indexFistName++)
+    {
+        if(stringInputUser[indexFistName] == ' ')
+        {
+            lastNameFound = true;
+            if(!(indexFistName < stringInputUser.length))
+                break;
+            else
+                indexFistName++;
+        }
+
+        if(lastNameFound)
+        {
+            for(var indexLastName = indexFistName; ;indexLastName++)
+            {
+                if(!(indexLastName < stringInputUser.length))
+                {
+                    indexFistName = indexLastName;
+                    break;
+                }
+                else if(stringInputUser[indexLastName] == ' ')
+                {
+                    indexFistName = stringInputUser.length;
+                    break;
+                    //Incase we need to get data after second space character
+                    /*
+                    if(!(indexLastName < stringInputUser.length))
+                    {
+                        indexFistName = indexLastName;
+                        break;
+                    }
+                    else
+                        indexLastName++;
+                    */
+                }
+                else
+                {
+                    lastName += stringInputUser[indexLastName];
+                }
+            }
+            lastNameFound = false;
+        }
+        else
+        {
+            firstName += stringInputUser[indexFistName];
+        }
+    }
+
+    userInfo = firstName+","+lastName;
+    searchByUser(userInfo);
+}
+
+function searchByUser(userInfoString)
 {
 
     var url = 'Controller.php';
-    var query = {page: 'PastReport', command: 'SendUserList', searchString:searchString};
+    var query = {page: 'PastReport', command: 'SendUserList', searchString:userInfoString};
 
     $.post(url, query, function(data) {
         var result = JSON.parse(data);
@@ -405,7 +472,7 @@ function searchByUser(searchString)
         usersTable += "<th>Department</th>";
         usersTable += "</tr>";
 
-        if(result == "NoResults")
+        if(result == "No Data")
         {
             usersTable += "<tr>";
             usersTable += "<td>No</td>";
@@ -430,9 +497,10 @@ function searchByUser(searchString)
     });
 }
 
-function chooseClickedUser(userNumber)
+function chooseClickedUser(userId)
 {
-    show_survey_goal_detailed(userNumber);
+    currentUserNumber = userId;
+    show_survey_goal_detailed();
     hideCover();
 }
 
@@ -444,10 +512,11 @@ function set_current_document (id)
 }
 
 function diel_goal_show()
-{   if(detailedReport)
+{
+    currentGoalDetailed = 'DIEL';
+    if(detailedReport)
     {
-        currentGoalDetailed = 'DIEL';
-        show_survey_goal_detailed(null);
+        show_survey_goal_detailed();
     }
     else
     {
@@ -462,7 +531,7 @@ function sppb_goal_show()
     currentGoalDetailed = 'SPP';
     if(detailedReport)
     {
-        show_survey_goal_detailed(null);
+        show_survey_goal_detailed();
     }
     else
     {
@@ -477,7 +546,7 @@ function ttl_goal_show()
     currentGoalDetailed = 'TTL';
     if(detailedReport)
     {
-        show_survey_goal_detailed(null);
+        show_survey_goal_detailed();
     }
     else
     {
@@ -492,7 +561,7 @@ function tc_goal_show()
     currentGoalDetailed = 'TC';
     if(detailedReport)
     {
-        show_survey_goal_detailed(null);
+        show_survey_goal_detailed();
     }
     else
     {
@@ -507,7 +576,7 @@ function gcd_goal_show()
     currentGoalDetailed = 'GSD';
     if(detailedReport)
     {
-        show_survey_goal_detailed(null);
+        show_survey_goal_detailed();
     }
     else
     {

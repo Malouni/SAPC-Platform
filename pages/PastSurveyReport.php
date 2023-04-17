@@ -32,8 +32,8 @@
     <div class='cover' id="blanket" onclick="hideCover()">
     </div>
     <div class='popup' id="popup" >
-        <button id=”close” onclick="hideCover()">&times;</button>
-        <input type="text" id="userInfo" value="Enter user (First Name, Last Name)">
+        <button id=”close” onclick="hideCover();">&times;</button>
+        <input type="text" onkeyup="searchUserFunction(this.id);" id="userInfo" placeholder="Please enter (First Name Last Name **Note** Space separated)">
         <div id="searchUser">
         </div>
     </div>
