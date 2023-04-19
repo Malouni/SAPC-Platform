@@ -4,11 +4,16 @@ function get_users_password($userName)
 {
     global $conn;
 
-    $sql = "SELECT * FROM UserTable WHERE UserName = '$userName'";
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT * FROM UserTable WHERE UserName = ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $userName);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
     if (mysqli_num_rows($result) > 0)
     {
-        $row = mysqli_fetch_assoc($result);
+        $row = $result->fetch_assoc();
         return $row['Password'];
     }
     else
@@ -80,6 +85,15 @@ function change_user_password($userID, $newPassword)
         return false;
 }
 
+function getIp()
+{
+    
+}
+
+function getAttemptsFromIp($ip)
+{
+
+}
 
 
 ?>
