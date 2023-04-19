@@ -37,14 +37,14 @@ function getUserAnswer(surveyYear){
                         table += "<tr><td colspan='2' style='font-weight: bold;'>"+result[row]['Question']+"</td></tr>";
                         IDcheck = result[row]['QuestionID'];
 
-                    if(result[row]['SubAnsewer'] != null)
+                    if(result[row]['SubAnsewer'] !== null)
                         table += "<tr><td style='text-indent: 30px;'>"+result[row]['Sub_Q']+"</td><td>"+result[row]['SubAnsewer']+"</td></tr>";
                     else    
                         table += "<tr><td style='text-indent: 30px;'>"+result[row]['Sub_Q']+"</td><td id='no_answer'>"+"No Answer"+"</td>";
                    
                 }
                 else{
-                    if(result[row]['MainAnsewer'] != null)
+                    if(result[row]['MainAnsewer'] !== null)
                         table += "<tr><td style='font-weight: bold;'>"+result[row]['Question']+"</td><td>"+result[row]['MainAnsewer']+"</td></tr>";
                     else 
                         table += "<tr><td style='font-weight: bold;'>"+result[row]['Question']+"</td><td id='no_answer'>"+"No Answer"+"</td>";
