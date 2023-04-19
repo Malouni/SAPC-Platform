@@ -271,7 +271,7 @@ function show_survey_goal_detailed() {
                     tables += "<th class='headerRest'>Question</th>";
                     tables += "<th class='headerRest'>Sub Question</th>";
                     tables += "<th class='headerRest'>Answer</th>";
-                    tables += "<th class='headerRest'>Comment</th>";
+                    tables += "<th class='headerRest commentcell'>Comment</th>";
                     tables += "</tr>";
                 }
                 else if(result[row-1]['SubGoal'] != result[row]['SubGoal'])
@@ -292,7 +292,7 @@ function show_survey_goal_detailed() {
                     tables += "<th class='headerRest'>Question</th>";
                     tables += "<th class='headerRest'>Sub Question</th>";
                     tables += "<th class='headerRest'>Answer</th>";
-                    tables += "<th class='headerRest'>Comment</th>";
+                    tables += "<th class='headerRest commentcell'>Comment</th>";
                     tables += "</tr>";
                 }
 
