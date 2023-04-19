@@ -94,11 +94,13 @@ function change_user_password($userID, $newPassword)
 function getIp()
 {
     return 1;
+    
 }
 
 function getAttemptsFromIp($ip)
 {
     return 1;
+
 }
 
 
