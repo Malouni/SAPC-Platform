@@ -144,9 +144,9 @@ function HistoricalUpdate($survID)
                                     AND CurrentSurveySub.Sub_Q = PastSurveySub.Sub_Q 
 
                                 JOIN SurveyReport CurrentSurveyReport 
-                                    ON CurrentSurveyReport.QuestionID = CurrentSurvey.QuestionID  
+                                    ON CurrentSurveyReport.QuestionID = CurrentSurvey.QuestionID  AND CurrentSurveyReport.SubQuestionID = CurrentSurveySub.SubQuestionID  
                                 JOIN SurveyReport PastSurveyReport 
-                                    ON PastSurveyReport.QuestionID =PastSurvey.QuestionID             
+                                    ON PastSurveyReport.QuestionID =PastSurvey.QuestionID  AND PastSurveyReport.SubQuestionID = PastSurveySub.SubQuestionID             
                                 
                                 WHERE CurrentSurveySub.SubQuestionID IS NULL AND PastSurveySub.SubQuestionID IS NULL 
                                 OR CurrentSurveySub.SubQuestionID IS NOT NULL AND PastSurveySub.SubQuestionID IS NOT NULL 
@@ -315,4 +315,5 @@ function  AvgTotalAnswers($survID)
     }
 }
 ?>
+
 

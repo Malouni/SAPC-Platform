@@ -4,6 +4,7 @@ var LabelList;
 var QuestionNum;
 var totalQuestion; 
 var shortUpdateID = [];
+var OneOptionID = []; 
 
 document.addEventListener("DOMContentLoaded", function(){
     QuestionLoad(); 
@@ -157,6 +158,7 @@ function QuestionRender(QuestionIndex){
             var id = 0;            
             var Update_ID = QuestionList[QuestionIndex]['QuestionID']+"_"+QuestionList[QuestionIndex]['SubQuestionID'];
             var IsFrist = true;             
+            
             do { 
 
                 if(!IsFrist){       
@@ -171,8 +173,9 @@ function QuestionRender(QuestionIndex){
 
                 typeArray.push(QuestionList[QuestionIndex]['SubType']);
 
-                if(QuestionList[QuestionIndex]['SubType'] == 'multi'){
-                      
+                if(QuestionList[QuestionIndex]['SubType'] == 'multi'){  
+                    var OptionCount = 0; 
+                    
                     //For Multi Choice Questions
                     multi_document += "<tr class='option-sq'>";
                     multi_document += "<td class='subQ-Qtext' id='sub-table-header"+IdNum+"'>"+QuestionList[QuestionIndex]['Sub_Q']+"</td>";    
@@ -185,9 +188,14 @@ function QuestionRender(QuestionIndex){
                             multi_document += "<td class='radio-option'><input type='radio' id='"+id+"' name='"+Update_ID+"' onchange='multiAnswerUpdate(this ,false);' value= "+LabelList[i]['InputValue']+"></td>";
                             multi_document += "<td class='label-option'><label for='"+id+"'> "+LabelList[i]['InputValue']+" </label><br></td>"; 
                             IdNum += 1 ;
+                            OptionCount +=1
                         }
                     }                        
-                    multi_document += "</tr>";           
+                    multi_document += "</tr>";
+                    
+                    if(OptionCount == 1){
+                        OneOptionID.push(Update_ID);
+                    }
                        
                 }else {
 
@@ -268,7 +276,7 @@ function multiAnswerUpdate(src , IsUpdate){
 function shortAnswerUpdate(){
     var textInputs = document.querySelectorAll('form input[type="number"]');
 
-    if(textInputs != null){
+    if(textInputs != ""){
         var inputArray = [];
         for (var i = 0; i < textInputs.length; i++){
 
@@ -294,7 +302,7 @@ function shortAnswerUpdate(){
 
                 IsUpdate = foundMatch ? 'true' : 'false';
             } else {
-            IsUpdate = 'false';
+                IsUpdate = 'false';
             }
                 
             //send the infomation to controller for update 
@@ -330,6 +338,34 @@ function NoteUpdate(IsUpdateNote){
         $.post(url, query)
 
     }
+}
+
+//This function only call if question is multi and only one option + without exit in database yet 
+function OneOptionQ(){
+
+    //this will go to all the ID in array to Insert Into db with answer 0 
+    for(var i= 0 ; i < OneOptionID.length ; i++){
+
+        var ID = OneOptionID[i];
+        var updateID = ID.split("_");
+
+        //update for sub_question      
+        var Q_ID = parseInt(updateID[0]);
+        var SubQID = parseInt(updateID[1]);
+
+        //send the infomation to controller for update 
+        var url = 'Controller.php';
+        var query = {page: 'Suvery', command: 'AnswerUpdate' , Q_ID: ''+Q_ID+'' , SubQID: ''+SubQID+'' , IsUpdate: 'false' , Answer: 0 };            
+        $.post(url, query)
+
+        var radioGroup = document.getElementsByName(ID);
+
+        radioGroup.forEach(function(radioButton) {
+            radioButton.onchange = function() {
+              multiAnswerUpdate(this , 'true');
+            };
+        });
+    }   
 }
 
 
@@ -430,9 +466,25 @@ function ComposedAnswerLoad(Q_ID ,typeArray){
                     // Retrieve the textbox by its name
                     var textbox = document.getElementsByName(name)[0];
                     shortUpdateID.push(name);
-                    textbox.defaultValue = answer;
+                    textbox.defaultValue = answer;        
                 }          
             }                      
+        }else{
+            if(OneOptionID.length > 0){
+
+                for(var j= 0 ; j < OneOptionID.length ; j++){
+                   
+                    var ID = OneOptionID[j];
+                    var radioGroup = document.getElementsByName(ID);
+            
+                    radioGroup.forEach(function(radioButton) {
+                        radioButton.onchange = function() {
+                          OneOptionQ();  
+                          multiAnswerUpdate(this , 'true');
+                        };
+                    });
+                }
+            }
         }
     });
 }
@@ -518,6 +570,8 @@ function shortNextButton(){
     shortAnswerUpdate();
     NoteUpdate(NoteIsUpdate); 
     NextQuestions(); 
+    shortUpdateID.length = 0 ; 
+    OneOptionID.length = 0 ;
 }
 
 function multiNextButton(){
@@ -525,6 +579,8 @@ function multiNextButton(){
     updateProgressBar(QuestionNum);
     NoteUpdate(NoteIsUpdate); 
     NextQuestions();
+    shortUpdateID.length = 0 ; 
+    OneOptionID.length = 0 ;
 }
 
 function BackBtn(){
@@ -533,6 +589,8 @@ function BackBtn(){
     NoteUpdate(NoteIsUpdate); 
     shortAnswerUpdate();
     BackQuestions();
+    shortUpdateID.length = 0 ; 
+    OneOptionID.length = 0 ;
 }
 
 //for disable the button 
