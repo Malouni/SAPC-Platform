@@ -61,6 +61,11 @@ td>button.pdf:nth-child(1) {
     border: 1px solid grey;
 }
 
+td>button.pdf:nth-child(2) {
+    background-image: url(../images/icons/comments.png);
+    border: none;
+}
+
 button.pdf:hover {
     cursor: pointer;
 }
@@ -134,6 +139,10 @@ th.headerActivity {
     background-color: #288f94;
     color: white;
     text-align: left;
+}
+
+.commentcell{
+    width: 30%;
 }
 
 th.headerRest {
