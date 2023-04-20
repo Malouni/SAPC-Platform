@@ -193,7 +193,7 @@ function ProgressPrecentUpdate($survID)
     //Get total number of Participants 
     $TotalParticipants = "SELECT  COUNT(*) as num 
                             FROM surveytable ST 
-                            JOIN usertable UT ON UT.Position = ST.Position
+                            JOIN usertable UT ON UT.Position = ST.Position OR UT.Position = 'chair'
                             WHERE SurvID = ".$survID." ";
 
     $ParticipantsNumber = mysqli_query($conn, $TotalParticipants);
