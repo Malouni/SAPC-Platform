@@ -348,7 +348,7 @@ else if ($_POST['page'] == 'AdminPage')
     $command = $_POST['command'];
     switch($command) {
         case 'UserTable':
-            $result = get_users_info();
+            $result = get_users_info($_POST['filter']);
             echo json_encode($result);
             break;
 

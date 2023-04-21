@@ -14,7 +14,7 @@
     <!-- links to stylesheets -->
     <link rel="stylesheet" href="/fonts/arial-nova/stylesheet.css">
     <link rel="stylesheet" href="/styles/generalStyles.css">
-    <link rel="stylesheet" href="../styles/uploaduserstyles.css">
+    <link rel="stylesheet" href="../styles/adminPage.css">
 
     <!-- links to scripts -->
     <script src="../scripts/AdminPage.js"></script>
@@ -39,7 +39,11 @@
             <div class="header">
                 <h2>Survey Users</h2>
             </div>
-            <div class="usertable" id="user-table">
+            <div class="usertable">
+                <h2>Search For A User</h2>
+                <input type="text" onkeyup="searchUserFunction(this.id);" id="userInfo" placeholder="Please enter (First Name Last Name **Note** Space separated)">
+                <div id="user-table">
+                </div>
             </div>
 
             <div class="header">
@@ -77,6 +81,7 @@
                     <input type="text" name="department" id = "department" placeholder="User Department" required>
                     <select name="userType" id="userType" require>
                         <option value="user">User</option>
+                        <option value="chair">Chair</option>
                         <option value="admin">Admin</option>
                     </select>
                     <input type="submit" value="Add User" id="addNewUser">
@@ -89,10 +94,6 @@
 
             <!---------survey info file row------------>
             <div class="row row3">
-                <!-----
-                <input type="file" name="csvSurveyFile" id="csvSurveyFile" accept=".csv" required>
-                <button onclick="addSurveyFromFileFunction()">Click</button>
-                ------>
                 <form onsubmit="addSurveyFromFileFunction(); return false">
                     <label for="csvFile">Upload CSV file containing Survey information:</label>
                     <input type="file" name="csvSurveyFile" id="csvSurveyFile" accept=".csv" required>

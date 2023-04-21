@@ -33,6 +33,7 @@
     </div>
     <div class='popup' id="popup" >
         <button id=”close” onclick="hideCover();">&times;</button>
+        <p>Search For A User</p>
         <input type="text" onkeyup="searchUserFunction(this.id);" id="userInfo" placeholder="Please enter (First Name Last Name **Note** Space separated)">
         <div id="searchUser">
         </div>
@@ -48,7 +49,7 @@
         </div>
 
         <!--------------Graphs container---------------->
-        <div class="graphs">
+        <div class="graphs" id="reportGraphs">
 
             <!--------------Circular graph container---------------->
             <div class="circular-graph metrics">

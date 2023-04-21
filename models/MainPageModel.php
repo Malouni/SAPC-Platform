@@ -1,16 +1,17 @@
 <?php
 
+//This function returns the upcoming surveys, with non expired due dates and for a specific user position
 function get_upcoming_surveys($userid, $userPosition)
 {
     global $conn;
 
     $date = date('Y-m-d');
 
-    if($userPosition == 'chair' || $userPosition == 'Chair')
+    if($userPosition == 'chair' || $userPosition == 'Chair' || $userPosition == 'CHAIR')
     {
         $sql = "SELECT SurveyTable.SurvID, SurveyTable.SurvName
                 FROM SurveyTable
-                WHERE SurveyTable.SurvDateEnd >= '$date' and SurveyTable.Position = '$userPosition' and SurveyTable.Position = 'user'";
+                WHERE SurveyTable.SurvDateEnd >= '$date' and SurveyTable.Position != 'admin' ";
     }
     else
     {
@@ -32,6 +33,7 @@ function get_upcoming_surveys($userid, $userPosition)
         return $data[0] = "NoResults";
 }
 
+//This function returns the surveys, completed by the user
 function get_surveys_completed_by_user($userid)
 {
     global $conn;

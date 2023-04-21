@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(){
+    $('#reportGraphs').hide();
     show_survey_documents();
     disable_goal_buttons();
 });
@@ -60,6 +61,7 @@ function show_survey_documents() {
         $('td > button[button-document-show-average-id]').click(function() {
             var id = $(this).attr('button-document-show-average-id');
             set_current_document(id);
+            $('#reportGraphs').show();
             enable_goal_buttons();
             currentUserNumber = null;
             detailedReport = false;
@@ -69,6 +71,7 @@ function show_survey_documents() {
         $('td > button[button-document-show-detailed-id]').click(function() {
             var id = $(this).attr('button-document-show-detailed-id');
             set_current_document(id);
+            $('#reportGraphs').hide();
             enable_goal_buttons();
             currentUserNumber = null;
             detailedReport = true;
@@ -156,12 +159,12 @@ function show_survey_goal_chosen(goal) {
                     {
                         if(composedMainQuestion)
                         {
+                            tables += "<tbody class='composedQuestion'>";
                             tables += "<tr class='rowPastReportSingle'>";
-                            //TODO: We need to change the attribute for column span for the grid below and move it to css file for the corresponding style
                             tables += "<td class='gridComposedActivity' colspan='3'>" + result[composedQuestion]['Question'] + "</td>";
                             tables += "</tr>";
                             tables += "<tr class='rowPastReportComposed'>";
-                            tables += "<td class='gridActivity'>" + result[composedQuestion]['Sub_Q'] + "</td>";
+                            tables += "<td class='gridActivitySubQuestion'>" + result[composedQuestion]['Sub_Q'] + "</td>";
                             tables += "<td class='gridRest'>" + result[composedQuestion]['Activity_Involvement'] + "</td>";
                             tables += "<td class='gridRest'>"+ result[composedQuestion]['Activity_Historical'] +"</td>";
                             tables += "</tr>";
@@ -170,7 +173,7 @@ function show_survey_goal_chosen(goal) {
                         else
                         {
                             tables += "<tr class='rowPastReportComposed'>";
-                            tables += "<td class='gridActivity'>" + result[composedQuestion]['Sub_Q'] + "</td>";
+                            tables += "<td class='gridActivitySubQuestion'>" + result[composedQuestion]['Sub_Q'] + "</td>";
                             tables += "<td class='gridRest'>" + result[composedQuestion]['Activity_Involvement'] + "</td>";
                             tables += "<td class='gridRest'>"+ result[composedQuestion]['Activity_Historical'] +"</td>";
                             tables += "</tr>";
@@ -196,6 +199,7 @@ function show_survey_goal_chosen(goal) {
                         }
                     }
                     composedMainQuestion = true;
+                    tables += "</tbody>";
                 }
                 else
                 {
@@ -228,28 +232,25 @@ function show_survey_goal_detailed() {
     var query = {page: 'PastReport', command: 'SurveyActivityDetailedGoal', goal: ''+currentGoalDetailed+'', userNumber:currentUserNumber};
 
     $.post(url, query, function(data) {
-        //console.log(data);
         var result = JSON.parse(data);
-        //alert(result.length);
+        var tables;
+        tables = "<button class='searchUser' onclick='showUserSearchPopupWindow();'>Search by user</button>";
         if(result == "No Data")
         {
-            var tables = "<p class='headers'>No data found</p>";
+            tables += "<p class='headers'>No data found</p>";
         }
         else
         {
             if(result[0]['Goal'] == "DIEL")
-                var tables = "<p class='headers'>Diverse, Inclusive & Equitable Learning</p>";
+                tables += "<p class='headers'>Diverse, Inclusive & Equitable Learning</p>";
             else if(result[0]['Goal'] == "SPP")
-                var tables = "<p class='headers'>Sustainable practice to promote well being</p>";
+                tables += "<p class='headers'>Sustainable practice to promote well being</p>";
             else if(result[0]['Goal'] == "TTL")
-                var tables = "<p class='headers'>Transformational Teaching & Learning</p>";
+                tables += "<p class='headers'>Transformational Teaching & Learning</p>";
             else if(result[0]['Goal'] == "TC")
-                var tables = "<p class='headers'>Transformation Communities</p>";
+                tables += "<p class='headers'>Transformation Communities</p>";
             else if(result[0]['Goal'] == "GSD")
-                var tables = "<p class='headers'>Guided skill development</p>";
-
-            tables += "<button onclick='showUserSearchPopupWindow();'>Search by user</button>";
-            tables += "<button onclick='deleteFilter();'>Remove Filter</button>";
+                tables += "<p class='headers'>Guided skill development</p>";
 
             for(var row = 0; row < result.length; row++)
             {
@@ -264,14 +265,14 @@ function show_survey_goal_detailed() {
                     else if(result[row]['SubGoal'] == "S")
                         tables += "<p class='headers'>Sustainability</p>";
 
-                    tables += "<table class='tablePastReport'>";
-                    tables += "<tr class='rowPastReport'>";
-                    tables += "<th class='headerRest'>First Name</th>";
-                    tables += "<th class='headerRest'>Last Name</th>";
-                    tables += "<th class='headerRest'>Question</th>";
-                    tables += "<th class='headerRest'>Sub Question</th>";
-                    tables += "<th class='headerRest'>Answer</th>";
-                    tables += "<th class='headerRest commentcell'>Comment</th>";
+                    tables += "<table class='detailedReportTable'>";
+                    tables += "<tr>";
+                    tables += "<th class='otherHeaders'>First Name</th>";
+                    tables += "<th class='otherHeaders'>Last Name</th>";
+                    tables += "<th class='otherHeaders'>Question</th>";
+                    tables += "<th class='subQuestionColumn'>Sub Question</th>";
+                    tables += "<th class='answerColumnHeader'>Answer</th>";
+                    tables += "<th class='commentHeader'>Comment</th>";
                     tables += "</tr>";
                 }
                 else if(result[row-1]['SubGoal'] != result[row]['SubGoal'])
@@ -285,14 +286,14 @@ function show_survey_goal_detailed() {
                     else if(result[row]['SubGoal'] == "S")
                         tables += "<p class='headers'>Sustainability</p>";
 
-                    tables += "<table class='tablePastReport'>";
-                    tables += "<tr class='rowPastReport'>";
-                    tables += "<th class='headerRest'>First Name</th>";
-                    tables += "<th class='headerRest'>Last Name</th>";
-                    tables += "<th class='headerRest'>Question</th>";
-                    tables += "<th class='headerRest'>Sub Question</th>";
-                    tables += "<th class='headerRest'>Answer</th>";
-                    tables += "<th class='headerRest commentcell'>Comment</th>";
+                    tables += "<table class='detailedReportTable'>";
+                    tables += "<tr>";
+                    tables += "<th class='otherHeaders'>First Name</th>";
+                    tables += "<th class='otherHeaders'>Last Name</th>";
+                    tables += "<th class='otherHeaders'>Question</th>";
+                    tables += "<th class='subQuestionColumn'>Sub Question</th>";
+                    tables += "<th class='answerColumnHeader'>Answer</th>";
+                    tables += "<th class='commentHeader'>Comment</th>";
                     tables += "</tr>";
                 }
 
@@ -304,28 +305,29 @@ function show_survey_goal_detailed() {
                     {
                         if(composedMainQuestion)
                         {
-                            tables += "<tr class='rowPastReportComposed'>";
-                            tables += "<td class='gridRest' rowspan='" + result[composedQuestion]['ComposedCount'] + "'>" + result[composedQuestion]['Fname'] + "</td>";
-                            tables += "<td class='gridRest' rowspan='" + result[composedQuestion]['ComposedCount'] + "'>" + result[composedQuestion]['Lname'] + "</td>";
-                            tables += "<td class='gridRest' rowspan='" + result[composedQuestion]['ComposedCount'] + "'>"+ result[composedQuestion]['Question'] +"</td>";
-                            tables += "<td class='gridRest'>"+ result[composedQuestion]['Sub_Q'] +"</td>";
-                            tables += "<td class='gridRest'>"+ result[composedQuestion]['SubQuestionAnswer'] +"</td>";
+                            tables += "<tbody class='composedQuestion'>";
+                            tables += "<tr>";
+                            tables += "<td class='userName' rowspan='" + result[composedQuestion]['ComposedCount'] + "'>" + result[composedQuestion]['Fname'] + "</td>";
+                            tables += "<td class='userName' rowspan='" + result[composedQuestion]['ComposedCount'] + "'>" + result[composedQuestion]['Lname'] + "</td>";
+                            tables += "<td class='otherCells' rowspan='" + result[composedQuestion]['ComposedCount'] + "'>"+ result[composedQuestion]['Question'] +"</td>";
+                            tables += "<td class='subQuestion'>"+ result[composedQuestion]['Sub_Q'] +"</td>";
+                            tables += "<td class='userAnswer'>"+ result[composedQuestion]['SubQuestionAnswer'] +"</td>";
                             if(result[composedQuestion]['NoteText'] == null)
                             {
-                                tables += "<td class='gridRest' rowspan='" + result[composedQuestion]['ComposedCount'] + "'>No Comment</td>";
+                                tables += "<td class='userComment' rowspan='" + result[composedQuestion]['ComposedCount'] + "'>No Comment</td>";
                             }
                             else
                             {
-                                tables += "<td class='gridRest' rowspan='" + result[composedQuestion]['ComposedCount'] + "'>"+ result[composedQuestion]['NoteText'] +"</td>";
+                                tables += "<td class='userComment' rowspan='" + result[composedQuestion]['ComposedCount'] + "'>"+ result[composedQuestion]['NoteText'] +"</td>";
                             }
                             tables += "</tr>";
                             composedMainQuestion = false;
                         }
                         else
                         {
-                            tables += "<tr class='rowPastReportComposed'>";
-                            tables += "<td class='gridRest'>" + result[composedQuestion]['Sub_Q'] + "</td>";
-                            tables += "<td class='gridRest'>" + result[composedQuestion]['SubQuestionAnswer'] + "</td>";
+                            tables += "<tr>";
+                            tables += "<td class='subQuestion'>" + result[composedQuestion]['Sub_Q'] + "</td>";
+                            tables += "<td class='userAnswer'>" + result[composedQuestion]['SubQuestionAnswer'] + "</td>";
                             tables += "</tr>";
                         }
                         //alert(composedQuestion);
@@ -352,20 +354,22 @@ function show_survey_goal_detailed() {
                         }
                     }
                     composedMainQuestion = true;
+                    tables += "</tbody>";
                 }
                 else
                 {
-                    tables += "<td class='gridRest'>" + result[row]['Fname'] + "</td>";
-                    tables += "<td class='gridRest'>" + result[row]['Lname'] + "</td>";
-                    tables += "<td class='gridRest' colspan='2'>"+ result[row]['Question'] +"</td>";
-                    tables += "<td class='gridRest'>"+ result[row]['QuestionAnswer'] +"</td>";
+                    tables += "<tr>";
+                    tables += "<td class='userName'>" + result[row]['Fname'] + "</td>";
+                    tables += "<td class='userName'>" + result[row]['Lname'] + "</td>";
+                    tables += "<td class='otherCells' colspan='2'>"+ result[row]['Question'] +"</td>";
+                    tables += "<td class='userAnswer'>"+ result[row]['QuestionAnswer'] +"</td>";
                     if(result[row]['NoteText'] == null)
                     {
-                        tables += "<td class='gridRest'>No Comment</td>";
+                        tables += "<td class='userComment'>No Comment</td>";
                     }
                     else
                     {
-                        tables += "<td class='gridRest'>"+ result[row]['NoteText'] +"</td>";
+                        tables += "<td class='userComment'>"+ result[row]['NoteText'] +"</td>";
                     }
                     tables += "</tr>";
                 }
@@ -389,12 +393,6 @@ function showUserSearchPopupWindow()
     searchByUser(null);
     $('#blanket').show();
     $('#popup').show();
-}
-
-function deleteFilter()
-{
-    currentUserNumber = null;
-    show_survey_goal_detailed();
 }
 
 function searchUserFunction(inputElementId)
@@ -428,16 +426,6 @@ function searchUserFunction(inputElementId)
                 {
                     indexFistName = stringInputUser.length;
                     break;
-                    //Incase we need to get data after second space character
-                    /*
-                    if(!(indexLastName < stringInputUser.length))
-                    {
-                        indexFistName = indexLastName;
-                        break;
-                    }
-                    else
-                        indexLastName++;
-                    */
                 }
                 else
                 {
@@ -618,7 +606,7 @@ function load_charts(goal){
         var result = JSON.parse(data);
 
         if(result != "No Data")
-        {   
+        {
             //list of year
             var CurrentYear = result[0]['CurrentYear'];
             var Year1 = result[0]['Year1'];
@@ -707,19 +695,6 @@ function hideCover()
     $('#blanket').hide();
     $('#popup').hide();
 }
-
-
-/*
-$('document').on('click','.blanket',function(){
-    $('#blanket').hide();
-    $('#popup').hide();
-});
-
-$('body').on('click','.popup',function(){
-    $('#blanket').hide();
-    $('#popup').hide();
-});
-*/
 
 
 
