@@ -3,12 +3,13 @@ document.addEventListener("DOMContentLoaded", function(){
     showSurveysTable();
 });
 
+var userFilter = "";
 
-//Functions
+//Function creates a table of all users from database
 function showUsersTable(){
     var url = 'Controller.php';
 
-    var query = {page: 'AdminPage', command: 'UserTable'};
+    var query = {page: 'AdminPage', command: 'UserTable', filter:userFilter};
 
     $.post(url, query, function(data) {
         var result = JSON.parse(data);
@@ -76,11 +77,63 @@ function showUsersTable(){
             if (confirm(text) == true){
                 removeUserFunction(userId);
             }
+            userFilter = '';
             showUsersTable();
         });
     });
 }
 
+function searchUserFunction(inputElementId)
+{
+    var stringInputUser = $("#"+inputElementId+"").val();
+    var userInfo = [];
+    var lastNameFound = false;
+    var firstName = "";
+    var lastName = "";
+    for(var indexFistName = 0; indexFistName < stringInputUser.length; indexFistName++)
+    {
+        if(stringInputUser[indexFistName] == ' ')
+        {
+            lastNameFound = true;
+            if(!(indexFistName < stringInputUser.length))
+                break;
+            else
+                indexFistName++;
+        }
+
+        if(lastNameFound)
+        {
+            for(var indexLastName = indexFistName; ;indexLastName++)
+            {
+                if(!(indexLastName < stringInputUser.length))
+                {
+                    indexFistName = indexLastName;
+                    break;
+                }
+                else if(stringInputUser[indexLastName] == ' ')
+                {
+                    indexFistName = stringInputUser.length;
+                    break;
+                }
+                else
+                {
+                    lastName += stringInputUser[indexLastName];
+                }
+            }
+            lastNameFound = false;
+        }
+        else
+        {
+            firstName += stringInputUser[indexFistName];
+        }
+    }
+
+    userInfo = firstName+","+lastName;
+    userFilter = userInfo;
+    showUsersTable();
+}
+
+//Function send a request to a controller to change the specific filed of the user
 function changeTheClickedFieldUserTable(clicked_id)
 {
     var rowId = $("#"+clicked_id+"").closest('tr').attr("id");
@@ -98,6 +151,7 @@ function changeTheClickedFieldUserTable(clicked_id)
     }
 }
 
+//Function creates a table of all surveys from database
 function showSurveysTable(){
     var url = 'Controller.php';
 
@@ -161,6 +215,7 @@ function showSurveysTable(){
     });
 }
 
+//Function send a request to a controller to change the specific filed of the survey
 function changeTheClickedFieldSurveyTable(clicked_id)
 {
     var rowId = $("#"+clicked_id+"").closest('tr').attr("id");
@@ -178,6 +233,7 @@ function changeTheClickedFieldSurveyTable(clicked_id)
     }
 }
 
+//Function send a request to a controller to create a new user with the given information
 function addNewUserFunction()
 {
     var url = 'Controller.php';
@@ -194,6 +250,7 @@ function addNewUserFunction()
     });
 }
 
+//Function send a request to a controller to remove a specific user
 function removeUserFunction(userId)
 {
     var url = 'Controller.php';
@@ -205,6 +262,7 @@ function removeUserFunction(userId)
     });
 }
 
+//Function send a request to a controller to remove a specific survey
 function removeSurveyFunction(surveyId,survName)
 {
     var url = 'Controller.php';
@@ -216,6 +274,7 @@ function removeSurveyFunction(surveyId,survName)
     });
 }
 
+//Function send a request to a controller to reset a password for a specific user
 function resetUserPassword(userId,userName)
 {
     var url = 'Controller.php';
@@ -227,6 +286,7 @@ function resetUserPassword(userId,userName)
     });
 }
 
+//Function send a request to a controller to add multiple users from a file
 function addUsersFromFileFunction(){
     var csvFile = document.querySelector('#csvUserFile').files[0];
     var reader = new FileReader();
@@ -234,8 +294,6 @@ function addUsersFromFileFunction(){
     reader.onload = function (e) {
         var text = e.target.result;
         var data = csvToArrayUsers(text);
-        //var result = csvToArrayUsers(text);
-        //var data = JSON.stringify(result);
 
         var url = 'Controller.php';
         var query = {page: 'AdminPage', command: 'csvAddUsers', csvFileDataUsers: data};
@@ -247,6 +305,7 @@ function addUsersFromFileFunction(){
     };
 }
 
+//This function reads a file of users and adds it each values to a specific header(eg: First Name, Last Name)
 function csvToArrayUsers(text)
 {
     var rows = text.split(/\r?\n|\r/);
@@ -254,7 +313,6 @@ function csvToArrayUsers(text)
     var array = [];
     var headers;
     var delimiter = ",";
-    var surveyInfoExists = false;
 
     for(singleRow = 0; singleRow < rows.length; singleRow++)
     {
@@ -269,7 +327,7 @@ function csvToArrayUsers(text)
         }
         cells = rows[singleRow].split(delimiter);
 
-        if(cells[0] !="" && !surveyInfoExists)
+        if(cells[0] !="")
         {
             var values = rows[singleRow].split(delimiter);
             values = values.filter(item => item);
@@ -280,12 +338,12 @@ function csvToArrayUsers(text)
                 return object;
                 }, {})
             );
-            surveyInfoExists = true;
         }
     }
     return array;
 }
 
+//Function send a request to a controller to add a surveys from a file
 function addSurveyFromFileFunction(){
     var csvFile = document.querySelector('#csvSurveyFile').files[0];
     var reader = new FileReader();
@@ -304,6 +362,7 @@ function addSurveyFromFileFunction(){
     };
 }
 
+//This function reads a file of users and adds it each values to a specific header(eg: Survey Name, Survey Year)
 function csvToArraySurvey(text)
 {
     var dataSectionAmount = 3;
@@ -418,6 +477,7 @@ function csvToArraySurvey(text)
     return array;
 }
 
+//This function removes spaces before and after provided values
 function removeUnnecessarySpaces(array)
 {
     for(var index = 0; index < array.length; index++)

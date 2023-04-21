@@ -1,12 +1,26 @@
 <?php
 
-function get_users_info()
+//This function gets the user information from bd
+function get_users_info($searchString)
 {
+
     global $conn;
 
-    $sql = "SELECT UserID, Fname, Lname, UserName, Position, Department FROM UserTable ORDER BY Fname ASC";
+    if($searchString == null)
+        $sql = "SELECT UserID, Fname, Lname, UserName, Position, Department
+                FROM UserTable
+                ORDER BY Fname ASC;";
+    else
+    {
+        $userInfo = explode(',', $searchString);
+        $sql = "SELECT UserID, Fname, Lname, UserName, Position, Department
+                FROM UserTable
+                WHERE Fname LIKE '$userInfo[0]%' AND Lname LIKE '$userInfo[1]%' ORDER BY Fname ASC;";
+    }
+
     $result = mysqli_query($conn, $sql);
     $data = [];
+
     if (mysqli_num_rows($result) > 0)
     {
         while($row = mysqli_fetch_assoc($result))
@@ -17,10 +31,13 @@ function get_users_info()
         return $data[0] = "NoResults";
 }
 
+//This function inserts a new user to user's table
 function add_new_user($email, $fName, $lName, $userType, $department)
 {
     global $conn;
     global $defaultPassword;
+
+    $userType = strtolower($userType);
 
     $hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
     $sql = "INSERT INTO UserTable (UserName, Password, Fname, Lname, Position, Department) VALUES ('$email', '$hashedPassword', '$fName', '$lName', '$userType', '$department')";
@@ -32,6 +49,7 @@ function add_new_user($email, $fName, $lName, $userType, $department)
         return false;
 }
 
+//This function removes user from user table
 function remove_user($userId)
 {
     global $conn;
@@ -47,6 +65,7 @@ function remove_user($userId)
         return false;
 }
 
+//This function checks if user exists in user's table
 function check_if_user_exists($email)
 {
     global $conn;
@@ -66,6 +85,7 @@ function add_new_survey($survYear, $survName, $survDateStart, $survDateEnd, $pos
     $lastUpdatedDate = date("Y/m/d");
     $AmPeopleFin = 0;
 
+    $position = strtolower($position);
 
     $sql = "INSERT INTO SurveyTable (SurvYear, SurvName, SurvDateStart, SurvDateEnd, TotalAnswersAvg, LastUpdatedDate, Position)
             VALUES ('$survYear', '$survName', '$survDateStart', '$survDateEnd', '$AmPeopleFin', '$lastUpdatedDate', '$position')";
@@ -88,6 +108,7 @@ function add_new_survey($survYear, $survName, $survDateStart, $survDateEnd, $pos
         return false;
 }
 
+//This function function checks if the survey exists in survey table
 function check_if_survey_exists($survYear, $survName)
 {
     global $conn;
@@ -104,6 +125,8 @@ function check_if_survey_exists($survYear, $survName)
 function add_survey_question($survID, $goal, $subGoal, $question, $type)
 {
     global $conn;
+
+    $type = strtolower($type);
 
     $sql = "INSERT INTO SurveyQuestions (SurvID, Goal, SubGoal, Question, Type)
             VALUES ('$survID', '$goal', '$subGoal', '$question', '$type')";
@@ -130,6 +153,8 @@ function add_survey_question($survID, $goal, $subGoal, $question, $type)
 function add_survey_sub_question($survID, $questionID, $sub_Q, $subType)
 {
     global $conn;
+
+    $subType = strtolower($subType);
 
     $sql = "INSERT INTO SubQuestions (SurvID, QuestionID, Sub_Q, SubType)
             VALUES ('$survID', '$questionID', '$sub_Q', '$subType')";
@@ -167,6 +192,7 @@ function add_possible_answer_to_question($survID, $questionID, $subQuestionID, $
         return false;
 }
 
+//This function sets the subquestion id to null instead of zero, to the questions that does not have subquestions
 function update_table_where_subQstID_is_zero ($tableName)
 {
     global $conn;
@@ -207,6 +233,11 @@ function update_user($userID, $fieldToChange, $value)
 {
     global $conn;
 
+    if($fieldToChange == 'Position')
+    {
+        $value = strtolower($value);
+    }
+
     $sql = "UPDATE UserTable SET ".$fieldToChange." = '$value'  WHERE UserID = '$userID'";
     $result = mysqli_query($conn, $sql);
 
@@ -216,12 +247,12 @@ function update_user($userID, $fieldToChange, $value)
         return false;
 }
 
+//This function resets the user password
 function rest_user_password($userID)
 {
     global $conn;
+    global $defaultPassword;
 
-    //This is the field for changing the default password for new users
-    $defaultPassword = "password";
     $hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
 
     $sql = "UPDATE UserTable SET Password = '$hashedPassword' WHERE UserID = '$userID'";
@@ -233,9 +264,15 @@ function rest_user_password($userID)
         return false;
 }
 
+//This function updates the specified field of survey
 function update_survey($survID, $fieldToChange, $value)
 {
     global $conn;
+
+    if($fieldToChange == 'Position')
+    {
+        $value = strtolower($value);
+    }
 
     $sql = "UPDATE SurveyTable SET ".$fieldToChange." = '$value'  WHERE SurvID = '$survID'";
     $result = mysqli_query($conn, $sql);
@@ -246,6 +283,7 @@ function update_survey($survID, $fieldToChange, $value)
         return false;
 }
 
+//This function populates the report for the survey with default values
 function populate_survey_report_table($survID, $questionID, $subQuestionID)
 {
     global $conn;
@@ -260,6 +298,7 @@ function populate_survey_report_table($survID, $questionID, $subQuestionID)
         return false;
 }
 
+//This function return the column name correspond to specific string for user table
 function get_the_column_name_user($rawData)
 {
     if($rawData == "First Name")
@@ -276,6 +315,7 @@ function get_the_column_name_user($rawData)
         return false;
 }
 
+//This function return the column name correspond to specific string for survey table
 function get_the_column_name_survey($rawData)
 {
     if($rawData == "Survey Name")
@@ -325,6 +365,7 @@ function delete_survey($survID)
         return false;
 }
 
+//This function goes through the array that was sent to controller and adds each question with the subquestion to the database
 function add_questions_to_new_survey($dataQuestions, $dataSubQuestions, $newSurvId)
 {
     $result = true;
