@@ -84,6 +84,10 @@ button.pdf:hover {
     height: 40px;
     border: none;
     border-radius: 3px 3px 0 0;
+}
+
+.buttonGoals:hover{
+    background-color:  #17a2b8;
     cursor: pointer;
 }
 
@@ -131,6 +135,10 @@ table.tablePastReport {
     border-collapse: collapse;
 }
 
+table.tablePastReport tbody.composedQuestion:hover {
+    background-color:  rgb(190, 190, 190);
+}
+
 th.headerActivity {
     width: 60%;
     border: 1px solid rgb(105, 105, 105);
@@ -139,10 +147,6 @@ th.headerActivity {
     background-color: #288f94;
     color: white;
     text-align: left;
-}
-
-.commentcell{
-    width: 30%;
 }
 
 th.headerRest {
@@ -159,23 +163,35 @@ tr.rowPastReport {
     border-collapse: collapse;
 }
 
+tr.rowPastReport:hover{
+    background-color:  rgb(190, 190, 190);
+}
+
 /* This is a css for a row of the single question  */
 tr.rowPastReportSingle {
     border: 1px solid rgb(105, 105, 105);
     border-collapse: collapse;
-    font-weight: bold;
 }
 
 /* This is a css for a row for a composed sub-question*/
 tr.rowPastReportComposed {
     border: 1px solid rgb(105, 105, 105);
     border-collapse: collapse;
+}
 
-
-
+tr.rowPastReportSingle:hover{
+    background-color:  rgb(190, 190, 190);
 }
 
 td.gridActivity {
+    border: 1px solid rgb(105, 105, 105);
+    border-collapse: collapse;
+    text-align: left;
+    padding: 0 0 0 0.3%;
+    font-weight: bold;
+}
+
+td.gridActivitySubQuestion {
     border: 1px solid rgb(105, 105, 105);
     border-collapse: collapse;
     text-align: left;
@@ -224,6 +240,93 @@ p.facility {
     color: rgb(105, 105, 105);
 }
 
+/*--------------Detailed report elements css-----------------*/
+
+button.searchUser
+{
+    width: 100%;
+    background-color: #003e51;
+    color: white;
+    text-align: center;
+    height: 40px;
+    border: none;
+    border-radius: 0 0 3px 3px;
+    cursor: pointer;
+}
+
+button.searchUser:hover{
+    background-color:  #17a2b8;
+    cursor: pointer;
+}
+
+/*--------------Detailed report table css-----------------*/
+
+table.detailedReportTable{
+    width: 100%;
+}
+
+table.detailedReportTable tbody.composedQuestion:hover{
+    background-color:  rgb(190, 190, 190);
+}
+
+table.detailedReportTable tr:hover{
+    background-color:  rgb(190, 190, 190);
+}
+
+table.detailedReportTable th{
+    border: 1px solid rgb(105, 105, 105);
+    background-color: #288f94;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    padding: 0 2px 0 2px;
+    margin: 0 1% 1% 1%;
+}
+
+table.detailedReportTable th.subQuestionColumn{
+    width: 15%;
+}
+
+table.detailedReportTable th.answerColumnHeader{
+    text-align: center;
+    padding: 0 2px 0 2px;
+}
+
+table.detailedReportTable th.commentHeader{
+    width: 30%;
+    text-align: center;
+}
+
+table.detailedReportTable td{
+    border: 1px solid rgb(105, 105, 105);
+    text-align: left;
+    padding: 0 2px 0 2px;
+    margin: 0 1% 1% 1%;
+}
+
+table.detailedReportTable td.otherCells{
+    font-weight: bold;
+}
+
+table.detailedReportTable td.subQuestion{
+    padding: 0 2px 0 2px;
+}
+
+table.detailedReportTable td.userName{
+    font-weight: bold;
+    text-align: center;
+}
+
+
+table.detailedReportTable td.userAnswer{
+    text-align: center;
+}
+
+table.detailedReportTable td.userComment{
+    vertical-align: top;
+    text-align: left;
+}
+
 /*--------------chart div containers-----------------*/
 
 .graphs {
@@ -244,47 +347,47 @@ p.facility {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-  .progress-circle {
+}
+
+.progress-circle {
     width: 100%;
     height: 100%;
-  }
-  
-  .circle-track,
-  .circle-progress {
+}
+
+.circle-track,
+.circle-progress {
     fill: none;
     stroke-linecap: round;
     stroke-width: 7;
-  }
-  
-  .circle-track {
+}
+
+.circle-track {
     stroke: rgb(225, 225, 225);
-  }
-  
-  .circle-progress {
+}
+
+.circle-progress {
     stroke: rgb(255, 145, 0);
     stroke-dasharray: 0, 282.743;
     stroke-dashoffset: 0;
     transition: stroke-dasharray 0.5s ease-out;
 }
-  
-  .progress-text {
+
+.progress-text {
     position: absolute;
     font-size: 3vw;
     font-weight: bold;
     color: rgb(14, 86, 134);
-  }
-  
-  .progress-percentage {
+}
+
+.progress-percentage {
     display: inline-block;
-  }
+}
 
-  /*--------------linear graph-----------------*/
+/*--------------linear graph-----------------*/
 
-  .line-chart{
+.line-chart{
     width: 600px;
-  }
+}
 
 /*-------------- Cover css -----------------*/
 .cover {
@@ -317,10 +420,9 @@ p.facility {
 }
 
 /*-------------- Popup elements css -----------------*/
-
 .popup button{
     display: block;
-    margin:  0 0 20px auto;
+    margin:  0 0 1px auto;
     background-color: transparent;
     font-size: 30px;
     color: #000000;
@@ -330,6 +432,15 @@ p.facility {
     border: none;
     outline: none;
     cursor: pointer;
+}
+
+.popup p{
+    display: block;
+    font-weight: bold;
+    text-align: left;
+    margin: 0 0 0 1.5%;
+    color:#003e51;
+    font-size: xx-large;
 }
 
 .popup input{
@@ -345,16 +456,28 @@ p.facility {
     outline: none;
 }
 
+.popup div{
+    margin: 5px 1.5% 0 1.5%;
+    max-height: 68%;
+    overflow: auto;
+}
+
+/*-------------- Popup table css -----------------*/
 .popup table{
-    margin: 1% 1.5% 0 1.5%;
-    width: 97%;
+    width: 99%;
     border-collapse: collapse;
 }
 
+/*-------------- Popup table elements css -----------------*/
 .popup tr{
     border: 1px solid rgb(105, 105, 105);
     border-radius: 8px;
     border-collapse: collapse;
+}
+
+.popup tr:hover{
+    background-color:  rgb(190, 190, 190);
+    cursor: pointer;
 }
 
 .popup th{
@@ -373,3 +496,23 @@ p.facility {
     padding: 0 0 0 0.3%;
     color: #000000;
 }
+
+
+/*------scrollbars styles-------*/
+
+/* width */
+::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2px grey;
+    border-radius: 3px;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background:#007396;
+    border-radius: 3px;
+  }
