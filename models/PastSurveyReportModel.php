@@ -1,5 +1,6 @@
 <?php
 
+//This function return all of the surveys from survey table
 function get_survey_documents()
 {
     global $conn;
@@ -17,6 +18,7 @@ function get_survey_documents()
         return $data[0] = "No Data";
 }
 
+//This function return the report with question,subquestion and the answers to that questions
 function get_survey_activity($survId, $goal)
 {
     global $conn;
@@ -50,66 +52,37 @@ function get_survey_activity($survId, $goal)
         return $data[0] = "No Data";
 }
 
+//This function return the report with user first name, last name, question,subquestion and the answers to that questions by specific user
 function get_survey_activity_detailed($survId, $goal, $userNumber)
 {
     global $conn;
-
-    if($userNumber == null)
-        $sql = "SELECT
-                    UT.UserID AS UserNumber,
-                    UT.Fname,
-                    UT.Lname,
-                    SQ.Goal,
-                    SQ.SubGoal,
-                    SQ.QuestionID,
-                    SQ.Question,
-                    UA.Answer AS QuestionAnswer,
-                    SQ.Type,
-                    SQS.Sub_Q,
-                    SA.Answer AS SubQuestionAnswer,
-                    AN.NoteText,
-                        (SELECT COUNT(SubQuestions.Sub_Q)
-                        FROM SurveyQuestions
-                        LEFT JOIN SubQuestions
-                        ON surveyquestions.QuestionID = subquestions.QuestionID
-                        WHERE SurveyQuestions.SurvID = ST.SurvID AND SQ.Type ='composed' AND SQ.QuestionID = SubQuestions.QuestionID) AS ComposedCount
-                FROM surveytable ST
-                    JOIN SurveyQuestions SQ ON ST.SurvID = SQ.SurvID
-                    LEFT JOIN answernotes AN ON SQ.QuestionID = AN.QuestionID
-                    LEFT JOIN useranswer UA ON SQ.QuestionID = UA.QuestionID
-                    LEFT JOIN SubQuestions SQS ON SQ.QuestionID = SQS.QuestionID
-                    LEFT JOIN subquestionanswer SA ON SQS.SubQuestionID = SA.SubQuestionID
-                    LEFT JOIN usertable UT ON UT.UserID = UA.UserID OR UT.UserID= SA.UserID
-                WHERE ST.SurvID = '$survId' AND SQ.Goal ='$goal'
-                ORDER BY SQ.QuestionID, SQ.SubGoal, UT.UserID;";
-    else
-        $sql = "SELECT
-                    UT.UserID AS UserNumber,
-                    UT.Fname,
-                    UT.Lname,
-                    SQ.Goal,
-                    SQ.SubGoal,
-                    SQ.QuestionID,
-                    SQ.Question,
-                    UA.Answer AS QuestionAnswer,
-                    SQ.Type,
-                    SQS.Sub_Q,
-                    SA.Answer AS SubQuestionAnswer,
-                    AN.NoteText,
-                        (SELECT COUNT(SubQuestions.Sub_Q)
-                        FROM SurveyQuestions
-                        LEFT JOIN SubQuestions
-                        ON surveyquestions.QuestionID = subquestions.QuestionID
-                        WHERE SurveyQuestions.SurvID = ST.SurvID AND SQ.Type ='composed' AND SQ.QuestionID = SubQuestions.QuestionID) AS ComposedCount
-                FROM surveytable ST
-                    JOIN SurveyQuestions SQ ON ST.SurvID = SQ.SurvID
-                    LEFT JOIN answernotes AN ON SQ.QuestionID = AN.QuestionID
-                    LEFT JOIN useranswer UA ON SQ.QuestionID = UA.QuestionID
-                    LEFT JOIN SubQuestions SQS ON SQ.QuestionID = SQS.QuestionID
-                    LEFT JOIN subquestionanswer SA ON SQS.SubQuestionID = SA.SubQuestionID
-                    LEFT JOIN usertable UT ON UT.UserID = UA.UserID OR UT.UserID= SA.UserID
-                WHERE ST.SurvID = '$survId' and SQ.Goal ='$goal' AND UT.UserID ='$userNumber'
-                ORDER BY SQ.QuestionID, SQ.SubGoal, UT.UserID;";
+    $sql = "SELECT
+                UT.UserID AS UserNumber,
+                UT.Fname,
+                UT.Lname,
+                SQ.Goal,
+                SQ.SubGoal,
+                SQ.QuestionID,
+                SQ.Question,
+                UA.Answer AS QuestionAnswer,
+                SQ.Type,
+                SQS.Sub_Q,
+                SA.Answer AS SubQuestionAnswer,
+                AN.NoteText,
+                    (SELECT COUNT(SubQuestions.Sub_Q)
+                    FROM SurveyQuestions
+                    LEFT JOIN SubQuestions
+                    ON surveyquestions.QuestionID = subquestions.QuestionID
+                    WHERE SurveyQuestions.SurvID = ST.SurvID AND SQ.Type ='composed' AND SQ.QuestionID = SubQuestions.QuestionID) AS ComposedCount
+            FROM surveytable ST
+                JOIN SurveyQuestions SQ ON ST.SurvID = SQ.SurvID
+                LEFT JOIN answernotes AN ON SQ.QuestionID = AN.QuestionID
+                LEFT JOIN useranswer UA ON SQ.QuestionID = UA.QuestionID
+                LEFT JOIN SubQuestions SQS ON SQ.QuestionID = SQS.QuestionID
+                LEFT JOIN subquestionanswer SA ON SQS.SubQuestionID = SA.SubQuestionID
+                LEFT JOIN usertable UT ON UT.UserID = UA.UserID OR UT.UserID= SA.UserID
+            WHERE ST.SurvID = '$survId' and SQ.Goal ='$goal' AND UT.UserID ='$userNumber'
+            ORDER BY SQ.QuestionID, SQ.SubGoal, UT.UserID;";
 
     $result = mysqli_query($conn, $sql);
     $data = [];
@@ -124,6 +97,7 @@ function get_survey_activity_detailed($survId, $goal, $userNumber)
         return $data[0] = "No Data";
 }
 
+//This function searches for the user from user table using specific filter
 function searchUser($searchString)
 {
     global $conn;
@@ -153,7 +127,7 @@ function searchUser($searchString)
         return $data[0] = "No Data";
 }
 
-
+//This function return the percentage of answers from a specific survey
 function get_survey_answer_percentage($survId, $goal)
 {
     global $conn;

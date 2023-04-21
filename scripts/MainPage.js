@@ -16,7 +16,6 @@ function upcomingSurveys (){
 
         if(result == "NoResults")
         {
-            //upcomingSurveys += "<img src='../images/cover-textures/1.png' alt='cover'>";
             upcomingSurveys += "<p class='title'>No Upcoming Surveys</p>";
         }
         else
@@ -35,12 +34,14 @@ function upcomingSurveys (){
     });
 }
 
+//This function opens the chosen survey for completion
 function upcomingSurveySelected(surveyId)
 {
     document.getElementById("upcomingSurveyID").value = surveyId;
     $('#surveystart').submit();
 }
 
+//The function creates a tables with the surveys tha user answers
 function historyOfSurveys(){
     var url = 'Controller.php';
 
@@ -48,12 +49,10 @@ function historyOfSurveys(){
 
     $.post(url, query, function(data) {
         var result = JSON.parse(data);
-        //Only the surveys that user answers
         var historySurveys = "<h1 class='sectionheader'>History</h1>";
 
         if(result == "NoResults")
         {
-            //historySurveys += "<img src='../images/cover-textures/1.png' alt='cover'>";
             historySurveys += "<p class='title'>No Past Reports Found<br></p>";
         }
         else
@@ -71,7 +70,7 @@ function historyOfSurveys(){
     });
 }
 
-
+//This function opens the chosen survey for review
 function historySurveySelected(surveyId)
 {
     document.getElementById("HSurveyID").value = surveyId;
