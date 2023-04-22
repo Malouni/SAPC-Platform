@@ -38,15 +38,12 @@ function get_surveys_completed_by_user($userid)
 {
     global $conn;
 
-    $sql = "SELECT DISTINCT rt.SurvID, rt.SurvName
-            FROM
-            (SELECT SurveyTable.SurvID, SurveyTable.SurvName
-            FROM SurveyTable
-            INNER JOIN UserTable
-            ON SurveyTable.Position = UserTable.Position
-            INNER JOIN useranswer
-            ON UserTable.UserID = useranswer.UserID
-            WHERE UserTable.UserID = '$userid')rt";
+    $sql = "SELECT DISTINCT st.SurvID, st.SurvName
+            FROM SurveyTable st
+                LEFT JOIN useranswer ua ON st.SurvID = ua.SurvID
+                LEFT JOIN subquestionanswer sqa ON ua.UserID = sqa.UserID
+                LEFT JOIN SurveyQuestions sq ON sqa.QuestionID = sq.QuestionID
+            WHERE ua.UserID = '$userid')rt";
     $result = mysqli_query($conn, $sql);
     $data = [];
     if (mysqli_num_rows($result) > 0)
