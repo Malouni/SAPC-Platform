@@ -43,7 +43,7 @@ function get_surveys_completed_by_user($userid)
                 LEFT JOIN useranswer ua ON st.SurvID = ua.SurvID
                 LEFT JOIN subquestionanswer sqa ON ua.UserID = sqa.UserID
                 LEFT JOIN SurveyQuestions sq ON sqa.QuestionID = sq.QuestionID
-            WHERE ua.UserID = '$userid')rt";
+            WHERE ua.UserID = '$userid'";
     $result = mysqli_query($conn, $sql);
     $data = [];
     if (mysqli_num_rows($result) > 0)

@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function(){
     upcomingSurveys();
     historyOfSurveys();
-    documents();
 });
 
 function upcomingSurveys (){

@@ -21,7 +21,6 @@ h2 {
     grid-template-areas:
         "leftside rightside"
     ;
-     border: 1px solid rgb(121, 121, 121);
 }
 
 .row{
@@ -67,6 +66,11 @@ h2 {
     outline: none;
 }
 
+.usertable div{
+    overflow: auto;
+    max-height: 26vh;
+}
+
 .usertable table{
     border: 1px solid rgb(121, 121, 121);
     border-collapse: collapse;
@@ -96,6 +100,7 @@ h2 {
     padding: 10px;
     overflow: auto;
     margin: 10px 0;
+    max-height: 38vh;
 }
 
 /*-------------- div surveyTable table css -----------------*/
