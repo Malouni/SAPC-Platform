@@ -139,7 +139,7 @@ h2 {
     grid-area: rightside;
     padding: 10px;
     display: grid;
-    grid-template-rows: 0.5fr 2.5fr 3.5fr 0.5fr 2.5fr;
+    grid-template-rows: 0.5fr 2fr 4.5fr 0.5fr 2fr;
 }
 
 

@@ -244,13 +244,16 @@ p.facility {
 
 button.searchUser
 {
-    width: 100%;
-    background-color: #003e51;
-    color: white;
+    display: block;
+    width: 40%;
+    min-width: 300px;
+    margin: 30px auto 0;
+    background-color: #c5c5c5;
+    color: rgb(0, 0, 0);
     text-align: center;
     height: 40px;
     border: none;
-    border-radius: 0 0 3px 3px;
+    border-radius: 20px;
     cursor: pointer;
 }
 
