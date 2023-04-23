@@ -56,7 +56,7 @@ function BackQuestions(){
     }    
 }
 
-// this will gender the question html based on data got from db
+// this will render the question html based on data got from db
 function QuestionRender(QuestionIndex){    
     
     if(sessionStorage.getItem("QuestionList") == "Failed"){
@@ -149,7 +149,7 @@ function QuestionRender(QuestionIndex){
             SingleAnswerLoad(QuestionList[QuestionIndex]['QuestionID'],QuesetionType[1]);
         
         }else{
-            //Gender all the subquestion by using while loops
+            //render all the subquestion by using while loops
             //if the next CurrentQuestionIndex has same QuestionID => still have more subquestions
             var multi_document = "";
             var short_document= "";
@@ -394,11 +394,17 @@ function NoteLoad(){
             //set IsUpdate = true for note
             NoteIsUpdate = 'true';
             //set the note
-            textbox.defaultValue = result;            
+            textbox.defaultValue = htmlEntitiesDecode(result);            
         }else{
             NoteIsUpdate = 'false';
         }
     });
+}
+
+//to decode the note. Ex: &lt; => <
+function htmlEntitiesDecode(input) {
+    var doc = new DOMParser().parseFromString(input, "text/html");
+    return doc.documentElement.textContent;
 }
 
 //load answer for Single questions 
