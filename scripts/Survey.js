@@ -329,7 +329,7 @@ function NoteUpdate(IsUpdateNote){
     var textbox = document.getElementById("userComments");
 
     // Get the value of the textbox element
-    var note = textbox.value;
+    var note = sanitizeInput(textbox.value);
 
     if(note != ""){
 
@@ -339,6 +339,17 @@ function NoteUpdate(IsUpdateNote){
 
     }
 }
+
+//check the input to prevent the XSS attack 
+function sanitizeInput(input) {
+    return input.replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;')
+                .replace(/\\/g, '&#92;');
+}
+  
 
 //This function only call if question is multi and only one option + without exit in database yet 
 function OneOptionQ(){
