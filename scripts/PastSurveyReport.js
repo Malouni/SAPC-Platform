@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function(){
 var detailedReport = false;
 var currentGoalDetailed ="";
 var currentUserNumber = null;
+var FirstTimeChooseDetailedReport = true;
 
 function show_survey_documents() {
     var url = 'Controller.php';
@@ -75,6 +76,7 @@ function show_survey_documents() {
             enable_goal_buttons();
             currentUserNumber = null;
             detailedReport = true;
+            FirstTimeChooseDetailedReport = true;
             diel_goal_show();
         });
 
@@ -236,7 +238,11 @@ function show_survey_goal_detailed() {
         var result = JSON.parse(data);
         var tables;
         tables = "<button class='searchUser' onclick='showUserSearchPopupWindow();'>Search by user</button>";
-        if(result == "No Data")
+        if(FirstTimeChooseDetailedReport)
+        {
+            tables += "<p class='headers'>Please select user</p>";
+        }
+        else if(result == "No Data")
         {
             tables += "<p class='headers'>No data found</p>";
         }
@@ -491,6 +497,7 @@ function searchByUser(userInfoString)
 function chooseClickedUser(userId)
 {
     currentUserNumber = userId;
+    FirstTimeChooseDetailedReport = false;
     show_survey_goal_detailed();
     hideCover();
 }
