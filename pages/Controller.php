@@ -317,7 +317,7 @@ else if ($_POST['page'] == 'userReview')
     switch($command) {
 
         case 'getUserAnswerReview':
-            $result = getUserReview($_SESSION['userId'] , $_POST['SurveyYear']);
+            $result = getUserReview($_SESSION['userId'] , $_POST['SurveyYear'] ,$_POST['Position'] );
             echo json_encode($result);
             break;
 
@@ -327,12 +327,12 @@ else if ($_POST['page'] == 'userReview')
             break;
 
         case 'SurveySubmitAnswer':
-            $result = getUserReview($_SESSION['userId'] , $_SESSION['NewSurveysID'] );
+            $result = getUserReview($_SESSION['userId'] , $_SESSION['NewSurveysID'] , 'none');
             echo json_encode($result);
             break;
 
         case 'HistorySurveyReview':
-            $result = getUserReview($_SESSION['userId'] , $_SESSION['PastSurveysID'] );
+            $result = getUserReview($_SESSION['userId'] , $_SESSION['PastSurveysID'], 'none' );
             echo json_encode($result);
             break;
     }

@@ -238,7 +238,7 @@ function ProgressPrecentUpdate($survID)
                             
                  
                 //This will set the Answer_Percentage = 0 whenever TotalAnswerResult for that goal is null or non exits
-                if($count <= $total_row){
+                if($count < $total_row){
                     //Calculate the Answer_Percentage
                     $Answer_Percentage_Result = $TotalAnswer_row["TotalAnswer"] / $answer_goal_row["answer_goal"]; 
 
