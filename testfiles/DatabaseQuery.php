@@ -10,6 +10,12 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+$LogInAttemptsTableSQL = "CREATE TABLE IF NOT EXISTS LogInAttemptsTable (
+    Id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    IpAddress varbinary(16) NOT NULL,
+    Time bigint(20) NOT NULL
+)";
+
 // UserTable query
 $UserTableSQL = "CREATE TABLE IF NOT EXISTS UserTable (
     UserID INT PRIMARY KEY AUTO_INCREMENT,
@@ -96,6 +102,10 @@ $AnswerNotesSQL = " CREATE TABLE IF NOT EXISTS AnswerNotes (
 
 
 // execute the query and check for errors
+if ($conn->query($LogInAttemptsTableSQL) === TRUE) {
+    echo "Table LogInAttemptsTable created successfully\n<br>";
+}
+
 if ($conn->query($UserTableSQL) === TRUE) {
     echo "Table UserTable created successfully\n<br>";
 }
