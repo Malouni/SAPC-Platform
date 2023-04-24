@@ -8,6 +8,7 @@ define('DB_NAME', 'sciencestrategicplan');
 $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 $defaultPassword = "password";
 $timeToWait = 1;
+$attemptsLeft = 5;
 
 
 if (empty($_POST['page'])) {
@@ -39,36 +40,48 @@ if ($_POST['page'] == 'LogInPage')
     switch($command) {
         case 'LogIn':
             global $timeToWait;
-            if(getAttemptsFromIp(getIp()) < 5)
+            global $attemptsLeft;
+            $userIp = getIp();
+            if(/*countAttemptsFromIp($userIp,$time)*/ true)
             {
                 if ($users_password_hash = get_users_password($_POST['userName']))
                 {
                     if(password_verify($_POST["password"], $users_password_hash))
                     {
-                        $error_msg_loginIn ="";
-                        $_SESSION['LogIn'] = 'Yes';
-                        $_SESSION['userFirstName'] = get_user_first_name ($_POST['userName']);
-                        $_SESSION['userLastName'] = get_user_last_name ($_POST['userName']);
-                        $_SESSION['userPosition'] = get_user_position ($_POST['userName']);
-                        $_SESSION['userId'] = get_user_id($_POST['userName']);
-                        if(password_verify($defaultPassword, $users_password_hash))
+                        if(/*deleteIpFromAttemptsTable($userIp)*/true)
                         {
-                            include('changePassword.php');
+                            $error_msg_loginIn ="";
+                            $_SESSION['LogIn'] = 'Yes';
+                            $_SESSION['userFirstName'] = get_user_first_name ($_POST['userName']);
+                            $_SESSION['userLastName'] = get_user_last_name ($_POST['userName']);
+                            $_SESSION['userPosition'] = get_user_position ($_POST['userName']);
+                            $_SESSION['userId'] = get_user_id($_POST['userName']);
+                            if(password_verify($defaultPassword, $users_password_hash))
+                            {
+                                include('changePassword.php');
+                            }
+                            else
+                            {
+                                require('Index.php');
+                            }
                         }
                         else
                         {
-                            require('Index.php');
+                            $error_msg_loginIn ='**Error occurred, please try again**';
+                            include('LogInPage.php');
                         }
                     }
                     else
                     {
-                        $error_msg_loginIn = '**Wrong username, or Password**';
+                        $error_msg_loginIn = '**Wrong username, or Password**(Attempts Left: '.$attemptsLeft.')';
+                        addIpToAttemptsTable($userIp,time());
                         include('LogInPage.php');
                     }
                 }
                 else
                 {
-                    $error_msg_loginIn = '**Wrong username, or Password**';
+                    $error_msg_loginIn = '**Wrong username, or Password**(Attempts Left: '.$attemptsLeft.')';
+                    addIpToAttemptsTable($userIp,time());
                     include('LogInPage.php');
                 }
             }

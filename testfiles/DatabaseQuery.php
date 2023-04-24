@@ -10,6 +10,16 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+$UserTableSQL = "CREATE TABLE IF NOT EXISTS UserTable (
+    UserID INT PRIMARY KEY AUTO_INCREMENT,
+    UserName varchar(100),
+    Password char(60),
+    Fname varchar(100),
+    Lname varchar(100),
+    Position varchar(100),
+    Department varchar(100)
+)";
+
 // UserTable query
 $UserTableSQL = "CREATE TABLE IF NOT EXISTS UserTable (
     UserID INT PRIMARY KEY AUTO_INCREMENT,

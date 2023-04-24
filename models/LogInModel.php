@@ -91,9 +91,57 @@ function change_user_password($userID, $newPassword)
         return false;
 }
 
+function addIpToAttemptsTable($ipAddress,$time)
+{
+    global $conn;
+
+    $sql = "INSERT INTO LogInAttemptsTable(IpAddress,Time) VALUES('$ipAddress','$time')";
+    $result = mysqli_query($conn, $sql);
+    if ($result)
+    {
+        return true;
+    }
+    else
+        return false;
+}
+
+function deleteIpFromAttemptsTable($ipAddress)
+{
+    global $conn;
+
+    $sql = "DELETE FROM LogInAttemptsTable WHERE IpAddress='$ipAddress'";
+    $result = mysqli_query($conn, $sql);
+    if ($result)
+    {
+        return true;
+    }
+    else
+        return false;
+}
+
+function countAttemptsFromIp($ipAddress,$time)
+{
+    global $conn;
+
+    $sql = "SELECT count(*) as attemptsCount from LogInAttemptsTable where Time > '$time' and IpAddress='$ipAddress'";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        return $row['attemptsCount'];
+    }
+    else
+        return false;
+}
+
 function getIp()
 {
-    return 1;
+    if (!empty($_SERVER['HTTP_CLIENT_IP']))
+        $ipAddr=$_SERVER['HTTP_CLIENT_IP'];
+    elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ipAddr=$_SERVER['HTTP_X_FORWARDED_FOR'];
+    else
+        $ipAddr=$_SERVER['REMOTE_ADDR'];
+    return $ipAddr;
 }
 
 function getAttemptsFromIp($ip)
