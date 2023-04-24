@@ -146,6 +146,7 @@ function QuestionRender(QuestionIndex){
 
             $('#question').html(document);
             NoteLoad();
+            shortUpdateID.length = 0 ; 
             SingleAnswerLoad(QuestionList[QuestionIndex]['QuestionID'],QuesetionType[1]);
         
         }else{
@@ -157,8 +158,10 @@ function QuestionRender(QuestionIndex){
             var IdNum = 1;  
             var id = 0;            
             var Update_ID = QuestionList[QuestionIndex]['QuestionID']+"_"+QuestionList[QuestionIndex]['SubQuestionID'];
-            var IsFrist = true;             
-            
+            var IsFrist = true;      
+            OneOptionID.length = 0 ;
+            shortUpdateID.length = 0 ; 
+           
             do { 
 
                 if(!IsFrist){       
@@ -357,6 +360,7 @@ function OneOptionQ(){
     //this will go to all the ID in array to Insert Into db with answer 0 
     for(var i= 0 ; i < OneOptionID.length ; i++){
 
+
         var ID = OneOptionID[i];
         var updateID = ID.split("_");
 
@@ -487,10 +491,10 @@ function ComposedAnswerLoad(Q_ID ,typeArray){
                 }          
             }                      
         }else{
+
             if(OneOptionID.length > 0){
 
                 for(var j= 0 ; j < OneOptionID.length ; j++){
-                   
                     var ID = OneOptionID[j];
                     var radioGroup = document.getElementsByName(ID);
             
@@ -587,8 +591,6 @@ function shortNextButton(){
     shortAnswerUpdate();
     NoteUpdate(NoteIsUpdate); 
     NextQuestions(); 
-    shortUpdateID.length = 0 ; 
-    OneOptionID.length = 0 ;
 }
 
 function multiNextButton(){
@@ -596,8 +598,6 @@ function multiNextButton(){
     updateProgressBar(QuestionNum);
     NoteUpdate(NoteIsUpdate); 
     NextQuestions();
-    shortUpdateID.length = 0 ; 
-    OneOptionID.length = 0 ;
 }
 
 function BackBtn(){
@@ -606,8 +606,6 @@ function BackBtn(){
     NoteUpdate(NoteIsUpdate); 
     shortAnswerUpdate();
     BackQuestions();
-    shortUpdateID.length = 0 ; 
-    OneOptionID.length = 0 ;
 }
 
 //for disable the button 
