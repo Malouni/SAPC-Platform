@@ -99,6 +99,7 @@ function show_survey_goal_chosen(goal) {
         if(result == "No Data")
         {
             var tables = "<p class='headers'>No data found</p>";
+            updateCircularProgressBar(0);
         }
         else
         {
@@ -643,10 +644,19 @@ var chart;
 // Linear graph
 function calculateGraph(CurrentYear, year1 , year2 ,value, value1, value2) {
 
-    if(year2 == null ){
+    if(year1 === null && year2 !== null){
+        var previousYears = [year2 , CurrentYear];
+        var dataNum = [value2 * 100 , value * 100];
+    }
+    else if(year2 === null && year1 !== null){
         var previousYears = [year1 , CurrentYear];
         var dataNum = [value1 * 100 , value * 100];
-    }else{
+    }
+    else if(year1 === null && year2 === null ){
+        var previousYears = [0 , 0 , 0];
+        var dataNum = [0 , 0 , 0 ];
+    }
+    else{
         var previousYears = [year2 , year1 , CurrentYear];
         var dataNum = [value2 * 100 , value1 * 100 , value * 100 ];
     }

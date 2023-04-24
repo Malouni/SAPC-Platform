@@ -132,9 +132,6 @@ function get_survey_answer_percentage($survId, $goal)
 {
     global $conn;
 
-    $Year1_ID = $survId - 1;
-    $Year2_ID = $survId - 2;
-
     $sql = "SELECT  ST.SurvYear  as CurrentYear , SR.Answer_Percentage as Value,
                     ST1.SurvYear as Year1,  SR1.Answer_Percentage as Value1 ,
                     ST2.SurvYear as Year2 , SR2.Answer_Percentage as Value2
@@ -143,13 +140,13 @@ function get_survey_answer_percentage($survId, $goal)
             JOIN SurveyReport SR  ON SR.QuestionID = SQ.QuestionID
             JOIN SurveyTable ST ON ST.SurvID = SR.SurvID
 
-            JOIN SurveyReport SR1 ON SR1.SurvID = '$Year1_ID'
-            JOIN SurveyQuestions SQ1 ON  SQ1.Goal =  SQ.Goal AND SR1.SurvID = SQ1.SurvID
-            JOIN SurveyTable ST1 ON ST1.SurvID = SR1.SurvID
+            LEFT JOIN SurveyTable ST1 ON  ST1.SurvYear = ST.SurvYear - 1 AND ST1.Position = ST.Position
+            LEFT JOIN SurveyQuestions SQ1 ON  SQ1.Goal =  SQ.Goal AND ST1.SurvID = SQ1.SurvID
+            LEFT JOIN SurveyReport SR1 ON SR1.SurvID = ST1.SurvID 
 
-            LEFT JOIN  SurveyReport SR2 ON SR2.SurvID = '$Year2_ID'
-            LEFT JOIN  SurveyQuestions SQ2 ON  SQ2.Goal =  SQ.Goal AND SR2.SurvID = SQ2.SurvID
-            LEFT JOIN SurveyTable ST2 ON ST2.SurvID = SR2.SurvID
+            LEFT JOIN SurveyTable ST2 ON ST2.SurvYear = ST.SurvYear - 2 AND ST2.Position = ST.Position
+            LEFT JOIN  SurveyQuestions SQ2 ON  SQ2.Goal =  SQ.Goal AND ST2.SurvID = SQ2.SurvID
+            LEFT JOIN  SurveyReport SR2 ON SR2.SurvID = ST2.SurvID
 
             WHERE SR.SurvID = '$survId' AND SQ.Goal = '$goal'
             GROUP BY SQ.Goal";

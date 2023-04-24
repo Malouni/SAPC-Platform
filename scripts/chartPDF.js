@@ -1,4 +1,5 @@
 var chart;
+var done;
 function load_charts_PDF(){
 
     var url = 'Controller.php';
@@ -20,7 +21,12 @@ function load_charts_PDF(){
             var Value2 = result[0]['Value2'];     
 
             circleChart(Value);
-            calculateLiner(CurrentYear , Year1 , Year2 ,Value , Value1 ,Value2);            
+            
+            //this will call the calculateLiner function after 1second to make sure circleChart already finish render
+            setTimeout(function() {
+                calculateLiner(CurrentYear , Year1 , Year2 ,Value , Value1 ,Value2);      
+            }, 1000);
+
         }else{
             calculateLiner(0 , 0 , 0 ,0 , 0 ,0);       
         }
@@ -33,10 +39,20 @@ function load_charts_PDF(){
 function calculateLiner(CurrentYear, year1 , year2 ,value, value1, value2) {
 
     if(chart != null){chart.destroy();}    
-    if(year2 == null ){
+    
+    if(year1 === null && year2 !== null){
+        var previousYears = [year2 , CurrentYear];
+        var dataNum = [value2 * 100 , value * 100];
+    }
+    else if(year2 === null && year1 !== null){
         var previousYears = [year1 , CurrentYear];
         var dataNum = [value1 * 100 , value * 100];
-    }else{
+    }
+    else if(year1 === null && year2 === null ){
+        var previousYears = [0 , 0 , 0];
+        var dataNum = [0 , 0 , 0 ];
+    }
+    else{
         var previousYears = [year2 , year1 , CurrentYear];
         var dataNum = [value2 * 100 , value1 * 100 , value * 100 ];
     }
@@ -122,9 +138,10 @@ function circleChart(data){
         animation: {
           duration: 1000,
           onComplete: function() {
-            var CircleCanvas = document.getElementById('circleChart');
-            var CircleData = CircleCanvas.toDataURL('image/png');
-            document.getElementById("circleChartData").value = CircleData; 
+                var CircleCanvas = document.getElementById('circleChart');
+                var CircleData = CircleCanvas.toDataURL('image/png');
+                document.getElementById("circleChartData").value = CircleData;
+                done = 'true'; 
             }
         },               
     };
