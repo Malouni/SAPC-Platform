@@ -169,19 +169,22 @@ function UpdateComment($userID , $Q_ID , $IsUpdateNote, $note)
 
     if($IsUpdateNote == 'true'){
 
-        $Update = "UPDATE answernotes SET NoteText = '$note' 
-                        WHERE QuestionID = ".$Q_ID." AND UserID = ".$userID."";
-
-        $result = mysqli_query($conn, $Update);  
+        $Update = "UPDATE answernotes SET NoteText = ?
+        WHERE QuestionID = ".$Q_ID." AND UserID = ".$userID."";
+        $stmt = mysqli_prepare($conn, $Update);
+        mysqli_stmt_bind_param($stmt, 's', $note);
+        $result = mysqli_stmt_execute($stmt);
 
     }else{
 
         $INSERT = "INSERT INTO answernotes (UserID, QuestionID, NoteText)
-                            VALUES (".$userID.", ".$Q_ID.",'$note')";  
-            
-        $result = mysqli_query($conn, $INSERT);
+                            VALUES (".$userID.", ".$Q_ID.", ?)";  
+        $stmt = mysqli_prepare($conn, $INSERT);
+        mysqli_stmt_bind_param($stmt, 's', $note);
+        $result = mysqli_stmt_execute($stmt);
     }
 }
+
 
 //Load comment 
 function LoadComment($userID , $Q_ID)
