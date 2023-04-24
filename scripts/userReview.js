@@ -12,7 +12,9 @@ function getUserAnswer(surveyYear){
     }else if(surveyYear == 1){
         var query = {page: 'userReview', command: 'HistorySurveyReview'};
     }else{
-        var query = {page: 'userReview', command: 'getUserAnswerReview' , SurveyYear: ''+surveyYear+'' };                
+        //get the postion in Select Value
+        var postion = surveyYear.split('_');
+        var query = {page: 'userReview', command: 'getUserAnswerReview' , SurveyYear: ''+postion[0]+'' , Position: ''+postion[1]+'' };                
     }
 
     $.post(url, query, function(data) {
@@ -61,7 +63,7 @@ function getUserAnswer(surveyYear){
     //print the table
     $('#report').html(table);
     if(surveyYear == 1){
-        setDefaultSelect(result[1]['SurvYear']);
+        setDefaultSelect(result[1]['SurvYear']+ "_" +result[1]['Position']);
     }
     });
 }
@@ -83,7 +85,7 @@ function getSelectMenu(){
                         
             for(let row = 0 ; row < result.length ; row++)
             {
-                select +="<option value="+result[row]['SurvYear']+"> "+result[row]['SurvYear']+" </option>";
+                select +="<option value="+result[row]['SurvYear']+"_"+result[row]['Position'] +"> "+result[row]['SurvYear']+"_"+result[row]['Position'] +" </option>";
             }   
 
             select +="</select>";    
@@ -118,7 +120,7 @@ function setDefaultSelect(year){
     var mySelect = document.getElementById('year');
 
     for(var i, j = 0; i = mySelect.options[j]; j++) {
-
+        
         if(i.value == valueSelect) {
             mySelect.selectedIndex = j;
             break;
