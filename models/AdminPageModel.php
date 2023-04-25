@@ -396,6 +396,41 @@ function delete_survey($survID)
         return false;
 }
 
+function downloadBackUpFromDB()
+{
+    $backup_file = "../backupFiles/" .DB_NAME. "" . date("Y-m-d_H-i-s") . ".sql";
+
+    // Create the backup command
+    $command = "mysqldump --user=".DB_USER." --password=".DB_PASS." ".DB_NAME." > ".$backup_file;
+
+    // Execute the backup command
+    exec($command);
+
+    // Check if the backup file was created successfully
+    if (file_exists($backup_file)) {
+        // Set the headers to force the browser to download the file
+        /*
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($backup_file).'"');
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($backup_file));
+
+        // Read the backup file and send it to the browser for download
+        readfile($backup_file);
+
+        // Delete the backup file after it has been downloaded
+        unlink($backup_file);
+        */
+        // Exit the script to prevent any additional output
+        return true;
+    } else {
+        return false;
+    }
+}
 
 //This function goes through the array that was sent to controller and adds each question with the subquestion to the database
 function add_questions_to_new_survey($dataQuestions, $dataSubQuestions, $newSurvId)
