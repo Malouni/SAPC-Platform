@@ -496,3 +496,71 @@ function getBackupFile()
         alert(result);
     });
 }
+
+function show_back_up_files()
+{
+
+    var url = 'Controller.php';
+    var query = {page: 'AdminPage', command: 'BackUpFiles'};
+
+    $.post(url, query, function(data) {
+        var result = JSON.parse(data);
+        var backUpFileTable = "";
+
+        backUpFileTable += "<table>";
+        backUpFileTable += "<tr>";
+        backUpFileTable += "<th>Database Name</th>";
+        backUpFileTable += "<th>Date</th>";
+        backUpFileTable += "<th>Time</th>";
+        backUpFileTable += "</tr>";
+
+        if(result.length === 0)
+        {
+            backUpFileTable += "<tr>";
+            backUpFileTable += "<td>No</td>";
+            backUpFileTable += "<td>Back-ups file</td>";
+            backUpFileTable += "<td>Found</td>";
+            backUpFileTable += "</tr>";
+        }
+        else
+        {
+            for (var row = result.length - 1; row >= 0; row--) {
+                var tempArrayOfInfo = result[row].split('_');
+                backUpFileTable += "<tr onclick='chosenFile(this.id)' id='" + row + "'>";
+                backUpFileTable += "<td name='Database Name'>" + tempArrayOfInfo[0] + "</td>";
+                backUpFileTable += "<td name='Years'>" + tempArrayOfInfo[1] + "</td>";
+                var time = tempArrayOfInfo[2].split('.');
+                backUpFileTable += "<td name='Time'>" + time[0] + "</td>";
+                backUpFileTable += "</tr>";
+            }
+        }
+        backUpFileTable += "</table>";
+
+        $('#backUpFiles').html(backUpFileTable);
+    });
+}
+
+function chosenFile(fileID)
+{
+    var url = 'Controller.php';
+    var query = {page: 'AdminPage', command: 'ChosenFileToRestoreDB', chosenFile:fileID};
+    $.post(url, query, function(data) {
+        var result = JSON.parse(data);
+        alert(result);
+    });
+    hideCover();
+}
+
+function showBackUpFilesPopupWindow()
+{
+    show_back_up_files();
+    $('#blanket').show();
+    $('#popup').show();
+}
+
+//Blanket function
+function hideCover()
+{
+    $('#blanket').hide();
+    $('#popup').hide();
+}
