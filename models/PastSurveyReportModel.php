@@ -36,10 +36,14 @@ function get_survey_activity($survId, $goal)
             FROM SurveyReport SR
             JOIN SurveyQuestions SQ ON SR.QuestionID = SQ.QuestionID
             LEFT JOIN SubQuestions SQS ON SR.SubQuestionID = SQS.SubQuestionID AND SR.QuestionID = SQS.QuestionID
-            WHERE SR.SurvID = '$survId' and SQ.Goal ='$goal'
+            WHERE SR.SurvID = ? and SQ.Goal = ?
             ORDER BY SR.SurvID, SR.QuestionID, SR.SubQuestionID;";
 
-    $result = mysqli_query($conn, $sql);
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, 'is', $survId, $goal);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
     $data = [];
 
     if (mysqli_num_rows($result) > 0)
@@ -50,12 +54,14 @@ function get_survey_activity($survId, $goal)
     }
     else
         return $data[0] = "No Data";
+
 }
 
 //This function return the report with user first name, last name, question,subquestion and the answers to that questions by specific user
 function get_survey_activity_detailed($survId, $goal, $userNumber)
 {
     global $conn;
+
     $sql = "SELECT
                 UT.UserID AS UserNumber,
                 UT.Fname,
@@ -73,7 +79,7 @@ function get_survey_activity_detailed($survId, $goal, $userNumber)
                     FROM SurveyQuestions
                     LEFT JOIN SubQuestions
                     ON surveyquestions.QuestionID = subquestions.QuestionID
-                    WHERE SurveyQuestions.SurvID = ST.SurvID AND SQ.Type ='composed' AND SQ.QuestionID = SubQuestions.QuestionID) AS ComposedCount
+                    WHERE SurveyQuestions.SurvID = ? AND SQ.Type ='composed' AND SQ.QuestionID = SubQuestions.QuestionID) AS ComposedCount
             FROM surveytable ST
                 JOIN SurveyQuestions SQ ON ST.SurvID = SQ.SurvID
                 LEFT JOIN answernotes AN ON SQ.QuestionID = AN.QuestionID
@@ -81,21 +87,28 @@ function get_survey_activity_detailed($survId, $goal, $userNumber)
                 LEFT JOIN SubQuestions SQS ON SQ.QuestionID = SQS.QuestionID
                 LEFT JOIN subquestionanswer SA ON SQS.SubQuestionID = SA.SubQuestionID
                 LEFT JOIN usertable UT ON UT.UserID = UA.UserID OR UT.UserID= SA.UserID
-            WHERE ST.SurvID = '$survId' and SQ.Goal ='$goal' AND UT.UserID ='$userNumber'
-            ORDER BY SQ.QuestionID, SQ.SubGoal, UT.UserID;";
+            WHERE ST.SurvID = ? and SQ.Goal =? AND UT.UserID = ?
+            ORDER BY SQ.QuestionID, SQ.SubGoal, UT.UserID";
 
-    $result = mysqli_query($conn, $sql);
+    $stmt = mysqli_prepare($conn, $sql);
+
+    mysqli_stmt_bind_param($stmt, "iisi", $survId, $survId, $goal, $userNumber);
+    mysqli_stmt_execute($stmt);
+
+    $result = mysqli_stmt_get_result($stmt);
+
     $data = [];
 
-    if (mysqli_num_rows($result) > 0)
-    {
-        while($row = mysqli_fetch_assoc($result))
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
             $data[] = $row;
+        }
         return $data;
-    }
-    else
+    } else {
         return $data[0] = "No Data";
+    }
 }
+
 
 //This function searches for the user from user table using specific filter
 function searchUser($searchString)
@@ -111,10 +124,18 @@ function searchUser($searchString)
         $userInfo = explode(',', $searchString);
         $sql = "SELECT UserID AS UserNumber, Fname AS FirstName, Lname AS LastName, Department
                 FROM UserTable
-                WHERE Position != 'admin' AND Fname LIKE '$userInfo[0]%' AND Lname LIKE '$userInfo[1]%';";
+                WHERE Position != 'admin' AND Fname LIKE ? AND Lname LIKE ? ;";
     }
 
-    $result = mysqli_query($conn, $sql);
+    $stmt = mysqli_prepare($conn, $sql);
+
+    
+    $fname = $userInfo[0] . '%';
+    $lname = $userInfo[1] . '%';
+    mysqli_stmt_bind_param($stmt, "ss", $fname, $lname);
+
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     $data = [];
 
     if (mysqli_num_rows($result) > 0)
@@ -136,22 +157,26 @@ function get_survey_answer_percentage($survId, $goal)
                     ST1.SurvYear as Year1,  SR1.Answer_Percentage as Value1 ,
                     ST2.SurvYear as Year2 , SR2.Answer_Percentage as Value2
 
-            FROM SurveyQuestions SQ
-            JOIN SurveyReport SR  ON SR.QuestionID = SQ.QuestionID
-            JOIN SurveyTable ST ON ST.SurvID = SR.SurvID
+                    FROM SurveyQuestions SQ
+                    JOIN SurveyReport SR  ON SR.QuestionID = SQ.QuestionID
+                    JOIN SurveyTable ST ON ST.SurvID = SR.SurvID
 
-            LEFT JOIN SurveyTable ST1 ON  ST1.SurvYear = ST.SurvYear - 1 AND ST1.Position = ST.Position
-            LEFT JOIN SurveyQuestions SQ1 ON  SQ1.Goal =  SQ.Goal AND ST1.SurvID = SQ1.SurvID
-            LEFT JOIN SurveyReport SR1 ON SR1.SurvID = ST1.SurvID 
+                    LEFT JOIN SurveyTable ST1 ON  ST1.SurvYear = ST.SurvYear - 1 AND ST1.Position = ST.Position
+                    LEFT JOIN SurveyQuestions SQ1 ON  SQ1.Goal =  SQ.Goal AND ST1.SurvID = SQ1.SurvID
+                    LEFT JOIN SurveyReport SR1 ON SR1.SurvID = ST1.SurvID 
 
-            LEFT JOIN SurveyTable ST2 ON ST2.SurvYear = ST.SurvYear - 2 AND ST2.Position = ST.Position
-            LEFT JOIN  SurveyQuestions SQ2 ON  SQ2.Goal =  SQ.Goal AND ST2.SurvID = SQ2.SurvID
-            LEFT JOIN  SurveyReport SR2 ON SR2.SurvID = ST2.SurvID
+                    LEFT JOIN SurveyTable ST2 ON ST2.SurvYear = ST.SurvYear - 2 AND ST2.Position = ST.Position
+                    LEFT JOIN  SurveyQuestions SQ2 ON  SQ2.Goal =  SQ.Goal AND ST2.SurvID = SQ2.SurvID
+                    LEFT JOIN  SurveyReport SR2 ON SR2.SurvID = ST2.SurvID
 
-            WHERE SR.SurvID = '$survId' AND SQ.Goal = '$goal'
-            GROUP BY SQ.Goal";
+                    WHERE SR.SurvID = ? AND SQ.Goal = ?
+                    GROUP BY SQ.Goal";
 
-    $result = mysqli_query($conn, $sql);
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "is", $survId, $goal);
+    mysqli_stmt_execute($stmt);
+
+    $result = mysqli_stmt_get_result($stmt);
     $data = [];
 
     if (mysqli_num_rows($result) > 0)
