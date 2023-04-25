@@ -486,3 +486,13 @@ function removeUnnecessarySpaces(array)
     }
     return array;
 }
+
+function getBackupFile()
+{
+    var url = 'Controller.php';
+    var query = {page: 'AdminPage', command: 'DownloadBackupFromDB'};
+    $.post(url, query, function(data) {
+        var result = JSON.parse(data);
+        alert(result);
+    });
+}
