@@ -13,8 +13,12 @@ function getUserReview($userId , $survYear , $position){
                         LEFT JOIN subquestions SQS ON SQS.QuestionID =  SQ.QuestionID
                         LEFT JOIN useranswer UA ON UA.QuestionID = SQ.QuestionID AND UA.UserID = '".$userId."'
                         LEFT JOIN subquestionanswer UAS ON UAS.SubQuestionID = SQS.SubQuestionID AND UAS.UserID = '".$userId."' 
-                        WHERE SQ.SurvID = '".$survYear."' 
+                        WHERE SQ.SurvID = ?
                         ORDER BY SQ.QuestionID";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i', $survYear);
+
     }else{
         
         // Fetch the data for the selected year
@@ -23,12 +27,13 @@ function getUserReview($userId , $survYear , $position){
                     LEFT JOIN subquestions SQS ON SQS.QuestionID =  SQ.QuestionID
                     LEFT JOIN useranswer UA ON UA.QuestionID = SQ.QuestionID AND UA.UserID = '".$userId."'
                     LEFT JOIN subquestionanswer UAS ON UAS.SubQuestionID = SQS.SubQuestionID AND UAS.UserID = '".$userId."' 
-                    WHERE SQ.SurvID IN (SELECT SurvID FROM surveytable WHERE  SurvYear = '$survYear' AND Position = '$position')  
+                    WHERE SQ.SurvID IN (SELECT SurvID FROM surveytable WHERE  SurvYear = ? AND Position = ?)  
                     ORDER BY SQ.QuestionID";
+     
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param('ss', $survYear, $position);
     }
-
-    $stmt = $conn->prepare($sql);
-    //$stmt->bind_param('ii', $userId, $survYear);
+    
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -41,7 +46,7 @@ function getUserReview($userId , $survYear , $position){
 
     } else 
         return $data[0] = 'Failed';
-    
+
 }
 
 function getYearSurvey($position){

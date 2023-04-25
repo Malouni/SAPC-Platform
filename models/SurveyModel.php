@@ -83,42 +83,43 @@ function LoadLastProgress($survId , $userID)
 }
 
 // for load the user answer 
-function LoadAnswers($survId , $userID , $Q_ID , $Type)
+function LoadAnswers($survId, $userID, $Q_ID, $Type)
 {
     global $conn;
 
-    if($Type == 'single'){
-        
-        // load the ansewer for the only single questions    
-        $sql = " SELECT QuestionID, Answer As MainAnswer
-                    FROM useranswer
-                    WHERE QuestionID = ".$Q_ID." AND UserID = ".$userID." 
-                    AND Answer IS NOT NULL";
-    }else{
+    if ($Type == 'single') {
+        // load the answer for the only single questions    
+        $stmt = mysqli_prepare($conn, "SELECT QuestionID, Answer AS MainAnswer
+                                       FROM useranswer
+                                       WHERE QuestionID = ? AND UserID = ".$userID."
+                                       AND Answer IS NOT NULL");
+        mysqli_stmt_bind_param($stmt, "i", $Q_ID);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
 
-        // load the ansewer for the only composed questions    
-        $sql = " SELECT subquestionanswer.QuestionID, subquestionanswer.SubQuestionID, subquestionanswer.Answer As SubAnswer
-                    FROM subquestionanswer
-                    LEFT JOIN subquestions ON subquestions.SubQuestionID = subquestionanswer.SubQuestionID
-                    WHERE subquestionanswer.QuestionID =  ".$Q_ID." AND UserID = ".$userID."
-                    AND Answer IS NOT NULL
-                    ORDER BY subquestions.SubType ";                   
+    } else {
+        // load the answer for the only composed questions    
+        $stmt = mysqli_prepare($conn, "SELECT subquestionanswer.QuestionID, subquestionanswer.SubQuestionID, subquestionanswer.Answer AS SubAnswer
+                                       FROM subquestionanswer
+                                       LEFT JOIN subquestions ON subquestions.SubQuestionID = subquestionanswer.SubQuestionID
+                                       WHERE subquestionanswer.QuestionID = ? AND UserID = ".$userID."
+                                       AND Answer IS NOT NULL
+                                       ORDER BY subquestions.SubType");
+        mysqli_stmt_bind_param($stmt, "i", $Q_ID);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
     }
 
-    $result = mysqli_query($conn, $sql);
-   
-    //put the data to array and return 
+    // put the data to array and return 
     $data = [];
-    if (mysqli_num_rows($result)) 
-    {
-        while($row = mysqli_fetch_assoc($result))
+    if (mysqli_num_rows($result)) {
+        while ($row = mysqli_fetch_assoc($result))
             $data[] = $row;
         return $data;
-
-    }else
+    } else
         return $data[0] = "Failed";
-
 }
+
 
 //========================== UPDATE SESSION ===================================
 // for update the user answer 
@@ -130,17 +131,19 @@ function UpdateAnswers($survId , $userID , $Q_ID , $SubQ_ID ,$IsUpdate, $Answer)
         // update the ansewer for the question without the sub questions when SubQ_ID == 0(Note: the SubQuestionID = 0 in db is not exit )  
         if($SubQ_ID == 0)
         {
-            $Update = "UPDATE UserAnswer SET Answer = ".$Answer."   
-                            WHERE SurvID = ".$survId." AND QuestionID = ".$Q_ID." AND UserID = ".$userID."";
-
-            $result = mysqli_query($conn, $Update);
+            $Update = "UPDATE UserAnswer SET Answer = ?   
+                            WHERE SurvID = ".$survId." AND QuestionID = ? AND UserID = ".$userID."";
+            $stmt = mysqli_prepare($conn, $Update);
+            mysqli_stmt_bind_param($stmt, 'di', $Answer, $Q_ID);
+            mysqli_stmt_execute($stmt);
         
         }else
         {
-            $Update = "UPDATE SubQuestionAnswer SET Answer = ".$Answer."   
-                            WHERE  QuestionID = ".$Q_ID." AND UserID = ".$userID." AND SubQuestionID = ".$SubQ_ID."";
-            
-            $result = mysqli_query($conn, $Update);
+            $Update = "UPDATE SubQuestionAnswer SET Answer = ?   
+                            WHERE  QuestionID = ? AND UserID = ".$userID." AND SubQuestionID = ?";
+            $stmt = mysqli_prepare($conn, $Update);
+            mysqli_stmt_bind_param($stmt, 'dii', $Answer, $Q_ID, $SubQ_ID);
+            mysqli_stmt_execute($stmt);
         }
     }else{
 
@@ -148,19 +151,22 @@ function UpdateAnswers($survId , $userID , $Q_ID , $SubQ_ID ,$IsUpdate, $Answer)
         if($SubQ_ID == 0)
         {
             $INSERT = "INSERT INTO useranswer (UserID, QuestionID, SurvID, Answer) 
-                            VALUES (".$userID.", ".$Q_ID.",  ".$survId." ,".$Answer.")";
-
-            $result = mysqli_query($conn, $INSERT);
+                            VALUES (".$userID.", ?, ".$survId.", ?)";
+            $stmt = mysqli_prepare($conn, $INSERT);
+            mysqli_stmt_bind_param($stmt, 'id',  $Q_ID, $Answer);
+            mysqli_stmt_execute($stmt);
         
         }else
         {
             $INSERT = "INSERT INTO subquestionanswer (UserID, QuestionID, SubQuestionID, Answer)
-                            VALUES (".$userID.", ".$Q_ID.",  ".$SubQ_ID.",".$Answer.")";  
-            
-            $result = mysqli_query($conn, $INSERT);
+                            VALUES (".$userID.", ?, ?, ?)";  
+            $stmt = mysqli_prepare($conn, $INSERT);
+            mysqli_stmt_bind_param($stmt, 'iid', $Q_ID, $SubQ_ID, $Answer);
+            mysqli_stmt_execute($stmt);
         }
     }
 }
+
 
 //Update comment 
 function UpdateComment($userID , $Q_ID , $IsUpdateNote, $note)
@@ -170,17 +176,17 @@ function UpdateComment($userID , $Q_ID , $IsUpdateNote, $note)
     if($IsUpdateNote == 'true'){
 
         $Update = "UPDATE answernotes SET NoteText = ?
-        WHERE QuestionID = ".$Q_ID." AND UserID = ".$userID."";
+        WHERE QuestionID = ? AND UserID = ".$userID."";
         $stmt = mysqli_prepare($conn, $Update);
-        mysqli_stmt_bind_param($stmt, 's', $note);
+        mysqli_stmt_bind_param($stmt, 'si', $note, $Q_ID);
         $result = mysqli_stmt_execute($stmt);
 
     }else{
 
         $INSERT = "INSERT INTO answernotes (UserID, QuestionID, NoteText)
-                            VALUES (".$userID.", ".$Q_ID.", ?)";  
+                            VALUES (".$userID.", ?, ?)";  
         $stmt = mysqli_prepare($conn, $INSERT);
-        mysqli_stmt_bind_param($stmt, 's', $note);
+        mysqli_stmt_bind_param($stmt, 'is', $Q_ID , $note);
         $result = mysqli_stmt_execute($stmt);
     }
 }
@@ -193,9 +199,12 @@ function LoadComment($userID , $Q_ID)
     
     $sql = "SELECT NoteText  
                 FROM answernotes 
-                WHERE UserID = ".$userID." AND QuestionID = ".$Q_ID."";
+                WHERE UserID = ".$userID." AND QuestionID = ?";
 
-    $result = mysqli_query($conn, $sql);
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $Q_ID);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     
     if (mysqli_num_rows($result) > 0)
     {
@@ -205,6 +214,7 @@ function LoadComment($userID , $Q_ID)
     else
         return NULL;
 }
+
 
 
 
