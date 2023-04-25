@@ -101,17 +101,14 @@ function change_user_password($userID, $newPassword)
 {
     global $conn;
 
-    $sql = "UPDATE UserTable SET Password = ? WHERE UserID = '$userID'";
+    $sql = "UPDATE UserTable SET Password = ? WHERE UserID = ?";
     
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $newPassword);
-    $stmt->execute();
-    
-    $result = $stmt->get_result();
+    mysqli_stmt_bind_param($stmt, "si", $newPassword, $userID);
+    $result = mysqli_stmt_execute($stmt);
+
     if ($result)
-    {
         return true;
-    }
     else
         return false;
 }
