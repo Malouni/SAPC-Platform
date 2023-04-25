@@ -1,9 +1,11 @@
 /* container styles */
 .pastReports {
+    position: absolute;
+    top: 70px;
     border: 1px solid rgb(185, 185, 185);
     width: 98%;
     height: auto;
-    margin: 10px auto;
+    margin: 0 1% 0 1%;
     min-width: 1000px;
     padding: 0 0.5% 0.5% 0.5%;
 }
