@@ -174,7 +174,7 @@ else if ($_POST['page'] == 'Navigation') {
 
         case 'HistorySurveysID':
             $_SESSION['PastSurveysID'] = (int) $_POST['P_ID'];
-            include('userReview.php');
+            include('HistoryReview.php');
             break;
     }
 } else if ($_POST['page'] == 'SuveryStart') {

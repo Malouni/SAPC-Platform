@@ -26,7 +26,7 @@
     <!----------------------------- Main section -------------------------------->
 
     <div class="container">
-        <script>  CurrentReport(); </script>
+        <script> SurveyHistory(); </script>
 
         <div class="report" id="selectBTN">            
         </div>
