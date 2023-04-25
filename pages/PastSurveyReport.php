@@ -40,7 +40,7 @@
     </div>
 
     <div class="pastReports">
-        <p class="headers">Science Strategic Plan 2023</p>
+        <p class="headers">Science Strategic Plan</p>
         <div class="pastDocuments" id="documents-pane">
             <?php
             if (!empty($result))
