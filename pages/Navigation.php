@@ -29,6 +29,11 @@
     <input type='hidden' name='command' value='PresentReport'>
 </form>
 
+<form method='post' action='Controller.php' id='form-past-Report' style='display:none'>
+    <input type='hidden' name='page' value='Navigation'>
+    <input type='hidden' name='command' value='PastReport'>
+</form>
+
 <form method='post' action='Controller.php' id='form-user-management' style='display:none'>
     <input type='hidden' name='page' value='Navigation'>
     <input type='hidden' name='command' value='UploadCsv'>

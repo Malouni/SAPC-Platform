@@ -33,6 +33,26 @@ function hideShowMenu() {
             li.appendChild(p);
             menulist.appendChild(li);
         }
+
+        // Check if the "Past Reports" li element already exists in the submenulist
+        var pRExists = false;
+        for (var i = 0; i < liList.length; i++) {
+            var p = liList[i].getElementsByTagName("p")[0];
+            if (p.textContent == "Past Reports") {
+                pRExists = true;
+                break;
+            }
+        }
+
+        // If the user has admin position and the "Admin Options" li element does not exist, create it and add it to the submenulist
+        if (userPoselem.innerText == 'chair' && !pRExists) {
+            var li = document.createElement('li');
+            li.setAttribute('onclick', 'pastReport()');
+            var p = document.createElement('p');
+            p.textContent = 'Past Reports';
+            li.appendChild(p);
+            menulist.appendChild(li);
+        }
     }
 }
 
@@ -74,4 +94,8 @@ function userManagement() {
 
 function signOut() {
     $('#form-sign-out').submit();
+}
+
+function pastReport(){
+    $('#form-past-Report').submit();
 }
