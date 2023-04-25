@@ -367,38 +367,67 @@ function delete_survey($survID)
 
 function downloadBackUpFromDB()
 {
-    $backup_file = "../backupFiles/" .DB_NAME. "" . date("Y-m-d_H-i-s") . ".sql";
+    date_default_timezone_set('US/Pacific');
+    $backup_file = $_SERVER['DOCUMENT_ROOT']."/backupFiles/".DB_NAME."_".date("Y-m-d_H-i-s").".sql";
 
     // Create the backup command
-    $command = "mysqldump --user=".DB_USER." --password=".DB_PASS." ".DB_NAME." > ".$backup_file;
+    $command = 'mysqldump --host='.DB_HOST.' --user='.DB_USER.' --password='.DB_PASS.' '.DB_NAME.' > '.$backup_file;
+
+    //$command = "mysqldump --opt --host=".DB_HOST." --user=".DB_USER." --password=".DB_PASS." ".DB_NAME." --result-file=".$backup_file."";
+
+    //$command='mysqldump -h=' .DB_HOST.' -u=' .DB_USER.' -p=' .DB_PASS.' ' .DB_NAME.' > ' .$backup_file;
 
     // Execute the backup command
-    exec($command);
+    exec($command,$output,$worked);
+
+    // Check the output if the command
+    switch($worked){
+        case 0:
+            $result = 'The database:' .DB_NAME.' was successfully stored in the following path ';
+        break;
+
+        case 1:
+            $result = 'An error occurred when exporting: '.DB_NAME.' zu '.$backup_file.'';
+            //unlink($backup_file);
+        break;
+
+        case 2:
+            $result = 'An error occurred when exporting: '.DB_NAME.'';
+            //unlink($backup_file);
+        break;
+    }
 
     // Check if the backup file was created successfully
-    if (file_exists($backup_file)) {
-        // Set the headers to force the browser to download the file
-        /*
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="'.basename($backup_file).'"');
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($backup_file));
+    return $result;
+}
 
-        // Read the backup file and send it to the browser for download
-        readfile($backup_file);
+function backUpFiles()
+{
+    $files = array_values(array_diff(scandir($_SERVER['DOCUMENT_ROOT']."/backupFiles/"), array('.', '..')));
 
-        // Delete the backup file after it has been downloaded
-        unlink($backup_file);
-        */
-        // Exit the script to prevent any additional output
-        return true;
-    } else {
-        return false;
+    return $files;
+}
+
+function applyChosenFileToRestoreDB($chosenFile)
+{
+    $files = array_values(array_diff(scandir($_SERVER['DOCUMENT_ROOT']."/backupFiles/"), array('.', '..')));
+
+    //Please do not change the following points
+    //Import of the database and output of the status
+    $command='mysql --host=' .DB_HOST.' --user='.DB_USER.' --password='.DB_PASS.' '.DB_NAME.' < ' .$_SERVER['DOCUMENT_ROOT']."/backupFiles/".$files[$chosenFile];
+    exec($command,$output,$worked);
+    switch($worked){
+        case 0:
+            $result = 'The data from the file' .$files[$chosenFile].' were successfully imported into the database '.DB_NAME.'';
+        break;
+
+        case 1:
+            $result = 'An error occurred during the import, please try again';
+        break;
     }
+
+
+    return $result;
 }
 
 //This function goes through the array that was sent to controller and adds each question with the subquestion to the database
