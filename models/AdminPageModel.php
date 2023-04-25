@@ -7,9 +7,12 @@ function get_users_info($searchString)
     global $conn;
 
     if($searchString == null)
+    {
         $sql = "SELECT UserID, Fname, Lname, UserName, Position, Department
                 FROM UserTable
                 ORDER BY Fname ASC;";
+        $stmt = mysqli_prepare($conn, $sql);
+    }
     else
     {
         $userInfo = explode(',', $searchString);

@@ -116,23 +116,23 @@ function searchUser($searchString)
     global $conn;
 
     if($searchString == null)
+    {
         $sql = "SELECT UserID AS UserNumber, Fname AS FirstName, Lname AS LastName, Department
                 FROM UserTable
                 WHERE Position != 'admin';";
+        $stmt = mysqli_prepare($conn, $sql);
+    }
     else
     {
         $userInfo = explode(',', $searchString);
         $sql = "SELECT UserID AS UserNumber, Fname AS FirstName, Lname AS LastName, Department
                 FROM UserTable
                 WHERE Position != 'admin' AND Fname LIKE ? AND Lname LIKE ? ;";
+        $stmt = mysqli_prepare($conn, $sql);
+        $fname = $userInfo[0] . '%';
+        $lname = $userInfo[1] . '%';
+        mysqli_stmt_bind_param($stmt, "ss", $fname, $lname);
     }
-
-    $stmt = mysqli_prepare($conn, $sql);
-
-    
-    $fname = $userInfo[0] . '%';
-    $lname = $userInfo[1] . '%';
-    mysqli_stmt_bind_param($stmt, "ss", $fname, $lname);
 
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
