@@ -444,24 +444,35 @@ function backUpFiles()
 
 function applyChosenFileToRestoreDB($chosenFile)
 {
-    $files = array_values(array_diff(scandir($_SERVER['DOCUMENT_ROOT']."/backupFiles/"), array('.', '..')));
+    global $conn;
 
-    //Please do not change the following points
-    //Import of the database and output of the status
-    $command='mysql --host=' .DB_HOST.' --user='.DB_USER.' --password='.DB_PASS.' '.DB_NAME.' < ' .$_SERVER['DOCUMENT_ROOT']."/backupFiles/".$files[$chosenFile];
-    exec($command,$output,$worked);
-    switch($worked){
-        case 0:
-            $result = 'The data from the file' .$files[$chosenFile].' were successfully imported into the database '.DB_NAME.'';
-        break;
+    $sql = "CREATE OR REPLACE DATABASE ".DB_NAME.";";
+    $result = mysqli_query($conn, $sql);
 
-        case 1:
-            $result = 'An error occurred during the import, please try again';
-        break;
+    if ($result)
+    {
+        $files = array_values(array_diff(scandir($_SERVER['DOCUMENT_ROOT']."/backupFiles/"), array('.', '..')));
+
+        //Please do not change the following points
+        //Import of the database and output of the status
+        $command='mysql --host=' .DB_HOST.' --user='.DB_USER.' --password='.DB_PASS.' '.DB_NAME.' < ' .$_SERVER['DOCUMENT_ROOT']."/backupFiles/".$files[$chosenFile];
+        exec($command,$output,$worked);
+        switch($worked){
+            case 0:
+                $result = 'The data from the file' .$files[$chosenFile].' were successfully imported into the database '.DB_NAME.'';
+            break;
+
+            case 1:
+                $result = 'An error occurred during the import, please try again';
+            break;
     }
 
 
-    return $result;
+        return $result;
+    }
+    else
+        return $result = 'An error occurred during the import, please try again';;
+
 }
 
 //This function goes through the array that was sent to controller and adds each question with the subquestion to the database
