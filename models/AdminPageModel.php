@@ -15,20 +15,29 @@ function get_users_info($searchString)
         $userInfo = explode(',', $searchString);
         $sql = "SELECT UserID, Fname, Lname, UserName, Position, Department
                 FROM UserTable
-                WHERE Fname LIKE '$userInfo[0]%' AND Lname LIKE '$userInfo[1]%' ORDER BY Fname ASC;";
+                WHERE Fname LIKE ? AND Lname LIKE ? ORDER BY Fname ASC;";
+
+
+        $stmt = mysqli_prepare($conn, $sql);
+        $fname = "{$userInfo[0]}%";
+        $lname = "{$userInfo[1]}%";
+        mysqli_stmt_bind_param($stmt, "ss", $fname, $lname);
     }
 
-    $result = mysqli_query($conn, $sql);
+    $result = mysqli_stmt_execute($stmt);
     $data = [];
 
-    if (mysqli_num_rows($result) > 0)
-    {
-        while($row = mysqli_fetch_assoc($result))
+    if ($result) {
+        $result_set = mysqli_stmt_get_result($stmt);
+        while($row = mysqli_fetch_assoc($result_set)) {
             $data[] = $row;
+        }
+        mysqli_stmt_close($stmt);
         return $data;
-    }
-    else
+    } else {
+        mysqli_stmt_close($stmt);
         return $data[0] = "NoResults";
+    }
 }
 
 //This function inserts a new user to user's table
@@ -40,21 +49,27 @@ function add_new_user($email, $fName, $lName, $userType, $department)
     $userType = strtolower($userType);
 
     $hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
-    $sql = "INSERT INTO UserTable (UserName, Password, Fname, Lname, Position, Department) VALUES ('$email', '$hashedPassword', '$fName', '$lName', '$userType', '$department')";
-    $result = mysqli_query($conn, $sql);
 
+    $stmt = $conn->prepare("INSERT INTO UserTable (UserName, Password, Fname, Lname, Position, Department) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssss", $email, $hashedPassword, $fName, $lName, $userType, $department);
+    $result = $stmt->execute();
+    
     if ($result)
         return true;
     else
         return false;
 }
 
+
 //This function removes user from user table
 function remove_user($userId)
 {
     global $conn;
-    $sql = "DELETE FROM UserTable WHERE UserID = '$userId' RETURNING UserName AS UserName;";
-    $result = mysqli_query($conn, $sql);
+    $sql = "DELETE FROM UserTable WHERE UserID = ? RETURNING UserName AS UserName;";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $userId);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
 
     if (mysqli_num_rows($result) > 0)
     {
@@ -69,14 +84,18 @@ function remove_user($userId)
 function check_if_user_exists($email)
 {
     global $conn;
-
-    $sql = "SELECT * FROM UserTable WHERE UserName = '$email'";
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT * FROM UserTable WHERE UserName = ?"; 
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    
     if (mysqli_num_rows($result) > 0)
         return true;
     else
         return false;
 }
+
 
 //This function creates a survey record and outputs its id from the SurveyTable table
 function add_new_survey($survYear, $survName, $survDateStart, $survDateEnd, $position)
@@ -238,10 +257,12 @@ function update_user($userID, $fieldToChange, $value)
         $value = strtolower($value);
     }
 
-    $sql = "UPDATE UserTable SET ".$fieldToChange." = '$value'  WHERE UserID = '$userID'";
-    $result = mysqli_query($conn, $sql);
+    $sql = "UPDATE UserTable SET ".$fieldToChange." = ? WHERE UserID = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "si", $value, $userID);
+    mysqli_stmt_execute($stmt);
 
-    if ($result)
+    if (mysqli_stmt_affected_rows($stmt) > 0)
         return true;
     else
         return false;
@@ -255,8 +276,10 @@ function rest_user_password($userID)
 
     $hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
 
-    $sql = "UPDATE UserTable SET Password = '$hashedPassword' WHERE UserID = '$userID'";
-    $result = mysqli_query($conn, $sql);
+    $sql = "UPDATE UserTable SET Password = ? WHERE UserID = ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, 'si', $hashedPassword, $userID);
+    $result = mysqli_stmt_execute($stmt);
 
     if ($result)
         return true;
@@ -274,14 +297,19 @@ function update_survey($survID, $fieldToChange, $value)
         $value = strtolower($value);
     }
 
-    $sql = "UPDATE SurveyTable SET ".$fieldToChange." = '$value'  WHERE SurvID = '$survID'";
-    $result = mysqli_query($conn, $sql);
+    // Prepare the statement
+    $sql =  "UPDATE SurveyTable SET $fieldToChange = ? WHERE SurvID = ?";
+    $stmt = mysqli_prepare($conn, $sql );
+    mysqli_stmt_bind_param($stmt, 'si', $value, $survID);
+    $result = mysqli_stmt_execute($stmt);
 
-    if ($result)
+    if ($result) {
         return true;
-    else
+    } else {
         return false;
+    }
 }
+
 
 //This function populates the report for the survey with default values
 function populate_survey_report_table($survID, $questionID, $subQuestionID)
@@ -354,16 +382,20 @@ function delete_survey($survID)
                 ON sq.SubQuestionID = sqa.SubQuestionID
                 LEFT JOIN surveyreport as sp
                 ON st.SurvID = sp.SurvID
-            WHERE st.SurvID = '$survID';";
-    $result = mysqli_query($conn, $sql);
+            WHERE st.SurvID = ?";
 
-    if ($result)
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $survID);
+    mysqli_stmt_execute($stmt);
+
+    if (mysqli_stmt_affected_rows($stmt) > 0)
     {
         return true;
     }
     else
         return false;
 }
+
 
 //This function goes through the array that was sent to controller and adds each question with the subquestion to the database
 function add_questions_to_new_survey($dataQuestions, $dataSubQuestions, $newSurvId)

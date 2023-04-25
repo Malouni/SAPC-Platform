@@ -26,8 +26,13 @@ function get_user_first_name ($userName)
 {
     global $conn;
 
-    $sql = "SELECT * FROM UserTable WHERE UserName = '$userName'";
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT * FROM UserTable WHERE UserName = ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $userName);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         return $row['Fname'];
@@ -40,8 +45,13 @@ function get_user_last_name ($userName)
 {
     global $conn;
 
-    $sql = "SELECT * FROM UserTable WHERE UserName = '$userName'";
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT * FROM UserTable WHERE UserName = ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $userName);
+    $stmt->execute();
+    
+    $result = $stmt->get_result();
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         return $row['Lname'];
@@ -54,8 +64,13 @@ function get_user_position ($userName)
 {
     global $conn;
 
-    $sql = "SELECT * FROM UserTable WHERE UserName = '$userName'";
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT * FROM UserTable WHERE UserName = ?";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $userName);
+    $stmt->execute();
+    
+    $result = $stmt->get_result();
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         return $row['Position'];
@@ -67,8 +82,13 @@ function get_user_position ($userName)
 function get_user_id ($userName)
 {
     global $conn;
-    $sql = "SELECT * FROM UserTable WHERE UserName = '$userName'";
-    $result = mysqli_query($conn, $sql);
+    $sql = "SELECT * FROM UserTable WHERE UserName = ?";
+   
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $userName);
+    $stmt->execute();
+    
+    $result = $stmt->get_result();
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
         return $row['UserID'];
@@ -81,8 +101,13 @@ function change_user_password($userID, $newPassword)
 {
     global $conn;
 
-    $sql = "UPDATE UserTable SET Password = '$newPassword' WHERE UserID = '$userID'";
-    $result = mysqli_query($conn, $sql);
+    $sql = "UPDATE UserTable SET Password = ? WHERE UserID = '$userID'";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $newPassword);
+    $stmt->execute();
+    
+    $result = $stmt->get_result();
     if ($result)
     {
         return true;
