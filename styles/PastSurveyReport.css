@@ -245,21 +245,29 @@ p.facility {
 button.searchUser
 {
     display: block;
-    width: 40%;
+    width: 100%;
     min-width: 300px;
-    margin: 30px auto 0;
-    background-color: #c5c5c5;
-    color: rgb(0, 0, 0);
+    margin: 10px auto 0;
+    color:  #003e51;
+    background-color: white;
     text-align: center;
     height: 40px;
-    border: none;
-    border-radius: 20px;
+    border: 2px solid   #003e51;
+    border-radius: 5px;
     cursor: pointer;
 }
 
 button.searchUser:hover{
     background-color:  #17a2b8;
     cursor: pointer;
+}
+
+#searchicon{
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-image: url(../images/icons/search.png);
+    background-size: cover;
 }
 
 /*--------------Detailed report table css-----------------*/

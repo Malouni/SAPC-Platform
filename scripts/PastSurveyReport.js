@@ -237,7 +237,7 @@ function show_survey_goal_detailed() {
     $.post(url, query, function(data) {
         var result = JSON.parse(data);
         var tables;
-        tables = "<button class='searchUser' onclick='showUserSearchPopupWindow();'>Search by user</button>";
+        tables = "<button class='searchUser' onclick='showUserSearchPopupWindow();'>Search by user <div id='searchicon'></div></button>";
         if(FirstTimeChooseDetailedReport)
         {
             tables += "<p class='headers'>Please select user</p>";
