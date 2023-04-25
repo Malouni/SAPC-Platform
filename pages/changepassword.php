@@ -28,7 +28,7 @@
             <form method='post' action='Controller.php'>
                 <input type='hidden' name='page' value='ChangePwdPage'>
                 <input type='hidden' name='command' value='ChangePassword'>
-                <div id='errorMessage'><?php if (!empty($$error_msg_changePwd)) echo $$error_msg_changePwd; ?></div>
+                <div id='errorMessage'><?php if (!empty($error_msg_changePwd)) echo $error_msg_changePwd; ?></div>
                 <input type="password" placeholder="Please enter Password" class="wide" name="newPassword" required></br>
                 <input type="password" placeholder="Please confirm Password" class="wide" name="newPassword-C" required></br>
                 <input type="submit" value="Change Password" class="wide" id="submitbutton">
