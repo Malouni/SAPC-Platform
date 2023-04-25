@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 24, 2023 at 09:26 PM
+-- Generation Time: Apr 25, 2023 at 07:27 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -45,6 +45,18 @@ CREATE TABLE `answeroptions` (
   `QuestionID` int(11) DEFAULT NULL,
   `SubQuestionID` int(11) DEFAULT NULL,
   `InputValue` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `loginattemptstable`
+--
+
+CREATE TABLE `loginattemptstable` (
+  `Id` int(11) NOT NULL,
+  `IpAddress` varbinary(16) NOT NULL,
+  `Time` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -100,8 +112,8 @@ CREATE TABLE `surveyreport` (
   `QuestionID` int(11) DEFAULT NULL,
   `SubQuestionID` int(11) DEFAULT NULL,
   `Answer_Percentage` float DEFAULT NULL,
-  `Activity_Involvement` int(4) DEFAULT NULL,
-  `Activity_Historical` int(4) DEFAULT NULL
+  `Activity_Involvement` tinyint(4) DEFAULT NULL,
+  `Activity_Historical` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -155,7 +167,7 @@ CREATE TABLE `usertable` (
 --
 
 INSERT INTO `usertable` (`UserID`, `UserName`, `Password`, `Fname`, `Lname`, `Position`, `Department`) VALUES
-(1, 'admin', '$2y$10$TObZ8H3kVsZQiT8IqAnip.gEguM.Ygo4QPivhRN0lNdbetvt0uCX6', 'Platform', 'Admin', 'admin', 'Science');
+(1, 'admin', '$2y$10$G1tZ.7QIKy1ZtOW//6NkDeasHzz/z.TKM46pdpJf73sqhAhXUADKO', 'Site', 'Administrator', 'admin', 'Science');
 
 --
 -- Indexes for dumped tables
@@ -166,6 +178,12 @@ INSERT INTO `usertable` (`UserID`, `UserName`, `Password`, `Fname`, `Lname`, `Po
 --
 ALTER TABLE `answernotes`
   ADD PRIMARY KEY (`NoteID`);
+
+--
+-- Indexes for table `loginattemptstable`
+--
+ALTER TABLE `loginattemptstable`
+  ADD PRIMARY KEY (`Id`);
 
 --
 -- Indexes for table `subquestions`
@@ -200,6 +218,12 @@ ALTER TABLE `usertable`
 --
 ALTER TABLE `answernotes`
   MODIFY `NoteID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `loginattemptstable`
+--
+ALTER TABLE `loginattemptstable`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `subquestions`
