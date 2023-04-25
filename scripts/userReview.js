@@ -70,7 +70,7 @@ function getUserAnswer(surveyYear){
 
 
 
-function getSelectMenu(){
+function getSelectMenu(value){
 
     //call to Controller to get the data 
     var url = 'Controller.php';
@@ -92,7 +92,13 @@ function getSelectMenu(){
         }
 
         //print the selectButton 
-        $('#selectBTN').html(select); 
+        $('#selectBTN').html(select);
+        
+        //this is call from the navigation 
+        if(value === 1){
+          yearSelect(); 
+        }
+
     });     
  
 }
@@ -108,10 +114,15 @@ function SurveySumbit(){
     getUserAnswer(0);
 }
 
-
+//this come from the History in main page
 function SurveyHistory(){
-    getSelectMenu();
+    getSelectMenu(0);
     getUserAnswer(1);
+}
+
+//this come from the navigation
+function CurrentReport(){
+    getSelectMenu(1);
 }
 
 function setDefaultSelect(year){
