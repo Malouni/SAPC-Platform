@@ -7,9 +7,12 @@ function get_users_info($searchString)
     global $conn;
 
     if($searchString == null)
+    {
         $sql = "SELECT UserID, Fname, Lname, UserName, Position, Department
                 FROM UserTable
                 ORDER BY Fname ASC;";
+        $stmt = mysqli_prepare($conn, $sql);
+    }
     else
     {
         $userInfo = explode(',', $searchString);
@@ -396,6 +399,70 @@ function delete_survey($survID)
         return false;
 }
 
+function downloadBackUpFromDB()
+{
+    date_default_timezone_set('US/Pacific');
+    $backup_file = $_SERVER['DOCUMENT_ROOT']."/backupFiles/".DB_NAME."_".date("Y-m-d_H-i-s").".sql";
+
+    // Create the backup command
+    $command = 'mysqldump --host='.DB_HOST.' --user='.DB_USER.' --password='.DB_PASS.' '.DB_NAME.' > '.$backup_file;
+
+    //$command = "mysqldump --opt --host=".DB_HOST." --user=".DB_USER." --password=".DB_PASS." ".DB_NAME." --result-file=".$backup_file."";
+
+    //$command='mysqldump -h=' .DB_HOST.' -u=' .DB_USER.' -p=' .DB_PASS.' ' .DB_NAME.' > ' .$backup_file;
+
+    // Execute the backup command
+    exec($command,$output,$worked);
+
+    // Check the output if the command
+    switch($worked){
+        case 0:
+            $result = 'The database:' .DB_NAME.' was successfully stored in the following path ';
+        break;
+
+        case 1:
+            $result = 'An error occurred when exporting: '.DB_NAME.' zu '.$backup_file.'';
+            //unlink($backup_file);
+        break;
+
+        case 2:
+            $result = 'An error occurred when exporting: '.DB_NAME.'';
+            //unlink($backup_file);
+        break;
+    }
+
+    // Check if the backup file was created successfully
+    return $result;
+}
+
+function backUpFiles()
+{
+    $files = array_values(array_diff(scandir($_SERVER['DOCUMENT_ROOT']."/backupFiles/"), array('.', '..')));
+
+    return $files;
+}
+
+function applyChosenFileToRestoreDB($chosenFile)
+{
+    $files = array_values(array_diff(scandir($_SERVER['DOCUMENT_ROOT']."/backupFiles/"), array('.', '..')));
+
+    //Please do not change the following points
+    //Import of the database and output of the status
+    $command='mysql --host=' .DB_HOST.' --user='.DB_USER.' --password='.DB_PASS.' '.DB_NAME.' < ' .$_SERVER['DOCUMENT_ROOT']."/backupFiles/".$files[$chosenFile];
+    exec($command,$output,$worked);
+    switch($worked){
+        case 0:
+            $result = 'The data from the file' .$files[$chosenFile].' were successfully imported into the database '.DB_NAME.'';
+        break;
+
+        case 1:
+            $result = 'An error occurred during the import, please try again';
+        break;
+    }
+
+
+    return $result;
+}
 
 //This function goes through the array that was sent to controller and adds each question with the subquestion to the database
 function add_questions_to_new_survey($dataQuestions, $dataSubQuestions, $newSurvId)

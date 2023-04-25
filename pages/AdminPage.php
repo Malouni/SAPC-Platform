@@ -32,6 +32,17 @@
     <!----------------------------- Main section -------------------------------->
 
     <!-----------------main container-------------------->
+
+    <!-----------------cover-------------------->
+    <div class='cover' id="blanket" onclick="hideCover()">
+    </div>
+    <!-----------------popup-------------------->
+    <div class='popup' id="popup" >
+        <button id=”close” onclick="hideCover();">&times;</button>
+        <p>Select backup file</p>
+        <div id="backUpFiles">
+        </div>
+    </div>
     <div class="container">
 
         <!-------------left side container---------->
@@ -104,7 +115,7 @@
 
                 <button class="Bfloatright fButton" onclick="getBackupFile()">Save data to Back-up file</button>
 
-                <button class="Bfloatright fButton" onclick="">Restore Database from Back-Up file</button>
+                <button class="Bfloatright fButton" onclick="showBackUpFilesPopupWindow()">Restore Database from Back-Up file</button>
 
             </div>
         </div>

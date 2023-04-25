@@ -514,6 +514,21 @@ else if ($_POST['page'] == 'AdminPage')
             }
             echo json_encode($result);
             break;
+
+        case 'DownloadBackupFromDB':
+            $result = downloadBackUpFromDB();
+            echo json_encode($result);
+            break;
+
+        case 'BackUpFiles':
+            $result = backUpFiles();
+            echo json_encode($result);
+            break;
+
+        case 'ChosenFileToRestoreDB':
+            $result = applyChosenFileToRestoreDB($_POST['chosenFile']);
+            echo json_encode($result);
+            break;
     }
 }
 

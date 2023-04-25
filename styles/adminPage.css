@@ -240,7 +240,100 @@ form #csvSureInfoFileSend, form #csvSurvInfoFileSend{
     cursor: pointer;
 }
 
+/*-------------- Cover css -----------------*/
+.cover {
+    opacity:0.5;
+    background-color:#ccc;
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0px;
+    left:0px;
+    z-index:1000;
+    display: none;
+}
 
+/*-------------- Popup css -----------------*/
+
+.popup{
+    background-color: #ffffff;
+    width: 600px;
+    height: 420px;
+    position: fixed;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 50%;
+    border-radius: 8px;
+    display: none;
+    font-family: “Poppins”,sans-serif;
+    text-align: center;
+    z-index:1001;
+}
+
+/*-------------- Popup elements css -----------------*/
+.popup button{
+    display: block;
+    margin:  0 0 1px auto;
+    background-color: transparent;
+    font-size: 30px;
+    color: #000000;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.popup p{
+    display: block;
+    font-weight: bold;
+    text-align: left;
+    margin: 0 0 0 1.5%;
+    color:#003e51;
+    font-size: xx-large;
+}
+
+.popup div{
+    margin: 5px 1.5% 0 1.5%;
+    max-height: 68%;
+    overflow: auto;
+}
+
+/*-------------- Popup table css -----------------*/
+.popup table{
+    width: 99%;
+    border-collapse: collapse;
+}
+
+/*-------------- Popup table elements css -----------------*/
+.popup tr{
+    border: 1px solid rgb(105, 105, 105);
+    border-radius: 8px;
+    border-collapse: collapse;
+}
+
+.popup tr:hover{
+    background-color:  rgb(190, 190, 190);
+    cursor: pointer;
+}
+
+.popup th{
+    border: 1px solid rgb(105, 105, 105);
+    border-collapse: collapse;
+    padding: 0 0 0 0.5%;
+    background-color: #288f94;
+    color: white;
+    text-align: center;
+}
+
+.popup td{
+    border: 1px solid rgb(105, 105, 105);
+    border-collapse: collapse;
+    text-align: center;
+    padding: 0 0 0 0.3%;
+    color: #000000;
+}
 
 
 
