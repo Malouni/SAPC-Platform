@@ -514,6 +514,13 @@ else if ($_POST['page'] == 'AdminPage')
             }
             echo json_encode($result);
             break;
+
+        case 'DownloadBackupFromDB':
+            if(downloadBackUpFromDB())
+                echo json_encode("The backup was successful");
+            else
+                echo json_encode("The backup was not successful");
+            break;
     }
 }
 
