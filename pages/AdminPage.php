@@ -56,8 +56,9 @@
 
         <!------------right side container----------->
         <div class="rightside">
-            <div class="header">
-                <h2>Add Users</h2>
+            <div class="header split2">
+                <h2>Add Users -CSV</h2>
+                <h2>Add Survey -CSV</h2>
             </div>
 
             <!---------user info file row------------>
@@ -68,17 +69,23 @@
                     <br>
                     <input type="submit" value="Upload" id="csvSureInfoFileSend">
                 </form>
+                <form onsubmit="addSurveyFromFileFunction(); return false">
+                    <label for="csvFile">Upload CSV file containing Survey information:</label>
+                    <input type="file" name="csvSurveyFile" id="csvSurveyFile" accept=".csv" required>
+                    <br>
+                    <input type="submit" value="Upload" id="csvSurvInfoFileSend">
+                </form>
             </div>
 
             <!---------manually row------------>
             <div class="row row2">
                 <p>Add user manually</p>
                 <form onsubmit="addNewUserFunction(); return false">
-                    <input type="text" name="fName" id = "fName" placeholder="User First Name" required>
-                    <input type="text" name="lName" id = "lName" placeholder="User Last Name" required>
-                    <input type="text" name="email" id = "email" placeholder="User email" required>
-                    <input type="text" name="emailC" id = "emailC" placeholder="Confirm email" required>
-                    <input type="text" name="department" id = "department" placeholder="User Department" required>
+                    <input type="text" name="fName" id="fName" placeholder="User First Name" required>
+                    <input type="text" name="lName" id="lName" placeholder="User Last Name" required>
+                    <input type="text" name="email" id="email" placeholder="User email" required>
+                    <input type="text" name="emailC" id="emailC" placeholder="Confirm email" required>
+                    <input type="text" name="department" id="department" placeholder="User Department" required>
                     <select name="userType" id="userType" require>
                         <option value="user">User</option>
                         <option value="chair">Chair</option>
@@ -89,17 +96,16 @@
             </div>
 
             <div class="header">
-                <h2>Add Survey</h2>
+                <h2>Data Back-Ups</h2>
             </div>
 
             <!---------survey info file row------------>
             <div class="row row3">
-                <form onsubmit="addSurveyFromFileFunction(); return false">
-                    <label for="csvFile">Upload CSV file containing Survey information:</label>
-                    <input type="file" name="csvSurveyFile" id="csvSurveyFile" accept=".csv" required>
-                    <br>
-                    <input type="submit" value="Upload" id="csvSurvInfoFileSend">
-                </form>
+
+                <button class="Bfloatright fButton" onclick="getBackupFile()">Save data to Back-up file</button>
+
+                <button class="Bfloatright fButton" onclick="">Restore Database from Back-Up file</button>
+
             </div>
         </div>
 

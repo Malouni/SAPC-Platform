@@ -139,12 +139,29 @@ h2 {
     grid-area: rightside;
     padding: 10px;
     display: grid;
-    grid-template-rows: 0.5fr 2fr 4.5fr 0.5fr 2fr;
+    grid-template-rows: 0.5fr 2fr 4.5fr 0.5fr 1.5fr;
 }
 
+.split2{
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
 
 /*--------file row--------*/
 .row1{
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    border: none;
+    padding: 0;
+}
+
+.row1 form{
+    border: 1px solid rgb(121, 121, 121);
+    padding: 5px;
     position: relative;
 }
 
@@ -152,11 +169,11 @@ h2 {
     display: block;
 }
 
-.row1 form #csvSureInfoFileSend{
+form #csvSureInfoFileSend, form #csvSurvInfoFileSend{
     position: absolute;
-    bottom: 10px;
-    right: 10px;
-    width: 300px;
+    bottom: 5px;
+    left: 5px;
+    width: 97%;
     height: 40px;
     background-color: rgb(219, 219, 219);
     border-radius: 5px;
@@ -197,28 +214,36 @@ h2 {
 
 }
 
-/*------delete row--------*/
+/*------Back-UP row--------*/
 
 .row3{
     position: relative;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    padding: 5px 0 0 5px;
+    padding: 0;
+    border: none;
 }
 
-.row3 form *{
-    display: block;
+.row3>*{
+    position: relative;
 }
 
-.row3 form #csvSurvInfoFileSend{
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    width: 300px;
+
+.fButton{
+    width: 100%;
     height: 40px;
-    background-color: rgb(219, 219, 219);
+    background-color:#003e51;
+    color: white;
     border-radius: 5px;
     border: none;
     cursor: pointer;
-
 }
+
+
+
+
+
 
 /*------css buttons for adding, deleting --------*/
 button.editDelete
