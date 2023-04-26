@@ -109,7 +109,7 @@ function QuestionRender(QuestionIndex){
                 for(let i =0 ; i < LabelList.length ; i++){
 
                     if(LabelList[i]['QuestionID'] == Update_ID){
-                       if(LabelList[i]['InputValue'] == 'Other'){
+                       if(LabelList[i]['InputValue'].toLowerCase() == 'other'){
 
                             var id = 'op' + IdNum;
                             document += "<input type='radio' id='" + id + "' name='" + Update_ID + "' onchange='multiAnswerUpdate(this ,false);' onclick='OtherTextBox(\"show\" , "+Update_ID+" );' value= 'other'>";
@@ -202,7 +202,7 @@ function QuestionRender(QuestionIndex){
                     for(let i =0 ; i < LabelList.length ; i++){
 
                         if(LabelList[i]['QuestionID'] == QuestionList[QuestionIndex]['QuestionID'] && LabelList[i]['SubQuestionID'] == QuestionList[QuestionIndex]['SubQuestionID'] ){
-                            if(LabelList[i]['InputValue'] == 'Other'){
+                            if(LabelList[i]['InputValue'].toLowerCase() == 'other'){
 
                                 var id = 'op' + IdNum;
 
