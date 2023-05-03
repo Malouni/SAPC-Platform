@@ -5,6 +5,7 @@ var QuestionNum;
 var totalQuestion; 
 var shortUpdateID = [];
 var OneOptionID = []; 
+var OtherOptionID = [];
 
 document.addEventListener("DOMContentLoaded", function(){
     QuestionLoad(); 
@@ -93,6 +94,8 @@ function QuestionRender(QuestionIndex){
         
         if(QuesetionType[0] == 'single'){   
             var Update_ID = QuestionList[QuestionIndex]['QuestionID'];
+            shortUpdateID.length = 0 ; 
+            OtherOptionID.length = 0 ;
 
             if(QuesetionType[1] == 'multi' ){
 
@@ -106,10 +109,22 @@ function QuestionRender(QuestionIndex){
                 for(let i =0 ; i < LabelList.length ; i++){
 
                     if(LabelList[i]['QuestionID'] == Update_ID){
-                        var id = 'op' + IdNum;
-                        document += "<input type='radio' id='"+id+"' name='"+Update_ID+"' onchange='multiAnswerUpdate(this ,false);' value= "+LabelList[i]['InputValue']+">";
-                        document += "<label for='"+id+"'> "+LabelList[i]['InputValue']+" </label><br>"; 
-                        IdNum += 1 ;
+                       if(LabelList[i]['InputValue'].toLowerCase() == 'other'){
+
+                            var id = 'op' + IdNum;
+                            document += "<input type='radio' id='" + id + "' name='" + Update_ID + "' onchange='multiAnswerUpdate(this ,false);' onclick='OtherTextBox(\"show\" , "+Update_ID+" );' value= 'other'>";
+                            document += "<label for='"+id+"'> "+LabelList[i]['InputValue']+" </label><br>"; 
+                            document += "<input type='number' id='"+Update_ID+"'  style='display:none;' name='"+Update_ID+"' >";
+                            IdNum += 1 ;
+                            OtherOptionID.push(Update_ID);
+                            
+                       }else{ 
+
+                            var id = 'op' + IdNum;
+                            document += "<input type='radio' id='"+id+"' name='"+Update_ID+"' onchange='multiAnswerUpdate(this ,false);'  onclick='' value= "+LabelList[i]['InputValue']+">";
+                            document += "<label for='"+id+"'> "+LabelList[i]['InputValue']+" </label><br>"; 
+                            IdNum += 1 ;
+                       }
                     }
                 }         
                                 
@@ -146,7 +161,6 @@ function QuestionRender(QuestionIndex){
 
             $('#question').html(document);
             NoteLoad();
-            shortUpdateID.length = 0 ; 
             SingleAnswerLoad(QuestionList[QuestionIndex]['QuestionID'],QuesetionType[1]);
         
         }else{
@@ -161,7 +175,8 @@ function QuestionRender(QuestionIndex){
             var IsFrist = true;      
             OneOptionID.length = 0 ;
             shortUpdateID.length = 0 ; 
-           
+            OtherOptionID.length = 0 ;
+
             do { 
 
                 if(!IsFrist){       
@@ -187,11 +202,26 @@ function QuestionRender(QuestionIndex){
                     for(let i =0 ; i < LabelList.length ; i++){
 
                         if(LabelList[i]['QuestionID'] == QuestionList[QuestionIndex]['QuestionID'] && LabelList[i]['SubQuestionID'] == QuestionList[QuestionIndex]['SubQuestionID'] ){
-                            var id = 'op' + IdNum;
-                            multi_document += "<td class='radio-option'><input type='radio' id='"+id+"' name='"+Update_ID+"' onchange='multiAnswerUpdate(this ,false);' value= "+LabelList[i]['InputValue']+"></td>";
-                            multi_document += "<td class='label-option'><label for='"+id+"'> "+LabelList[i]['InputValue']+" </label><br></td>"; 
-                            IdNum += 1 ;
-                            OptionCount +=1
+                            if(LabelList[i]['InputValue'].toLowerCase() == 'other'){
+
+                                var id = 'op' + IdNum;
+
+                                multi_document += "<td class='radio-option'><input type='radio' id='"+id+"' name='"+Update_ID+"'  onchange='multiAnswerUpdate(this ,false);' onclick='OtherTextBox(\"show\" , \""+Update_ID+"\" );' value= 'other'> </td>";
+                                multi_document += "<td class='label-option'><label for='"+id+"'> "+LabelList[i]['InputValue']+" </label><br></td>"; 
+                                multi_document += "<td class='text-input'><input type='number' id='"+Update_ID+"'  style='display:none;' name='"+Update_ID+"'></td>";
+                                
+                                IdNum += 1 ;
+                                OptionCount +=1
+                                OtherOptionID.push(Update_ID);
+
+                           }else{                           
+                                
+                                var id = 'op' + IdNum;
+                                multi_document += "<td class='radio-option'><input type='radio' id='"+id+"' name='"+Update_ID+"' onchange='multiAnswerUpdate(this ,false);' value= "+LabelList[i]['InputValue']+"></td>";
+                                multi_document += "<td class='label-option'><label for='"+id+"'> "+LabelList[i]['InputValue']+" </label><br></td>"; 
+                                IdNum += 1 ;
+                                OptionCount +=1
+                            }
                         }
                     }                        
                     multi_document += "</tr>";
@@ -236,7 +266,6 @@ function QuestionRender(QuestionIndex){
 
 //================ All Update Function ==================
 
-
 //Update answer function for multi chocie 
 function multiAnswerUpdate(src , IsUpdate){
     var answer = src.value
@@ -278,15 +307,32 @@ function multiAnswerUpdate(src , IsUpdate){
 //this function use to update the shortAnswer
 function shortAnswerUpdate(){
     var textInputs = document.querySelectorAll('form input[type="number"]');
+    // loop through each input element
+    for (var i = 0; i < textInputs.length; i++) {
+        var input = textInputs[i];
+        var answer = input.value;
+        var name = input.getAttribute('name');
+        var IsInOtherList = 'false';
+        var OtherFound;
 
-    if(textInputs != ""){
-        var inputArray = [];
-        for (var i = 0; i < textInputs.length; i++){
+        //check if it in the OtherOptionID list or not 
+        // if no update it. 
+        if (OtherOptionID.length > 0) {
 
+            for (var x = 0; x < OtherOptionID.length; x++) {
+                if (OtherOptionID[x] == name) {
+                    OtherFound = true;
+                    break;
+                }
+            }
+            IsInOtherList = OtherFound ? 'true' : 'false';
+        }
+        
+        // check if input value is not empty
+        if (answer !== "" && IsInOtherList == 'false') 
+        {    
             //get all input (value , Q_ID and QSubID from its name)
             var input = textInputs[i];
-            var name = input.getAttribute('name');
-            var answer = input.value;
             var nameParts = name.split("_");
             var Q_ID = nameParts[0];
             var QSubID = nameParts[1];
@@ -319,8 +365,8 @@ function shortAnswerUpdate(){
                 var query = {page: 'Suvery', command: 'AnswerUpdate' , Q_ID: ''+parseInt(Q_ID)+'' , SubQID: 0 , IsUpdate: ''+IsUpdate+'' , Answer:''+answer+'' };            
                 $.post(url, query)                
             }            
-        }
-    }   
+        }        
+    }  
 }
 
 //call when click next to update the note from user to db
@@ -428,16 +474,49 @@ function SingleAnswerLoad(Q_ID ,type){
                 
                 // Retrieve the radio button group by its name
                 var radioGroup = document.getElementsByName(name);
+                var otherOptionCheck = 'false' ; 
+
+                // check the name is in the OtherOptionID or not 
+                var OtherFound;
+                var IsInOtherList = 'false';
+                if (OtherOptionID.length > 0) {
+
+                    for (var x = 0; x < OtherOptionID.length; x++) {
+                        if (OtherOptionID[x] == name) {
+                            OtherFound = true;
+                            break;
+                        }
+                    }
+                    IsInOtherList = OtherFound ? 'true' : 'false';
+                }
 
                 radioGroup.forEach(function(radioButton) {
                     radioButton.onchange = function() {
                       multiAnswerUpdate(this , 'true');
-                    };
+                    };               
+
+                    //set the onclick function to hide the textbox when click on different radio button
+                    if(IsInOtherList == 'true' && radioButton.value != 'other' &&  radioButton.type === 'radio'){
+                        radioButton.onclick = function() {
+                            OtherTextBox('hide' , name);
+                        };          
+                    }
 
                     // Check if the radio button matches the desired value
                     if (radioButton.value === (answer.toString())) {
                       radioButton.checked = true;
-                  }
+                      otherOptionCheck = 'true'; 
+                    }
+
+                    //after run all but otherOptionCheck still not 'true' then => check the other radio button
+                    if(otherOptionCheck != 'true' && radioButton.value == 'other' ){
+                        radioButton.checked = true;
+                        OtherTextBox('show' , name);
+                        
+                        //set the other text box value 
+                        var Othertextbox = document.getElementById(name);
+                        Othertextbox.defaultValue = answer;
+                    } 
                 });
             }else{
                 // Retrieve the textbox by its name
@@ -465,22 +544,61 @@ function ComposedAnswerLoad(Q_ID ,typeArray){
                 //Get data
                 var name = (result[i]['QuestionID']+"_"+ result[i]['SubQuestionID']).toString();
                 var answer = result[i]['SubAnswer'];
+                var otherOptionCheck = 'false' ; 
+
     
                 //for multi question
                 if(typeArray[i] == 'multi'){
         
                     // Retrieve the radio button group by its name
                     var radioGroup = document.getElementsByName(name);
+
+                    // check the name is in the OtherOptionID or not 
+                    var OtherFound;
+                    var IsInOtherList = 'false';
+
+                    if (OtherOptionID.length > 0) {
+
+                        for (var x = 0; x < OtherOptionID.length; x++) {
+                            if (OtherOptionID[x] == name) {
+                                OtherFound = true;
+                                break;
+                            }
+                        }
+                        IsInOtherList = OtherFound ? 'true' : 'false';
+                    }
+
                     
                     radioGroup.forEach(function(radioButton) {
-                      radioButton.onchange = function() {
-                        multiAnswerUpdate(this , 'true');
-                      };
+                        radioButton.onchange = function() {
+                            multiAnswerUpdate(this , 'true');
+                        };
 
-                      // Check if the radio button matches the desired value
-                      if (radioButton.value === (answer.toString())) {
-                        radioButton.checked = true;
-                    }
+
+                        //set the onclick function to hide the textbox when click on different radio button
+                        if(IsInOtherList == 'true' && radioButton.value != "other" &&  radioButton.type === 'radio'){
+                            var nameId= name; 
+
+                            radioButton.onclick = function() {
+                                OtherTextBox('hide' , nameId);
+                            };          
+                        }
+
+                        // Check if the radio button matches the desired value
+                        if (radioButton.value === (answer.toString())) {
+                            radioButton.checked = true;
+                            otherOptionCheck = 'true'; 
+                        }
+    
+                        //after run all but otherOptionCheck still not 'true' then => check the other radio button
+                        if(otherOptionCheck != 'true' && radioButton.value == 'other' ){
+                            radioButton.checked = true;
+                            OtherTextBox('show' , name);
+                            
+                            //set the other text box value 
+                            var Othertextbox = document.getElementById(name);
+                            Othertextbox.defaultValue = answer;
+                        } 
                     });
                         
                 }else{    
@@ -491,7 +609,6 @@ function ComposedAnswerLoad(Q_ID ,typeArray){
                 }          
             }                      
         }else{
-
             if(OneOptionID.length > 0){
 
                 for(var j= 0 ; j < OneOptionID.length ; j++){
@@ -633,6 +750,19 @@ function btnShow(){
     
     Nextbtn.style.display = "none";
     Finbtn.style.display = "block";      
+}
+
+//show/hide 'other' textbox for multi choice
+function OtherTextBox(value , id){
+    var textbox = document.getElementById(id);
+
+    if(value == 'show')
+    {
+        textbox.style.display = "block"
+    }else{
+        textbox.style.display = "none"
+        textbox.value = 0;
+    }
 }
 
 //go to user review btn
