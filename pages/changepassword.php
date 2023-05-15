@@ -21,7 +21,7 @@
     <div id="logInDiv">
         <div id="logInHeader">
             <p><img src="../images/LOGOS/TRU-LG03.png" alt="TRU-logo"><strong>THOMPSON RIVERS UNIVERSITY</strong></p>
-            <P class="subtitle">Look's like you are using the defalult password, </P>
+            <P class="subtitle">Look's like you are using the default password, </P>
             <p>please change it using the following fields</p>
         </div>
         <div id="change-passForm">
